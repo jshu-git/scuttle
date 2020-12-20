@@ -14,6 +14,10 @@ export class TicTacToeBoard extends React.Component {
         return true;
     }
 
+    getCurrentTurn() {
+        return this.props.ctx.currentPlayer;
+    }
+
     render() {
         let tbody = [];
         for (let i = 0; i < 3; i++) {
@@ -47,6 +51,7 @@ export class TicTacToeBoard extends React.Component {
 
         return (
             <div>
+                <p>Current Turn: Player {this.getCurrentTurn()}</p>
                 <table id="board">
                     <tbody>{tbody}</tbody>
                 </table>
