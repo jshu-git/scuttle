@@ -1,15 +1,15 @@
 import { INVALID_MOVE } from "boardgame.io/core";
 
 export const TicTacToe = {
-    setup: () => ({ 
+    setup: () => ({
         cells: Array(9).fill(null),
-        deck: Array(52).fill(null),
+        deck: createDeck(),
     }),
 
     turn: {
         moveLimit: 1,
     },
-    
+
     moves: {
         clickCell: (G, ctx, id) => {
             // validate
@@ -18,6 +18,10 @@ export const TicTacToe = {
                 return INVALID_MOVE;
             }
             G.cells[id] = ctx.currentPlayer;
+        },
+
+        shuffle: (G, ctx) => {
+            G.deck = shuffleDeck(G.deck);
         },
     },
 
@@ -55,4 +59,40 @@ function IsVictory(cells) {
 
 function IsDraw(cells) {
     return cells.filter((c) => c === null).length === 0;
+}
+
+// https://www.thatsoftwaredude.com/content/6196/coding-a-card-deck-in-javascript
+function createDeck() {
+    var suits = ["Spades", "Diamonds", "Clubs", "Hearts"];
+    var values = [
+        "Ace",
+        "2",
+        "3",
+        "4",
+        "5",
+        "6",
+        "7",
+        "8",
+        "9",
+        "10",
+        "Jack",
+        "Queen",
+        "King",
+    ];
+    var deck = [];
+    for (var i = 0; i < suits.length; i++) {
+        for (var x = 0; x < values.length; x++) {
+            var card = { Value: values[x], Suit: suits[i] };
+            deck.push(card);
+        }
+    }
+    return deck;
+}
+
+// https://stackoverflow.com/questions/2450954/how-to-randomize-shuffle-a-javascript-array/46545530#46545530
+function shuffleDeck(deck) {
+    return deck
+        .map((a) => ({ sort: Math.random(), value: a }))
+        .sort((a, b) => a.sort - b.sort)
+        .map((a) => a.value);
 }

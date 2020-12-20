@@ -8,7 +8,8 @@ import { TicTacToeBoard } from "./Board";
 const TicTacToeClient = Client({
     game: TicTacToe,
     board: TicTacToeBoard,
-
+    numPlayers: 2,
+    
     // local master
     multiplayer: Local({
         persist: false,
