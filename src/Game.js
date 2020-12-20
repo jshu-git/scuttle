@@ -1,29 +1,39 @@
 import { INVALID_MOVE } from "boardgame.io/core";
 
 export const TicTacToe = {
-    setup: () => ({
+    setup: (ctx) => ({
         cells: Array(9).fill(null),
-        deck: createDeck(),
+        deck: createDeck(), // change to shuffle on setup later
+        hand0: [],
+        hand1: [],
     }),
 
     turn: {
         moveLimit: 1,
     },
 
-    moves: {
-        clickCell: (G, ctx, id) => {
-            // validate
-            if (G.cells[id] !== null || id < 0 || id > G.cells.length) {
-                console.log(INVALID_MOVE);
-                return INVALID_MOVE;
-            }
-            G.cells[id] = ctx.currentPlayer;
-        },
-
-        shuffle: (G, ctx) => {
-            G.deck = shuffleDeck(G.deck);
+    phases: {
+        // draw: {
+        //     moves: { drawHands },
+        //     start: true,
+        //     next: "play",
+        //     endIf: (G, ctx) => {
+        //         return G.hand0.length === 4 && G.hand1.length === 5;
+        //     },
+        // },
+        play: {
+            onBegin: (G, ctx) => {
+                drawHands(G);
+            },
+            moves: { clickCell, shuffle },
+            start: true,
         },
     },
+
+    // moves: {
+    //     clickCell,
+    //     shuffle,
+    // },
 
     // victory condition
     endIf: (G, ctx) => {
@@ -36,7 +46,33 @@ export const TicTacToe = {
     },
 };
 
+// moves
+// tutorial
+function clickCell(G, ctx, id) {
+    // validate
+    if (G.cells[id] !== null || id < 0 || id > G.cells.length) {
+        console.log(INVALID_MOVE);
+        return INVALID_MOVE;
+    }
+    G.cells[id] = ctx.currentPlayer;
+}
+
+function shuffle(G, ctx) {
+    G.deck = shuffleDeck(G.deck);
+}
+
 // helpers
+function drawHands(G, ctx) {
+    for (let i = 0; i < 4; i++) {
+        const card = G.deck.pop();
+        G.hand0.push(card);
+    }
+    for (let i = 0; i < 5; i++) {
+        const card = G.deck.pop();
+        G.hand1.push(card);
+    }
+}
+
 function IsVictory(cells) {
     const positions = [
         [0, 1, 2],
