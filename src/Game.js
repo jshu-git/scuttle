@@ -3,9 +3,10 @@ import { INVALID_MOVE } from "boardgame.io/core";
 export const TicTacToe = {
     setup: (ctx) => ({
         cells: Array(9).fill(null),
-        deck: createDeck(), // change to shuffle on setup later
-        hand0: [],
-        hand1: [],
+        deck: shuffle(createDeck()), // change to shuffle on setup later
+        hands: {},
+        // field0: [],
+        // field1: [],
     }),
 
     turn: {
@@ -23,9 +24,9 @@ export const TicTacToe = {
         // },
         play: {
             onBegin: (G, ctx) => {
-                drawHands(G);
+                drawHands(G, ctx);
             },
-            moves: { clickCell, shuffle },
+            moves: { clickCell, drawCard },
             start: true,
         },
     },
@@ -57,19 +58,25 @@ function clickCell(G, ctx, id) {
     G.cells[id] = ctx.currentPlayer;
 }
 
-function shuffle(G, ctx) {
-    G.deck = shuffleDeck(G.deck);
+function drawCard(G, ctx) {
+    const card = G.deck.pop();
+    G.hands[ctx.currentPlayer].push(card);
 }
+
+
 
 // helpers
 function drawHands(G, ctx) {
+    G.hands[ctx.playOrder[ctx.playOrderPos]] = [];
+    G.hands[ctx.playOrder[ctx.playOrderPos+1]] = [];
+    
     for (let i = 0; i < 4; i++) {
         const card = G.deck.pop();
-        G.hand0.push(card);
+        G.hands[ctx.playOrder[ctx.playOrderPos]].push(card);
     }
     for (let i = 0; i < 5; i++) {
         const card = G.deck.pop();
-        G.hand1.push(card);
+        G.hands[ctx.playOrder[ctx.playOrderPos+1]].push(card);
     }
 }
 
@@ -126,7 +133,7 @@ function createDeck() {
 }
 
 // https://stackoverflow.com/questions/2450954/how-to-randomize-shuffle-a-javascript-array/46545530#46545530
-function shuffleDeck(deck) {
+function shuffle(deck) {
     return deck
         .map((a) => ({ sort: Math.random(), value: a }))
         .sort((a, b) => a.sort - b.sort)
