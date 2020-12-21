@@ -3,40 +3,33 @@ import "./style/board.css";
 
 export class TicTacToeBoard extends React.Component {
     onClick = (id) => {
-        if (this.isActive(id)) {
-            this.props.moves.clickCell(id);
-        }
+        console.log(id);
+        this.props.moves.playCard(id);
     };
 
-    isActive(id) {
-        if (!this.props.isActive) return false;
-        if (this.props.G.cells[id] !== null) return false;
-        return true;
-    }
-
-    getCurrentTurn() {
-        return this.props.ctx.currentPlayer;
-    }
-
     render() {
-        let tbody = [];
-        for (let i = 0; i < 3; i++) {
-            let cells = [];
-            for (let j = 0; j < 3; j++) {
-                const id = 3 * i + j;
-                cells.push(
-                    <td
-                        key={id}
-                        className={this.isActive(id) ? "active" : ""}
-                        onClick={() => this.onClick(id)}
-                    >
-                        {this.props.G.cells[id]}
-                    </td>
-                );
-            }
-            tbody.push(<tr key={i}>{cells}</tr>);
+        // hand stuff
+        // hand is a table that is 1 row long
+        let tbody_hand = [];
+        let cells_hand = [];
+        // ***important*** uses playerID. this matches with G.hands
+        // console.log("hello playerid " + this.props.playerID);
+        let hand = this.props.G.hands[this.props.playerID];
+        for (let i = 0; i < hand.length; i++) {
+            cells_hand.push(
+                // key info: https://reactjs.org/docs/lists-and-keys.html#keys-must-only-be-unique-among-siblings
+                <td
+                    key={i}
+                    className={this.props.isActive ? "active" : ""}
+                    onClick={() => this.onClick(i)}
+                >
+                    {hand[i].Value} of {hand[i].Suit}
+                </td>
+            );
         }
+        tbody_hand.push(<tr key={0}>{cells_hand}</tr>);
 
+        // winner stuff
         let winner = null;
         if (this.props.ctx.gameover) {
             winner =
@@ -51,12 +44,13 @@ export class TicTacToeBoard extends React.Component {
 
         return (
             <div>
-                <p>Current Turn: Player {this.getCurrentTurn()}</p>
-                <table id="board">
-                    <tbody>{tbody}</tbody>
+                <p>Current Turn: Player {this.props.ctx.currentPlayer}</p>
+                <hr></hr>
+                <p>Your Hand</p>
+                <table>
+                    <tbody>{tbody_hand}</tbody>
                 </table>
                 {winner}
-                <br></br>
             </div>
         );
     }

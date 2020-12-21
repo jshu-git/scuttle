@@ -23,7 +23,7 @@ const App = () => (
         <TicTacToeClient playerID="1" />
 
         {/* spectator */}
-        <TicTacToeClient playerID="2" />
+        {/* <TicTacToeClient playerID="2" /> */}
     </div>
 );
 

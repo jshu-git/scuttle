@@ -65,11 +65,11 @@ function drawCard(G, ctx) {
 
 // currently just removes the played card
 function playCard(G, ctx, id) {
-    if (id == null || id < 0 || id > G.hands[ctx.currentPlayer].length) {
+    if (id == null || id < 0 || id >= G.hands[ctx.currentPlayer].length) {
         console.log("playcard error");
         return INVALID_MOVE;
     }
-    // console.log(id);
+    console.log("playCard " + G.hands[ctx.currentPlayer][id].Value + " " + G.hands[ctx.currentPlayer][id].Suit);
     // remove 1 element at index 'id'
     G.hands[ctx.currentPlayer].splice(id, 1);
 }
