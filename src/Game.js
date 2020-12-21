@@ -2,13 +2,11 @@ import { INVALID_MOVE } from "boardgame.io/core";
 
 export const TicTacToe = {
     setup: (ctx) => ({
-        cells: Array(9).fill(null),
+        // cells: Array(9).fill(null),
         deck: shuffle(createDeck()), // change to shuffle on setup later
         hands: {},
         fields: {},
         graveyard: [],
-        // field0: [],
-        // field1: [],
     }),
 
     turn: {
@@ -17,46 +15,46 @@ export const TicTacToe = {
 
     phases: {
         draw: {
-            moves: { drawHands },
             start: true,
             onBegin: (G, ctx) => {
                 drawHands(G, ctx);
                 setFields(G, ctx);
-                ctx.events.endPhase();
+                // ctx.events.endPhase(); // this fails for some reason, so have to use endIf
             },
             next: "play",
+            endIf: (G, ctx) => {
+                return (
+                    Object.keys(G.hands).length === 2 &&
+                    Object.keys(G.fields).length === 2
+                );
+            },
         },
         play: {
-            moves: { clickCell, drawCard, playCard },
+            moves: { drawCard, playCard },
         },
     },
 
-    // moves: {
-    //     clickCell,
-    //     shuffle,
-    // },
-
     // victory condition
-    endIf: (G, ctx) => {
-        if (IsVictory(G.cells)) {
-            return { winner: ctx.currentPlayer };
-        }
-        if (IsDraw(G.cells)) {
-            return { draw: true };
-        }
-    },
+    // endIf: (G, ctx) => {
+    //     if (IsVictory(G.cells)) {
+    //         return { winner: ctx.currentPlayer };
+    //     }
+    //     if (IsDraw(G.cells)) {
+    //         return { draw: true };
+    //     }
+    // },
 };
 
 // moves
 // tutorial
-function clickCell(G, ctx, id) {
-    // validate
-    if (G.cells[id] !== null || id < 0 || id > G.cells.length) {
-        console.log("click cell error");
-        return INVALID_MOVE;
-    }
-    G.cells[id] = ctx.currentPlayer;
-}
+// function clickCell(G, ctx, id) {
+// validate
+// if (G.cells[id] !== null || id < 0 || id > G.cells.length) {
+//     console.log("click cell error");
+//     return INVALID_MOVE;
+// }
+// G.cells[id] = ctx.currentPlayer;
+// }
 
 function drawCard(G, ctx) {
     const card = G.deck.pop();
@@ -105,29 +103,29 @@ function setFields(G, ctx) {
     G.fields[ctx.playOrder[ctx.playOrderPos + 1]] = [];
 }
 
-function IsVictory(cells) {
-    const positions = [
-        [0, 1, 2],
-        [3, 4, 5],
-        [6, 7, 8],
-        [0, 3, 6],
-        [1, 4, 7],
-        [2, 5, 8],
-        [0, 4, 8],
-        [2, 4, 6],
-    ];
+// function IsVictory(cells) {
+//     const positions = [
+//         [0, 1, 2],
+//         [3, 4, 5],
+//         [6, 7, 8],
+//         [0, 3, 6],
+//         [1, 4, 7],
+//         [2, 5, 8],
+//         [0, 4, 8],
+//         [2, 4, 6],
+//     ];
 
-    const isRowComplete = (row) => {
-        const symbols = row.map((i) => cells[i]);
-        return symbols.every((i) => i !== null && i === symbols[0]);
-    };
+//     const isRowComplete = (row) => {
+//         const symbols = row.map((i) => cells[i]);
+//         return symbols.every((i) => i !== null && i === symbols[0]);
+//     };
 
-    return positions.map(isRowComplete).some((i) => i === true);
-}
+//     return positions.map(isRowComplete).some((i) => i === true);
+// }
 
-function IsDraw(cells) {
-    return cells.filter((c) => c === null).length === 0;
-}
+// function IsDraw(cells) {
+//     return cells.filter((c) => c === null).length === 0;
+// }
 
 // https://www.thatsoftwaredude.com/content/6196/coding-a-card-deck-in-javascript
 function createDeck() {
