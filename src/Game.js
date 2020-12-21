@@ -26,7 +26,7 @@ export const TicTacToe = {
             onBegin: (G, ctx) => {
                 drawHands(G, ctx);
             },
-            moves: { clickCell, drawCard },
+            moves: { clickCell, drawCard, playCard },
             start: true,
         },
     },
@@ -52,7 +52,7 @@ export const TicTacToe = {
 function clickCell(G, ctx, id) {
     // validate
     if (G.cells[id] !== null || id < 0 || id > G.cells.length) {
-        console.log(INVALID_MOVE);
+        console.log("click cell error");
         return INVALID_MOVE;
     }
     G.cells[id] = ctx.currentPlayer;
@@ -63,6 +63,16 @@ function drawCard(G, ctx) {
     G.hands[ctx.currentPlayer].push(card);
 }
 
+// currently just removes the played card
+function playCard(G, ctx, id) {
+    if (id == null || id < 0 || id > G.hands[ctx.currentPlayer].length) {
+        console.log("playcard error");
+        return INVALID_MOVE;
+    }
+    // console.log(id);
+    // remove 1 element at index 'id'
+    G.hands[ctx.currentPlayer].splice(id, 1);
+}
 
 
 // helpers
