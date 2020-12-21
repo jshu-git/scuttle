@@ -16,21 +16,18 @@ export const TicTacToe = {
     },
 
     phases: {
-        // draw: {
-        //     moves: { drawHands },
-        //     start: true,
-        //     next: "play",
-        //     endIf: (G, ctx) => {
-        //         return G.hand0.length === 4 && G.hand1.length === 5;
-        //     },
-        // },
-        play: {
+        draw: {
+            moves: { drawHands },
+            start: true,
             onBegin: (G, ctx) => {
                 drawHands(G, ctx);
                 setFields(G, ctx);
+                ctx.events.endPhase();
             },
+            next: "play",
+        },
+        play: {
             moves: { clickCell, drawCard, playCard },
-            start: true,
         },
     },
 
@@ -153,7 +150,11 @@ function createDeck() {
     var deck = [];
     for (var i = 0; i < suits.length; i++) {
         for (var x = 0; x < values.length; x++) {
-            var card = { Value: values[x], Suit: suits[i], id: values[x] + suits[i] };
+            var card = {
+                Value: values[x],
+                Suit: suits[i],
+                id: values[x] + suits[i],
+            };
             deck.push(card);
         }
     }
