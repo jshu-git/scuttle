@@ -6,9 +6,11 @@
  * https://opensource.org/licenses/MIT.
  */
 
-#board {
-    border-collapse: collapse;
+#hand {
+    border-collapse: separate;
+    border-spacing: 5px;
     font-family: monospace;
+    border: 1px solid black;
 }
 
 #winner {

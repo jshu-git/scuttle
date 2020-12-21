@@ -5,6 +5,8 @@ export const TicTacToe = {
         cells: Array(9).fill(null),
         deck: shuffle(createDeck()), // change to shuffle on setup later
         hands: {},
+        fields: {},
+        graveyard: [],
         // field0: [],
         // field1: [],
     }),
@@ -25,6 +27,7 @@ export const TicTacToe = {
         play: {
             onBegin: (G, ctx) => {
                 drawHands(G, ctx);
+                setFields(G, ctx);
             },
             moves: { clickCell, drawCard, playCard },
             start: true,
@@ -63,31 +66,46 @@ function drawCard(G, ctx) {
     G.hands[ctx.currentPlayer].push(card);
 }
 
-// currently just removes the played card
+// currently either (1) removes card or (2) add to field
 function playCard(G, ctx, id) {
-    if (id == null || id < 0 || id >= G.hands[ctx.currentPlayer].length) {
+    let hand = G.hands[ctx.currentPlayer];
+    let field = G.fields[ctx.currentPlayer];
+
+    if (id == null || id < 0 || id >= hand.length) {
         console.log("playcard error");
         return INVALID_MOVE;
     }
-    console.log("playCard " + G.hands[ctx.currentPlayer][id].Value + " " + G.hands[ctx.currentPlayer][id].Suit);
-    // remove 1 element at index 'id'
-    G.hands[ctx.currentPlayer].splice(id, 1);
-}
+    console.log("playCard " + hand[id].Value + " " + hand[id].Suit);
 
+    // remove 1 element at index 'id' (remove from hand)
+    // let remove = hand.splice(id, 1)[0];
+    // console.log(remove);
+
+    // remove from hand and add to field
+    let remove = hand.splice(id, 1)[0];
+    field.push(remove);
+}
 
 // helpers
 function drawHands(G, ctx) {
     G.hands[ctx.playOrder[ctx.playOrderPos]] = [];
-    G.hands[ctx.playOrder[ctx.playOrderPos+1]] = [];
-    
+    G.hands[ctx.playOrder[ctx.playOrderPos + 1]] = [];
+
     for (let i = 0; i < 4; i++) {
         const card = G.deck.pop();
         G.hands[ctx.playOrder[ctx.playOrderPos]].push(card);
     }
+
     for (let i = 0; i < 5; i++) {
         const card = G.deck.pop();
-        G.hands[ctx.playOrder[ctx.playOrderPos+1]].push(card);
+        // still feels hacky, not sure of other way to access both players at once
+        G.hands[ctx.playOrder[ctx.playOrderPos + 1]].push(card);
     }
+}
+
+function setFields(G, ctx) {
+    G.fields[ctx.playOrder[ctx.playOrderPos]] = [];
+    G.fields[ctx.playOrder[ctx.playOrderPos + 1]] = [];
 }
 
 function IsVictory(cells) {
@@ -135,7 +153,7 @@ function createDeck() {
     var deck = [];
     for (var i = 0; i < suits.length; i++) {
         for (var x = 0; x < values.length; x++) {
-            var card = { Value: values[x], Suit: suits[i] };
+            var card = { Value: values[x], Suit: suits[i], id: values[x] + suits[i] };
             deck.push(card);
         }
     }
