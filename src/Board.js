@@ -5,8 +5,15 @@ export class TicTacToeBoard extends React.Component {
     constructor(props) {
         super(props);
         // index is index of selected card
-        this.state = { showCardOptions: false, index: 0, isScuttling: false };
-        this.toggleCardOptions = this.toggleCardOptions.bind(this);
+        this.state = {
+            showPlayCardOptions: false,
+            index: 0,
+            isScuttling: false,
+            showGraveyard: false,
+            // showTwoPrompt: false,
+        };
+        // don't think we need this https://stackoverflow.com/questions/42556083/what-does-bindthis-in-constructor-do-in-reactjs
+        // this.togglePlayCardOptions = this.togglePlayCardOptions.bind(this);
     }
 
     /*
@@ -14,19 +21,24 @@ export class TicTacToeBoard extends React.Component {
         it toggles the card options
         it sets state.index to the index of the clicked card to keep track of it for when an option is executed
     */
-    toggleCardOptions = (i) => {
+    togglePlayCardOptions = (i) => {
         this.setState(
-            { showCardOptions: !this.state.showCardOptions, index: i },
+            { showPlayCardOptions: !this.state.showPlayCardOptions, index: i },
             () => {
                 console.log("index is ", this.state.index);
             }
         );
     };
 
+    /*
+        this function is called when a card is playCardScuttle
+        it toggles off the card options
+        isScuttling means the player is in the process of choosing a card to scuttle
+    */
     toggleChoosingScuttle = () => {
         this.setState(
             {
-                showCardOptions: false,
+                showPlayCardOptions: false,
                 isScuttling: true,
             },
             () => {
@@ -35,10 +47,26 @@ export class TicTacToeBoard extends React.Component {
         );
     };
 
+    toggleGraveyard = () => {
+        this.setState({ showGraveyard: !this.state.showGraveyard });
+    };
+
+    // toggleTwoPrompt = () => {
+    //     this.setState(
+    //         {
+    //             showPlayCardOptions: false,
+    //             showTwoPrompt: true,
+    //         },
+    //         () => {
+    //             console.log();
+    //         }
+    //     );
+    // };
+
     // this function calls Game.js playCardValue
     playCardValue = (id) => {
         // toggle off the card options
-        this.setState({ showCardOptions: false });
+        this.setState({ showPlayCardOptions: false });
         this.props.moves.playCardValue(id);
     };
 
@@ -114,13 +142,16 @@ export class TicTacToeBoard extends React.Component {
                 <td
                     key={card.id}
                     className={this.props.isActive ? "active" : ""}
-                    onClick={() => this.toggleCardOptions(i)}
+                    onClick={
+                        this.props.isActive
+                            ? () => this.togglePlayCardOptions(i)
+                            : () => void 0
+                    }
                 >
                     {card.Value} of {card.Suit}
                 </td>
             );
         }
-
         // the key here is tied to playerID
         // console.log("tbody_hand key " + this.props.playerID);
         tbody_hand.push(<tr key={this.props.playerID}>{cells_hand}</tr>);
@@ -138,24 +169,56 @@ export class TicTacToeBoard extends React.Component {
             //     );
         }
 
+        // graveyard stuff
+        // graveyard is a BIG table that is 1 row long
+        let tbody_graveyard = [];
+        let cells_graveyard = [];
+        let graveyard = this.props.G.graveyard;
+        for (let i = 0; i < graveyard.length; i++) {
+            let card = graveyard[i];
+            cells_graveyard.push(
+                <td key={card.id}>
+                    {card.Value} of {card.Suit}
+                </td>
+            );
+        }
+        tbody_graveyard.push(
+            <tr key={this.props.playerID}>{cells_graveyard}</tr>
+        );
+
         return (
             <div>
                 <p>Current Turn: Player {this.props.ctx.currentPlayer}</p>
+                <p>Deck Count: {this.props.G.deck.length}</p>
+
+                <p>Graveyard Count: {this.props.G.graveyard.length}</p>
+                {/* graveyard toggle */}
+                <button onClick={() => this.toggleGraveyard()}>
+                    View Graveyard
+                </button>
+                {this.state.showGraveyard && (
+                    <table>
+                        <tbody>{tbody_graveyard}</tbody>
+                    </table>
+                )}
+
                 <hr></hr>
+                <p>Opponent Field</p>
                 <table id="field">
-                    <thead>
+                    {/* <thead>
                         <tr>
                             <th colSpan={field_other_len}>Opponent Field</th>
                         </tr>
-                    </thead>
+                    </thead> */}
                     <tbody>{tbody_field_other}</tbody>
                 </table>
+                <p>Your Field</p>
                 <table id="field">
-                    <thead>
+                    {/* <thead>
                         <tr>
                             <th colSpan={field_you_len}>Your Field</th>
                         </tr>
-                    </thead>
+                    </thead> */}
                     <tbody>{tbody_field_you}</tbody>
                 </table>
                 <table id="hand">
@@ -168,7 +231,7 @@ export class TicTacToeBoard extends React.Component {
                 </table>
 
                 {/* card options toggle */}
-                {this.state.showCardOptions && (
+                {this.state.showPlayCardOptions && (
                     <div>
                         {/* calls the local playCardValue with the set state */}
                         <button
@@ -186,6 +249,15 @@ export class TicTacToeBoard extends React.Component {
                 <br></br>
                 <br></br>
                 <br></br>
+
+                {/* cardeffect toggle */}
+                {/* {this.state.showTwoPrompt && (
+                    <p>
+                        {this.props.ctx.currentPlayer === this.props.playerID
+                            ? "Opponent is deciding 2"
+                            : "do you wanna play 2"}
+                    </p>
+                )} */}
 
                 {winner}
             </div>
