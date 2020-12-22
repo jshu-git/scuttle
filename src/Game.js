@@ -67,7 +67,8 @@ function playCardValue(G, ctx, i) {
 function playCardScuttle(G, ctx, i, j) {
     // let current_hand = G.hands[ctx.currentPlayer];
     let current_player = ctx.playOrder[ctx.playOrderPos];
-    let opponent_player = ctx.playOrder[(ctx.playOrderPos + 1) % ctx.playOrder.length];
+    let opponent_player =
+        ctx.playOrder[(ctx.playOrderPos + 1) % ctx.playOrder.length];
 
     let current_hand = G.hands[current_player];
     let opponent_field = G.fields[opponent_player];
@@ -86,19 +87,24 @@ function playCardScuttle(G, ctx, i, j) {
     }
 
     // card logic
-    if (
-        parseInt(current_card.Value) >= parseInt(target_card.Value) ||
-        (current_card.Value === "Ace" && target_card.Value === "Ace")
-    ) {
+    var temp = current_card.Value;
+    var temp2 = target_card.Value;
+    if (temp === "Ace") {
+        temp = "1";
+    }
+    if (temp2 === "Ace") {
+        temp2 = "1";
+    }
+    if (parseInt(temp) >= parseInt(temp2)) {
         let remove1 = current_hand.splice(i, 1)[0];
         let remove2 = opponent_field.splice(j, 1)[0];
+        G.graveyard.push(remove1);
+        G.graveyard.push(remove2);
         console.log(remove1.Value + " SCUTTLE " + remove2.Value);
-    }
-    else {
+    } else {
         console.log("playCardScuttle error, scuttle failed");
         return INVALID_MOVE;
     }
-
     // console.log("playCardScuttle " + card.id);
 }
 
