@@ -30,7 +30,13 @@ export const TicTacToe = {
             },
         },
         play: {
-            moves: { drawCard, playCardValue, playCardEffect, playCardScuttle },
+            moves: {
+                drawHands,
+                drawCard,
+                playCardValue,
+                playCardEffect,
+                playCardScuttle,
+            },
         },
     },
 };
@@ -41,12 +47,13 @@ function drawCard(G, ctx) {
     G.hands[ctx.currentPlayer].push(card);
 }
 
+// i is the index of the card in the current player's hand
 function playCardValue(G, ctx, i) {
     let hand = G.hands[ctx.currentPlayer];
     let field = G.fields[ctx.currentPlayer];
 
     if (i == null || i < 0 || i >= hand.length) {
-        console.log("playcard error");
+        console.log("playCardValue error");
         return INVALID_MOVE;
     }
 
@@ -57,6 +64,45 @@ function playCardValue(G, ctx, i) {
     field.push(remove);
 }
 
+function playCardScuttle(G, ctx, i, j) {
+    // let current_hand = G.hands[ctx.currentPlayer];
+    let current_player = ctx.playOrder[ctx.playOrderPos];
+    let opponent_player = ctx.playOrder[(ctx.playOrderPos + 1) % ctx.playOrder.length];
+
+    let current_hand = G.hands[current_player];
+    let opponent_field = G.fields[opponent_player];
+
+    let current_card = current_hand[i];
+    let target_card = opponent_field[j];
+
+    // can't use J/Q/K to scuttle
+    if (
+        current_card.Value === "Jack" ||
+        current_card.Value === "Queen" ||
+        current_card.Value === "King"
+    ) {
+        console.log("playCardScuttle error, attempt to scuttle with J/Q/K");
+        return INVALID_MOVE;
+    }
+
+    // card logic
+    if (
+        parseInt(current_card.Value) >= parseInt(target_card.Value) ||
+        (current_card.Value === "Ace" && target_card.Value === "Ace")
+    ) {
+        let remove1 = current_hand.splice(i, 1)[0];
+        let remove2 = opponent_field.splice(j, 1)[0];
+        console.log(remove1.Value + " SCUTTLE " + remove2.Value);
+    }
+    else {
+        console.log("playCardScuttle error, scuttle failed");
+        return INVALID_MOVE;
+    }
+
+    // console.log("playCardScuttle " + card.id);
+}
+
+// j is the index of the TARGET card in the OPPONENT's hand
 function playCardEffect(G, ctx, i, j) {
     let hand = G.hands[ctx.currentPlayer];
     // let field = G.fields[ctx.currentPlayer];
@@ -65,28 +111,22 @@ function playCardEffect(G, ctx, i, j) {
     console.log("playCardEffect " + card.id);
 }
 
-function playCardScuttle(G, ctx, i, j) {
-    let hand = G.hands[ctx.currentPlayer];
-    // let field = G.fields[ctx.currentPlayer];
-
-    let card = hand[i];
-    console.log("playCardScuttle " + card.id);
-}
-
 // helpers
 function drawHands(G, ctx) {
-    G.hands[ctx.playOrder[ctx.playOrderPos]] = [];
-    G.hands[ctx.playOrder[ctx.playOrderPos + 1]] = [];
+    let current = ctx.playOrder[ctx.playOrderPos];
+    // wrap around end of playOrder arr
+    let next = ctx.playOrder[(ctx.playOrderPos + 1) % ctx.playOrder.length];
+    G.hands[current] = [];
+    G.hands[next] = [];
 
     for (let i = 0; i < 4; i++) {
         const card = G.deck.pop();
-        G.hands[ctx.playOrder[ctx.playOrderPos]].push(card);
+        G.hands[current].push(card);
     }
 
     for (let i = 0; i < 5; i++) {
         const card = G.deck.pop();
-        // still feels hacky, not sure of other way to access both players at once
-        G.hands[ctx.playOrder[ctx.playOrderPos + 1]].push(card);
+        G.hands[next].push(card);
     }
 }
 
