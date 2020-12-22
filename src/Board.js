@@ -5,7 +5,7 @@ export class TicTacToeBoard extends React.Component {
     constructor(props) {
         super(props);
         // index is index of selected card
-        this.state = { showCardOptions: false, index: 0 };
+        this.state = { showCardOptions: false, index: 0, isScuttling: false };
         this.toggleCardOptions = this.toggleCardOptions.bind(this);
     }
 
@@ -23,11 +23,29 @@ export class TicTacToeBoard extends React.Component {
         );
     };
 
+    toggleChoosingScuttle = () => {
+        this.setState(
+            {
+                showCardOptions: false,
+                isScuttling: true,
+            },
+            () => {
+                console.log("isScuttling is ", this.state.isScuttling);
+            }
+        );
+    };
+
     // this function calls Game.js playCardValue
     playCardValue = (id) => {
         // toggle off the card options
-        this.setState({ showCardOptions: !this.state.showCardOptions });
+        this.setState({ showCardOptions: false });
         this.props.moves.playCardValue(id);
+    };
+
+    playCardScuttle = (i, j) => {
+        // toggle off the card options
+        this.setState({ isScuttling: false });
+        this.props.moves.playCardScuttle(i, j);
     };
 
     render() {
@@ -47,7 +65,24 @@ export class TicTacToeBoard extends React.Component {
                 let card = f[idx];
 
                 cells_field.push(
-                    <td key={card.id}>
+                    <td
+                        key={card.id}
+                        onClick={
+                            // can only scuttle opponent's field
+                            this.state.isScuttling && k !== this.props.playerID
+                                ? () =>
+                                      this.playCardScuttle(
+                                          this.state.index,
+                                          idx
+                                      )
+                                : () => void 0
+                        }
+                        className={
+                            this.state.isScuttling && k !== this.props.playerID
+                                ? "activeScuttle"
+                                : ""
+                        }
+                    >
                         {card.Value} of {card.Suit}
                     </td>
                 );
@@ -141,8 +176,10 @@ export class TicTacToeBoard extends React.Component {
                         >
                             playCardValue
                         </button>
+                        <button onClick={() => this.toggleChoosingScuttle()}>
+                            playCardScuttle
+                        </button>
                         <button>playCardEffect</button>
-                        <button>playCardScuttle</button>
                     </div>
                 )}
 

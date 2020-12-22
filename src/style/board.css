@@ -39,3 +39,7 @@ td.active {
 td.active:hover {
     background: #eeffff;
 }
+
+td.activeScuttle:hover {
+    background: #ff8888;
+}
