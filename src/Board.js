@@ -2,17 +2,38 @@ import React from "react";
 import "./style/board.css";
 
 export class TicTacToeBoard extends React.Component {
-    onClick = (id) => {
-        // console.log(id);
-        this.props.moves.playCard(id);
+    constructor(props) {
+        super(props);
+        // index is index of selected card
+        this.state = { showCardOptions: false, index: 0 };
+        this.toggleCardOptions = this.toggleCardOptions.bind(this);
+    }
+
+    /*
+        this function is called when a card is clicked
+        it toggles the card options
+        it sets state.index to the index of the clicked card to keep track of it for when an option is executed
+    */
+    toggleCardOptions = (i) => {
+        this.setState(
+            { showCardOptions: !this.state.showCardOptions, index: i },
+            () => {
+                console.log("index is ", this.state.index);
+            }
+        );
+    };
+
+    // this function calls Game.js playCardValue
+    playCardValue = (id) => {
+        // toggle off the card options
+        this.setState({ showCardOptions: !this.state.showCardOptions });
+        this.props.moves.playCardValue(id);
     };
 
     render() {
         // field stuff
-        // field is a table that is 2 rows long (1 for each hand)
         let tbody_field_other = [];
         let tbody_field_you = [];
-
         let fields = this.props.G.fields;
         let field_other_len = 0;
         let field_you_len = 0;
@@ -49,40 +70,37 @@ export class TicTacToeBoard extends React.Component {
         // hand is a table that is 1 row long
         let tbody_hand = [];
         let cells_hand = [];
-
-        // ***important*** uses playerID. this matches with G.hands
+        // ***important*** playerID matches with G.hands
         // console.log("hello playerid " + this.props.playerID);
         let hand = this.props.G.hands[this.props.playerID];
         for (let i = 0; i < hand.length; i++) {
             let card = hand[i];
             cells_hand.push(
-                // key info: https://reactjs.org/docs/lists-and-keys.html#keys-must-only-be-unique-among-siblings
-                // https://sentry.io/answers/defining-proper-key-in-props/
                 <td
                     key={card.id}
                     className={this.props.isActive ? "active" : ""}
-                    onClick={() => this.onClick(i)}
+                    onClick={() => this.toggleCardOptions(i)}
                 >
                     {card.Value} of {card.Suit}
                 </td>
             );
         }
 
-        // key is tied to playerID
+        // the key here is tied to playerID
         // console.log("tbody_hand key " + this.props.playerID);
         tbody_hand.push(<tr key={this.props.playerID}>{cells_hand}</tr>);
 
         // winner stuff
         let winner = null;
         if (this.props.ctx.gameover) {
-            winner =
-                this.props.ctx.gameover.winner !== undefined ? (
-                    <div id="winner">
-                        Winner: {this.props.ctx.gameover.winner}
-                    </div>
-                ) : (
-                    <div id="winner">Draw!</div>
-                );
+            // winner =
+            //     this.props.ctx.gameover.winner !== undefined ? (
+            //         <div id="winner">
+            //             Winner: {this.props.ctx.gameover.winner}
+            //         </div>
+            //     ) : (
+            //         <div id="winner">Draw!</div>
+            //     );
         }
 
         return (
@@ -113,9 +131,25 @@ export class TicTacToeBoard extends React.Component {
                     </thead>
                     <tbody>{tbody_hand}</tbody>
                 </table>
+
+                {/* card options toggle */}
+                {this.state.showCardOptions && (
+                    <div>
+                        {/* calls the local playCardValue with the set state */}
+                        <button
+                            onClick={() => this.playCardValue(this.state.index)}
+                        >
+                            playCardValue
+                        </button>
+                        <button>playCardEffect</button>
+                        <button>playCardScuttle</button>
+                    </div>
+                )}
+
                 <br></br>
                 <br></br>
                 <br></br>
+
                 {winner}
             </div>
         );

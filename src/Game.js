@@ -30,55 +30,47 @@ export const TicTacToe = {
             },
         },
         play: {
-            moves: { drawCard, playCard },
+            moves: { drawCard, playCardValue, playCardEffect, playCardScuttle },
         },
     },
-
-    // victory condition
-    // endIf: (G, ctx) => {
-    //     if (IsVictory(G.cells)) {
-    //         return { winner: ctx.currentPlayer };
-    //     }
-    //     if (IsDraw(G.cells)) {
-    //         return { draw: true };
-    //     }
-    // },
 };
 
 // moves
-// tutorial
-// function clickCell(G, ctx, id) {
-// validate
-// if (G.cells[id] !== null || id < 0 || id > G.cells.length) {
-//     console.log("click cell error");
-//     return INVALID_MOVE;
-// }
-// G.cells[id] = ctx.currentPlayer;
-// }
-
 function drawCard(G, ctx) {
     const card = G.deck.pop();
     G.hands[ctx.currentPlayer].push(card);
 }
 
-// currently either (1) removes card or (2) add to field
-function playCard(G, ctx, id) {
+function playCardValue(G, ctx, i) {
     let hand = G.hands[ctx.currentPlayer];
     let field = G.fields[ctx.currentPlayer];
 
-    if (id == null || id < 0 || id >= hand.length) {
+    if (i == null || i < 0 || i >= hand.length) {
         console.log("playcard error");
         return INVALID_MOVE;
     }
-    console.log("playCard " + hand[id].Value + " " + hand[id].Suit);
 
-    // remove 1 element at index 'id' (remove from hand)
-    // let remove = hand.splice(id, 1)[0];
-    // console.log(remove);
-
+    let card = hand[i];
+    console.log("playCardValue " + card.id);
     // remove from hand and add to field
-    let remove = hand.splice(id, 1)[0];
+    let remove = hand.splice(i, 1)[0];
     field.push(remove);
+}
+
+function playCardEffect(G, ctx, i, j) {
+    let hand = G.hands[ctx.currentPlayer];
+    // let field = G.fields[ctx.currentPlayer];
+
+    let card = hand[i];
+    console.log("playCardEffect " + card.id);
+}
+
+function playCardScuttle(G, ctx, i, j) {
+    let hand = G.hands[ctx.currentPlayer];
+    // let field = G.fields[ctx.currentPlayer];
+
+    let card = hand[i];
+    console.log("playCardScuttle " + card.id);
 }
 
 // helpers
@@ -102,30 +94,6 @@ function setFields(G, ctx) {
     G.fields[ctx.playOrder[ctx.playOrderPos]] = [];
     G.fields[ctx.playOrder[ctx.playOrderPos + 1]] = [];
 }
-
-// function IsVictory(cells) {
-//     const positions = [
-//         [0, 1, 2],
-//         [3, 4, 5],
-//         [6, 7, 8],
-//         [0, 3, 6],
-//         [1, 4, 7],
-//         [2, 5, 8],
-//         [0, 4, 8],
-//         [2, 4, 6],
-//     ];
-
-//     const isRowComplete = (row) => {
-//         const symbols = row.map((i) => cells[i]);
-//         return symbols.every((i) => i !== null && i === symbols[0]);
-//     };
-
-//     return positions.map(isRowComplete).some((i) => i === true);
-// }
-
-// function IsDraw(cells) {
-//     return cells.filter((c) => c === null).length === 0;
-// }
 
 // https://www.thatsoftwaredude.com/content/6196/coding-a-card-deck-in-javascript
 function createDeck() {
