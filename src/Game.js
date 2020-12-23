@@ -31,7 +31,6 @@ export const TicTacToe = {
         },
         play: {
             moves: {
-                drawHands,
                 drawCard,
                 playCardValue,
                 playCardEffect,

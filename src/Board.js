@@ -81,8 +81,6 @@ export class TicTacToeBoard extends React.Component {
         let tbody_field_other = [];
         let tbody_field_you = [];
         let fields = this.props.G.fields;
-        let field_other_len = 0;
-        let field_you_len = 0;
         // key is player, value is the corresponding field
         for (let k in fields) {
             let cells_field = [];
@@ -118,10 +116,8 @@ export class TicTacToeBoard extends React.Component {
 
             // add cells to the correct field (your field always on bottom)
             if (k === this.props.playerID) {
-                field_you_len = f.length;
                 tbody_field_you.push(<tr key={k}>{cells_field}</tr>);
             } else {
-                field_other_len = f.length;
                 tbody_field_other.push(<tr key={k}>{cells_field}</tr>);
             }
 
@@ -205,20 +201,10 @@ export class TicTacToeBoard extends React.Component {
                 <hr></hr>
                 <p>Opponent Field</p>
                 <table id="field">
-                    {/* <thead>
-                        <tr>
-                            <th colSpan={field_other_len}>Opponent Field</th>
-                        </tr>
-                    </thead> */}
                     <tbody>{tbody_field_other}</tbody>
                 </table>
                 <p>Your Field</p>
                 <table id="field">
-                    {/* <thead>
-                        <tr>
-                            <th colSpan={field_you_len}>Your Field</th>
-                        </tr>
-                    </thead> */}
                     <tbody>{tbody_field_you}</tbody>
                 </table>
                 <table id="hand">
@@ -229,6 +215,13 @@ export class TicTacToeBoard extends React.Component {
                     </thead>
                     <tbody>{tbody_hand}</tbody>
                 </table>
+
+                {/* draw card button */}
+                {this.props.isActive && (
+                    <button onClick={() => this.props.moves.drawCard()}>
+                        Draw Card
+                    </button>
+                )}
 
                 {/* card options toggle */}
                 {this.state.showPlayCardOptions && (
