@@ -1,34 +1,46 @@
 import { INVALID_MOVE } from "boardgame.io/core";
+import { initializeGame } from "./setup.js";
+
+const setup = ({ playOrder, playOrderPos }) => {
+    const { deck, hands, fields } = initializeGame(playOrder, playOrderPos);
+
+    // initialize game state G
+    return {
+        deck: deck,
+        hands: hands,
+        fields: fields,
+        graveyard: [],
+    };
+};
 
 export const TicTacToe = {
-    setup: (ctx) => ({
-        // cells: Array(9).fill(null),
-        deck: shuffle(createDeck()), // change to shuffle on setup later
-        hands: {},
-        fields: {},
-        graveyard: [],
-    }),
+    setup: setup,
 
     turn: {
         moveLimit: 1,
+        stages: {
+            cardEffect: {
+                moves: { playAce },
+            },
+        },
     },
 
     phases: {
-        draw: {
-            start: true,
-            onBegin: (G, ctx) => {
-                drawHands(G, ctx);
-                setFields(G, ctx);
-                // ctx.events.endPhase(); // this fails for some reason, so have to use endIf
-            },
-            next: "play",
-            endIf: (G, ctx) => {
-                return (
-                    Object.keys(G.hands).length === 2 &&
-                    Object.keys(G.fields).length === 2
-                );
-            },
-        },
+        // draw: {
+        //     start: true,
+        //     onBegin: (G, ctx) => {
+        //         drawHands(G, ctx);
+        //         setFields(G, ctx);
+        //         // ctx.events.endPhase(); // this fails for some reason, so have to use endIf
+        //     },
+        //     next: "play",
+        //     endIf: (G, ctx) => {
+        //         return (
+        //             Object.keys(G.hands).length === 2 &&
+        //             Object.keys(G.fields).length === 2
+        //         );
+        //     },
+        // },
         play: {
             moves: {
                 drawCard,
@@ -36,9 +48,15 @@ export const TicTacToe = {
                 playCardEffect,
                 playCardScuttle,
             },
+            start: true,
         },
     },
 };
+
+// stage moves
+function playAce(G, ctx) {
+    console.log("playing ace");
+}
 
 // moves
 function drawCard(G, ctx) {
@@ -109,73 +127,9 @@ function playCardScuttle(G, ctx, i, j) {
 
 // j is the index of the TARGET card in the OPPONENT's hand
 function playCardEffect(G, ctx, i, j) {
-    let hand = G.hands[ctx.currentPlayer];
-    // let field = G.fields[ctx.currentPlayer];
-
-    let card = hand[i];
-    console.log("playCardEffect " + card.id);
-}
-
-// helpers
-function drawHands(G, ctx) {
-    let current = ctx.playOrder[ctx.playOrderPos];
-    // wrap around end of playOrder arr
-    let next = ctx.playOrder[(ctx.playOrderPos + 1) % ctx.playOrder.length];
-    G.hands[current] = [];
-    G.hands[next] = [];
-
-    for (let i = 0; i < 4; i++) {
-        const card = G.deck.pop();
-        G.hands[current].push(card);
-    }
-
-    for (let i = 0; i < 5; i++) {
-        const card = G.deck.pop();
-        G.hands[next].push(card);
-    }
-}
-
-function setFields(G, ctx) {
-    G.fields[ctx.playOrder[ctx.playOrderPos]] = [];
-    G.fields[ctx.playOrder[ctx.playOrderPos + 1]] = [];
-}
-
-// https://www.thatsoftwaredude.com/content/6196/coding-a-card-deck-in-javascript
-function createDeck() {
-    var suits = ["Spades", "Diamonds", "Clubs", "Hearts"];
-    var values = [
-        "Ace",
-        "2",
-        "3",
-        "4",
-        "5",
-        "6",
-        "7",
-        "8",
-        "9",
-        "10",
-        "Jack",
-        "Queen",
-        "King",
-    ];
-    var deck = [];
-    for (var i = 0; i < suits.length; i++) {
-        for (var x = 0; x < values.length; x++) {
-            var card = {
-                Value: values[x],
-                Suit: suits[i],
-                id: values[x] + suits[i],
-            };
-            deck.push(card);
-        }
-    }
-    return deck;
-}
-
-// https://stackoverflow.com/questions/2450954/how-to-randomize-shuffle-a-javascript-array/46545530#46545530
-function shuffle(deck) {
-    return deck
-        .map((a) => ({ sort: Math.random(), value: a }))
-        .sort((a, b) => a.sort - b.sort)
-        .map((a) => a.value);
+    // let current_player = ctx.playOrder[ctx.playOrderPos];
+    // let opponent_player =
+    //     ctx.playOrder[(ctx.playOrderPos + 1) % ctx.playOrder.length];
+    // // console.log("reaching");
+    // ctx.events.setActivePlayers({ all: "cardEffect" });
 }

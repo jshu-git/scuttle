@@ -207,6 +207,16 @@ export class TicTacToeBoard extends React.Component {
                 <table id="field">
                     <tbody>{tbody_field_you}</tbody>
                 </table>
+
+                {/* <p>Your Special Field</p>
+                <table id="field" style={{ float: "right" }}>
+                    <tbody>
+                        <tr>
+                            <td>henlo</td>
+                        </tr>
+                    </tbody>
+                </table> */}
+
                 <table id="hand">
                     <thead>
                         <tr>
@@ -217,14 +227,14 @@ export class TicTacToeBoard extends React.Component {
                 </table>
 
                 {/* draw card button */}
-                {this.props.isActive && (
+                {this.props.isActive && !this.state.showPlayCardOptions && (
                     <button onClick={() => this.props.moves.drawCard()}>
                         Draw Card
                     </button>
                 )}
 
                 {/* card options toggle */}
-                {this.state.showPlayCardOptions && (
+                {this.props.isActive && this.state.showPlayCardOptions && (
                     <div>
                         {/* calls the local playCardValue with the set state */}
                         <button
