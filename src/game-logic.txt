@@ -1,0 +1,88 @@
+turn:
+    stages:
+        action:
+            moves:
+                -- playCardEffect
+                -- playCardEffectSpecial
+                -- playCardValue
+                -- playCardScuttle
+                -- drawCard
+
+if you play an effect, you should be able to enter a new stage
+        effectStage:
+            moves:
+                --accept 
+                --counter
+if the opponent counters, you must have option to counter too, we can most likely call the same stage
+        idle:
+            moves:
+                --literallyDoNothing //like there are legit no options
+
+
+
+Example:
+Turn: 0 (player0's turn)
+    player 0 plays Ace as effect
+    change stage now
+        player0 enters idle stage    player1 enters effectStage stage
+        player1 accepts effect
+    stuff happens on field and hand
+turn ends, now player1 turn
+
+Turn: 1(player1 turn)
+    player1 plays 3 as effect
+    change stage now
+        player0 enters effectStage stage    player1 enters idle stage
+        player0 counters effect
+        change stage now
+            player0 enters idle stage    player1 enters effectStage stage
+            player1 accepts
+    stuff happens on field and hand
+turn ends, now player0 turn
+
+Turn: 2 (player0's turn)
+---------------------------------------------------------------------------------------------------------
+turnOrder:
+player0 -> player1 -> player0 -> player1 ....
+
+//on first turn, player0 must go be able to go
+onBegin: (G, ctx) => {
+      ctx.events.setActivePlayers({ currentPlayer: "action", others: "idle" });
+},
+//must check for winner at end of each turn
+onEnd:(G,ctx) =>{
+    checkForWinner(G);
+},
+
+this must occur independtly of stages
+---------------------------------------------------------------------------------------------------------
+how to setup stages
+--ctx.events.setActivePlayers()
+
+how to end turn
+-- ctx.events.endTurn();
+
+
+on each function that doesn't require a stage end, make it call endTurn
+
+
+function playCardEffect(){
+    //actual code goes here
+    ctx.events.setActivePlayers(currentPlayer:"idle", others: "effectStage");
+}
+
+function accept(){
+    //actual code goes here
+    ctx.events.endTurn();
+}
+
+function counter(){
+    //actual code goes here
+    ctx.events.setActivePlayers(currentPlayer:"effectStage", others: "idle");
+}
+
+
+
+--TO DO--
+if opponent doesn't have two the option to select for counter should be greyed out
+need to check hand. probably return error if you try to counter without two in hand

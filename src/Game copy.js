@@ -11,9 +11,6 @@ const setup = ({ playOrder, playOrderPos }) => {
         fields: fields,
         graveyard: [],
         counter_chain: [],
-
-        // used to keep track of currentPlayer during a stage, similar to currentPlayer for a turn
-        currentPlayerStage: undefined, // is overwritten whenever a cardeffect is played
     };
 };
 
@@ -118,48 +115,35 @@ function playCardScuttle(G, ctx, card_id, target_id) {
 }
 
 /*
-    playerEffect is the player playing the card effect (a number)
-    card_id is the card_id played (as effect) (by playerEffect)
-    G.currentPlayerStage is the turn of the player who is ABOUT to counter/accept, aka the "opposite" of playerEffect
+    card_id is the card_id played (as effect) by p0
+    p0 is the player playing the card effect
+    p1 is the player who has the option to accept/counter
 */
-function playCardEffect(G, ctx, card_id, playerEffect) {
+function playCardEffect(G, ctx, card_id, p0, p1) {
+    console.log("playing card effect: ", p0);
+    console.log("playing counter: ", p1);
+
     // push card into counter_chain
     G.counter_chain.push(card_id);
-
-    // set player stage
-    // this should point to who HAS THE OPTION TO COUNTER
-    G.currentPlayerStage = 1 - playerEffect; // a number
-
-    // set stage
-    if (playerEffect === 0) {
-        ctx.events.setActivePlayers({
-            value: {
-                0: "idle",
-                1: "effect",
-            },
-        });
-    } else {
-        ctx.events.setActivePlayers({
-            value: {
-                0: "effect",
-                1: "idle",
-            },
-        });
-    }
-
-    // but what about the effect?
-    // how to determine whether or not to execute and discard?
+    // console.log(G.counter_chain);
+    // let current_player = ctx.playOrder[ctx.playOrderPos];
+    // let opponent_player =
+    // ctx.playOrder[(ctx.playOrderPos + 1) % ctx.playOrder.length];
+    // console.log(ctx.playOrder[ctx.playOrderPos]);
 
     /*
-        IF NOT COUNTERED (not sure how to check for this)
         do card effect processing
         ...
     */
-    // discard the card from p0's hand
-    // let hand = G.hands[p0];
-    // let idx = hand.findIndex((i) => i.id === card_id);
-    // let remove = hand.splice(idx, 1)[0];
-    // G.graveyard.push(remove);
+
+    // set stage
+    // ctx.events.setActivePlayers({
+    //     value: {
+    //         p0: "idle",
+    //         p1: "effect",
+    //     },
+    // });
+    ctx.events.setActivePlayers({ currentPlayer: "idle", others: "effect" });
 }
 
 // effect moves
@@ -167,44 +151,46 @@ function accept(G, ctx) {
     // this ends the turn of the CURRENT PLAYER
     // moves control flow to OTHER PLAYER
     ctx.events.endTurn();
-    // note: currentPlayerStage doesn't need to be updated
-    // it will be immediately overwritten in the next playCardEffect
 
-
-
-    G.counter_chain = [];
+    // remove everything in counter chain
 
     // then, turn ends, and onBegin SHOULD sets the stages on the new turn
-
-    // ctx.currentPlayer should be bound to who played the original effect card
-
-    // let current_player = ctx.playOrder[ctx.playOrderPos];
-    // let opponent_player =
-    //     ctx.playOrder[(ctx.playOrderPos + 1) % ctx.playOrder.length];
 }
 
-function counter(G, ctx) {
+/*
+    p1 is countering the effect played by p0
+*/
+function counter(G, ctx, p0, p1) {
     // at this point, ctx.currentPlayer is STILL the player who played the FIRST effect, so we can't use that as a reference
-    // this is why we have to use our own G.currentPlayerStage
 
-    // currentPlayerStage holds which player's "turn" of the stage is aka who has option to counter
-    // check if this player has a 2
-    let hand = G.hands[G.currentPlayerStage];
+    // check if have 2
+    let hand = G.hands[p1];
     let index_of_two = hand.findIndex((x) => x.Value === "2");
-    // console.log("index of two is: ",index_of_two)
 
-    // alternatively in Board, can search and not allow counter button
-    if (index_of_two === -1) {
-        console.log("no two, forced to accept");
+    // alternatively, can search for 2 in Board and not allow counter button
+    if (index_of_two === undefined) {
+        console.log("no two");
     } else {
-        console.log("have two");
-
         // play as its own cardEffect
         // which is added to the counter_chain
-        playCardEffect(G, ctx, hand[index_of_two].id, G.currentPlayerStage);
+        playCardEffect(G, ctx, hand[index_of_two].id, p1, p0);
 
-        // discard 2 from hand
-        let remove = hand.splice(index_of_two, 1)[0];
-        G.graveyard.push(remove);
+        // remove 2
+        // let remove = hand.splice(index_of_two, 1)[0];
+        // G.graveyard.push(remove);
+        // // remove effect card
+        // console.log("used 2");
+        // // at the end,
+        // ctx.events.setActivePlayers({
+        //     currentPlayer: "action",
+        //     others: "idle",
+        // });
     }
+
+    // const values = hand.map((i) => i.Value);
+    // // console.log(values);
+    // if (!values.some((i) => i === "2")) {
+    //     console.log("no two");
+    // }
+    // return symbols.every(i => i !== null && i === symbols[0]);
 }

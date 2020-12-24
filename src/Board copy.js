@@ -69,38 +69,25 @@ export class TicTacToeBoard extends React.Component {
     // };
 
     // this function calls Game.js playCardValue
-    playCardValue = () => {
+    playCardValue = (card_id) => {
         // toggle off the card options
         this.setState({ showPlayCardOptions: false });
-        this.props.moves.playCardValue(this.state.selected_card_id);
+        this.props.moves.playCardValue(card_id);
     };
 
-    playCardScuttle = (target_id) => {
+    playCardScuttle = (card_id, target_id) => {
         // toggle off scuttling phase
         this.setState({ isScuttling: false });
-
-        this.props.moves.playCardScuttle(
-            this.state.selected_card_id,
-            target_id
-        );
+        this.props.moves.playCardScuttle(card_id, target_id);
     };
 
-    playCardEffect = () => {
+    playCardEffect = (card_id, p0, p1) => {
         // toggle off the card options
         this.setState({ showPlayCardOptions: false });
-
-        this.props.moves.playCardEffect(
-            this.state.selected_card_id,
-            // only the currentPlayer could have clicked on this
-            parseInt(this.props.ctx.currentPlayer)
-        );
+        this.props.moves.playCardEffect(card_id, p0, p1);
     };
 
     render() {
-        // a replacement for isActive since players are always in an active "state"
-        let not_idle =
-            this.props.ctx.activePlayers[this.props.playerID] !== "idle";
-
         // field stuff
         let tbody_field_other = [];
         let tbody_field_you = [];
@@ -113,6 +100,7 @@ export class TicTacToeBoard extends React.Component {
 
             for (let idx in f) {
                 let card = f[idx];
+                console.log(card);
 
                 cells_field.push(
                     <td
@@ -120,7 +108,11 @@ export class TicTacToeBoard extends React.Component {
                         onClick={
                             // can only scuttle opponent's field
                             this.state.isScuttling && k !== this.props.playerID
-                                ? () => this.playCardScuttle(card.id) // card.id is the target
+                                ? () =>
+                                      this.playCardScuttle(
+                                          this.state.selected_card_id,
+                                          card.id
+                                      )
                                 : () => void 0
                         }
                         className={
@@ -157,9 +149,9 @@ export class TicTacToeBoard extends React.Component {
             cells_hand.push(
                 <td
                     key={card.id}
-                    className={not_idle ? "active" : ""}
+                    className={this.props.isActive ? "active" : ""}
                     onClick={
-                        not_idle
+                        this.props.isActive
                             ? () => this.togglePlayCardOptions(card.id)
                             : () => void 0
                     }
@@ -199,7 +191,6 @@ export class TicTacToeBoard extends React.Component {
             );
         }
         tbody_graveyard.push(
-            // not sure if the key matters here
             <tr key={this.props.playerID}>{cells_graveyard}</tr>
         );
 
@@ -248,7 +239,7 @@ export class TicTacToeBoard extends React.Component {
                 </table>
 
                 {/* draw card button */}
-                {not_idle &&
+                {this.props.isActive &&
                     !this.state.showPlayCardOptions &&
                     !this.state.isScuttling && (
                         <button onClick={() => this.props.moves.drawCard()}>
@@ -257,16 +248,28 @@ export class TicTacToeBoard extends React.Component {
                     )}
 
                 {/* card options toggle */}
-                {not_idle && this.state.showPlayCardOptions && (
+                {this.props.isActive && this.state.showPlayCardOptions && (
                     <div>
                         {/* calls the local playCardValue with the set state */}
-                        <button onClick={() => this.playCardValue()}>
+                        <button
+                            onClick={() =>
+                                this.playCardValue(this.state.selected_card_id)
+                            }
+                        >
                             playCardValue
                         </button>
                         <button onClick={() => this.toggleChoosingScuttle()}>
                             playCardScuttle
                         </button>
-                        <button onClick={() => this.playCardEffect()}>
+                        <button
+                            onClick={() =>
+                                this.playCardEffect(
+                                    this.state.selected_card_id,
+                                    this.props.playerID === "0" ? "1" : "0",
+                                    this.props.playerID
+                                )
+                            }
+                        >
                             playCardEffect
                         </button>
                     </div>
