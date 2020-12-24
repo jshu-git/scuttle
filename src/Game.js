@@ -10,7 +10,11 @@ const setup = ({ playOrder, playOrderPos }) => {
         hands: hands,
         fields: fields,
         graveyard: [],
+
+        // effect stuff
         counter_chain: [],
+        effect_countered: false,
+        effect_target_card_id: undefined,
 
         // used to keep track of currentPlayer during a stage, similar to currentPlayer for a turn
         currentPlayerStage: undefined, // is overwritten whenever a cardeffect is played
@@ -122,7 +126,11 @@ function playCardScuttle(G, ctx, card_id, target_id) {
     card_id is the card_id played (as effect) (by playerEffect)
     G.currentPlayerStage is the turn of the player who is ABOUT to counter/accept, aka the "opposite" of playerEffect
 */
-function playCardEffect(G, ctx, card_id, playerEffect) {
+function playCardEffect(G, ctx, playerEffect, card_id, effect_target_card_id) {
+    // set the target card id
+    G.effect_target_card_id = effect_target_card_id;
+
+    // we don't remove card from hand here since counter also uses playCardEffect, and we don't know whose hand is playing
     // push card into counter_chain
     G.counter_chain.push(card_id);
 
@@ -146,41 +154,66 @@ function playCardEffect(G, ctx, card_id, playerEffect) {
             },
         });
     }
-
-    // but what about the effect?
-    // how to determine whether or not to execute and discard?
-
-    /*
-        IF NOT COUNTERED (not sure how to check for this)
-        do card effect processing
-        ...
-    */
-    // discard the card from p0's hand
-    // let hand = G.hands[p0];
-    // let idx = hand.findIndex((i) => i.id === card_id);
-    // let remove = hand.splice(idx, 1)[0];
-    // G.graveyard.push(remove);
 }
 
 // effect moves
+/*
+    target_card_is is only used if the effect requires a target
+*/
 function accept(G, ctx) {
-    // this ends the turn of the CURRENT PLAYER
-    // moves control flow to OTHER PLAYER
+    let current_player = ctx.playOrder[ctx.playOrderPos];
+    let opponent_player =
+        ctx.playOrder[(ctx.playOrderPos + 1) % ctx.playOrder.length];
+    let current_player_field = G.fields[current_player];
+    let opponent_player_field = G.fields[opponent_player];
+    let current_player_hand = G.hands[current_player];
+    let opponent_player_hand = G.hands[opponent_player];
+
+    // at this point, counter_chain[0] contains the effect card ID, the rest is just 2's
+    let effectCard_id = G.counter_chain[0];
+    // find and remove the card in current player's hand
+    let idx = current_player_hand.findIndex((i) => i.id === effectCard_id);
+    let remove = current_player_hand.splice(idx, 1)[0];
+    G.graveyard.push(remove);
+
+    switch (remove.Value) {
+        case "Ace":
+            for (let i = 0; i <= current_player_field.length; i++) {
+                G.graveyard.push(current_player_field.pop());
+            }
+            for (let i = 0; i <= opponent_player_field.length; i++) {
+                G.graveyard.push(opponent_player_field.pop());
+            }
+            break;
+        case "2":
+            // can only 2 special cards on the field
+            break;
+        case "3":
+            console.log("reaching");
+            let target_idx = G.graveyard.findIndex(
+                (i) => i.id === G.effect_target_card_id
+            );
+            let found_card = G.graveyard.splice(target_idx, 1)[0];
+            current_player_hand.push(found_card);
+                
+            break;
+        default:
+        // code block
+    }
+
+    // clear the counter_chain
+    G.counter_chain = [];
+
+    // reset effect_countered
+    G.effect_countered = false;
+
+    // this ends the turn of the CURRENT PLAYER, and moves control flow to OTHER PLAYER
     ctx.events.endTurn();
     // note: currentPlayerStage doesn't need to be updated
     // it will be immediately overwritten in the next playCardEffect
 
-
-
-    G.counter_chain = [];
-
     // then, turn ends, and onBegin SHOULD sets the stages on the new turn
-
     // ctx.currentPlayer should be bound to who played the original effect card
-
-    // let current_player = ctx.playOrder[ctx.playOrderPos];
-    // let opponent_player =
-    //     ctx.playOrder[(ctx.playOrderPos + 1) % ctx.playOrder.length];
 }
 
 function counter(G, ctx) {
@@ -199,9 +232,12 @@ function counter(G, ctx) {
     } else {
         console.log("have two");
 
+        // toggle countered
+        G.effect_countered = !G.effect_countered;
+
         // play as its own cardEffect
         // which is added to the counter_chain
-        playCardEffect(G, ctx, hand[index_of_two].id, G.currentPlayerStage);
+        playCardEffect(G, ctx, G.currentPlayerStage, hand[index_of_two].id);
 
         // discard 2 from hand
         let remove = hand.splice(index_of_two, 1)[0];

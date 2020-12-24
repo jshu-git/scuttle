@@ -9,7 +9,10 @@ export class TicTacToeBoard extends React.Component {
             selected_card_id: null,
             isScuttling: false,
             showGraveyard: false,
-            // showTwoPrompt: false,
+
+            // effect stuff
+            // selected card during an effect (if any)
+            isChoosingEffect: false,
         };
         // don't think we need this https://stackoverflow.com/questions/42556083/what-does-bindthis-in-constructor-do-in-reactjs
         // this.togglePlayCardOptions = this.togglePlayCardOptions.bind(this);
@@ -52,29 +55,47 @@ export class TicTacToeBoard extends React.Component {
         );
     };
 
+    toggleChoosingEffect = () => {
+        this.setState(
+            {
+                showPlayCardOptions: false,
+                isChoosingEffect: true,
+            },
+            () => {
+                console.log("isChoosingEffect is ", this.state.isChoosingEffect);
+            }
+        );
+    };
+
+    checkEffectRequiresTarget = () => {
+        console.log("isChoosingEffect is ", this.state.isChoosingEffect);
+        var check = this.state.selected_card_id;
+        if (
+            check.indexOf("Ace") !== -1 ||
+            check.indexOf("4") !== -1 ||
+            check.indexOf("5") !== -1 ||
+            check.indexOf("6") !== -1 ||
+            check.indexOf("7") !== -1 ||
+            check.indexOf("8") !== -1 ||
+            check.indexOf("9") !== -1 ||
+            check.indexOf("King") !== -1
+        ) {
+            return false;
+        }
+        return true;
+    };
+
     toggleGraveyard = () => {
         this.setState({ showGraveyard: !this.state.showGraveyard });
     };
 
-    // toggleTwoPrompt = () => {
-    //     this.setState(
-    //         {
-    //             showPlayCardOptions: false,
-    //             showTwoPrompt: true,
-    //         },
-    //         () => {
-    //             console.log();
-    //         }
-    //     );
-    // };
-
-    // this function calls Game.js playCardValue
     playCardValue = () => {
         // toggle off the card options
         this.setState({ showPlayCardOptions: false });
         this.props.moves.playCardValue(this.state.selected_card_id);
     };
 
+    // may need to add check for if opponent field is nonempty
     playCardScuttle = (target_id) => {
         // toggle off scuttling phase
         this.setState({ isScuttling: false });
@@ -85,16 +106,40 @@ export class TicTacToeBoard extends React.Component {
         );
     };
 
-    playCardEffect = () => {
-        // toggle off the card options
+    playCardEffect = (target_id) => {
         this.setState({ showPlayCardOptions: false });
 
+        // only the currentPlayer could have clicked on this
         this.props.moves.playCardEffect(
+            parseInt(this.props.ctx.currentPlayer),
             this.state.selected_card_id,
-            // only the currentPlayer could have clicked on this
-            parseInt(this.props.ctx.currentPlayer)
+            target_id
         );
     };
+
+    accept = () => {
+        this.props.moves.accept();
+    };
+
+    // card.id is the target
+    fieldOnClick(k, target_card_id) {
+        // can only scuttle opponent's field
+        if (this.state.isScuttling && k !== this.props.playerID) {
+            return () => this.playCardScuttle(target_card_id);
+        }
+        // can choose effect on either field
+        else if (this.state.isChoosingEffect) {
+            return () => this.playCardEffect(target_card_id);
+        }
+        return () => void 0;
+    }
+
+    graveyardOnClick(target_card_id) {
+        if (this.state.isChoosingEffect) {
+            return () => this.playCardEffect(target_card_id);
+        }
+        return () => void 0;
+    }
 
     render() {
         // a replacement for isActive since players are always in an active "state"
@@ -117,15 +162,12 @@ export class TicTacToeBoard extends React.Component {
                 cells_field.push(
                     <td
                         key={card.id}
-                        onClick={
-                            // can only scuttle opponent's field
-                            this.state.isScuttling && k !== this.props.playerID
-                                ? () => this.playCardScuttle(card.id) // card.id is the target
-                                : () => void 0
-                        }
+                        onClick={this.fieldOnClick(k, card.id)}
                         className={
-                            this.state.isScuttling && k !== this.props.playerID
-                                ? "activeScuttle"
+                            (this.state.isScuttling &&
+                                k !== this.props.playerID) ||
+                            this.state.isChoosingEffect
+                                ? "canTarget"
                                 : ""
                         }
                     >
@@ -193,7 +235,11 @@ export class TicTacToeBoard extends React.Component {
         for (let i = 0; i < graveyard.length; i++) {
             let card = graveyard[i];
             cells_graveyard.push(
-                <td key={card.id}>
+                <td
+                    key={card.id}
+                    onClick={this.graveyardOnClick(card.id)}
+                    className={this.state.isChoosingEffect ? "canTarget" : ""}
+                >
                     {card.Value} of {card.Suit}
                 </td>
             );
@@ -250,7 +296,11 @@ export class TicTacToeBoard extends React.Component {
                 {/* draw card button */}
                 {not_idle &&
                     !this.state.showPlayCardOptions &&
-                    !this.state.isScuttling && (
+                    !this.state.isScuttling &&
+                    !this.state.isChoosingEffect &&
+                    // no draw during an effect
+                    this.props.ctx.activePlayers[this.props.playerID] !==
+                        "effect" && (
                         <button onClick={() => this.props.moves.drawCard()}>
                             Draw Card
                         </button>
@@ -259,24 +309,32 @@ export class TicTacToeBoard extends React.Component {
                 {/* card options toggle */}
                 {not_idle && this.state.showPlayCardOptions && (
                     <div>
-                        {/* calls the local playCardValue with the set state */}
                         <button onClick={() => this.playCardValue()}>
                             playCardValue
                         </button>
                         <button onClick={() => this.toggleChoosingScuttle()}>
                             playCardScuttle
                         </button>
-                        <button onClick={() => this.playCardEffect()}>
+                        <button
+                            onClick={
+                                this.checkEffectRequiresTarget()
+                                    ? () => this.toggleChoosingEffect()
+                                    : () => this.playCardEffect()
+                            }
+                        >
                             playCardEffect
                         </button>
                     </div>
                 )}
 
-                <br></br>
-                <br></br>
-                <br></br>
-
-                {winner}
+                {/* effect card options */}
+                {this.props.ctx.activePlayers[this.props.playerID] ===
+                    "effect" && (
+                    <div>
+                        <button onClick={() => this.accept()}>accept</button>
+                        <button onClick={() => this.counter()}>counter</button>
+                    </div>
+                )}
             </div>
         );
     }
