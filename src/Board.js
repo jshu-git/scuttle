@@ -28,6 +28,8 @@ export class TicTacToeBoard extends React.Component {
             {
                 showPlayCardOptions: !this.state.showPlayCardOptions,
                 selected_card_id: card_id,
+                isScuttling: false,
+                isChoosingEffect: false,
             },
             () => {
                 console.log(
@@ -62,7 +64,10 @@ export class TicTacToeBoard extends React.Component {
                 isChoosingEffect: true,
             },
             () => {
-                console.log("isChoosingEffect is ", this.state.isChoosingEffect);
+                console.log(
+                    "isChoosingEffect is ",
+                    this.state.isChoosingEffect
+                );
             }
         );
     };
@@ -107,7 +112,7 @@ export class TicTacToeBoard extends React.Component {
     };
 
     playCardEffect = (target_id) => {
-        this.setState({ showPlayCardOptions: false });
+        this.setState({ showPlayCardOptions: false, isChoosingEffect: false });
 
         // only the currentPlayer could have clicked on this
         this.props.moves.playCardEffect(
@@ -128,14 +133,22 @@ export class TicTacToeBoard extends React.Component {
             return () => this.playCardScuttle(target_card_id);
         }
         // can choose effect on either field
-        else if (this.state.isChoosingEffect) {
+        else if (
+            this.state.isChoosingEffect &&
+            // 3 can't choose on field though
+            this.state.selected_card_id.indexOf("3") === -1
+        ) {
             return () => this.playCardEffect(target_card_id);
         }
         return () => void 0;
     }
 
     graveyardOnClick(target_card_id) {
-        if (this.state.isChoosingEffect) {
+        // only 3 can choose in graveyard
+        if (
+            this.state.isChoosingEffect &&
+            this.state.selected_card_id.indexOf("3") !== -1
+        ) {
             return () => this.playCardEffect(target_card_id);
         }
         return () => void 0;
@@ -143,8 +156,12 @@ export class TicTacToeBoard extends React.Component {
 
     render() {
         // a replacement for isActive since players are always in an active "state"
-        let not_idle =
-            this.props.ctx.activePlayers[this.props.playerID] !== "idle";
+        let is_idle =
+            this.props.ctx.activePlayers[this.props.playerID] === "idle";
+        let is_action =
+            this.props.ctx.activePlayers[this.props.playerID] === "action";
+        let is_effect =
+            this.props.ctx.activePlayers[this.props.playerID] === "effect";
 
         // field stuff
         let tbody_field_other = [];
@@ -164,9 +181,13 @@ export class TicTacToeBoard extends React.Component {
                         key={card.id}
                         onClick={this.fieldOnClick(k, card.id)}
                         className={
-                            (this.state.isScuttling &&
+                            (is_action &&
+                                this.state.isScuttling &&
                                 k !== this.props.playerID) ||
-                            this.state.isChoosingEffect
+                            // 3 can't target field
+                            (is_action &&
+                                this.state.isChoosingEffect &&
+                                this.state.selected_card_id.indexOf("3") === -1)
                                 ? "canTarget"
                                 : ""
                         }
@@ -199,9 +220,9 @@ export class TicTacToeBoard extends React.Component {
             cells_hand.push(
                 <td
                     key={card.id}
-                    className={not_idle ? "active" : ""}
+                    className={is_action ? "active" : ""}
                     onClick={
-                        not_idle
+                        is_action
                             ? () => this.togglePlayCardOptions(card.id)
                             : () => void 0
                     }
@@ -294,7 +315,7 @@ export class TicTacToeBoard extends React.Component {
                 </table>
 
                 {/* draw card button */}
-                {not_idle &&
+                {is_action &&
                     !this.state.showPlayCardOptions &&
                     !this.state.isScuttling &&
                     !this.state.isChoosingEffect &&
@@ -307,7 +328,7 @@ export class TicTacToeBoard extends React.Component {
                     )}
 
                 {/* card options toggle */}
-                {not_idle && this.state.showPlayCardOptions && (
+                {is_action && this.state.showPlayCardOptions && (
                     <div>
                         <button onClick={() => this.playCardValue()}>
                             playCardValue

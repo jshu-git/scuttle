@@ -178,10 +178,10 @@ function accept(G, ctx) {
 
     switch (remove.Value) {
         case "Ace":
-            for (let i = 0; i <= current_player_field.length; i++) {
+            while (current_player_field.length > 0) {
                 G.graveyard.push(current_player_field.pop());
             }
-            for (let i = 0; i <= opponent_player_field.length; i++) {
+            while (opponent_player_field.length > 0) {
                 G.graveyard.push(opponent_player_field.pop());
             }
             break;
@@ -195,7 +195,7 @@ function accept(G, ctx) {
             );
             let found_card = G.graveyard.splice(target_idx, 1)[0];
             current_player_hand.push(found_card);
-                
+
             break;
         default:
         // code block
