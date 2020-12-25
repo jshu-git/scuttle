@@ -10,7 +10,15 @@ export class Graveyard extends React.Component {
         for (let i = 0; i < graveyard.length; i++) {
             let card = graveyard[i];
             cells_graveyard.push(
-                <td key={card.id}>
+                <td
+                    key={card.id}
+                    className={this.props.targetable ? "targetable" : ""}
+                    onClick={
+                        this.props.targetable
+                            ? () => this.props.playCardEffect(card.id)
+                            : () => void 0
+                    }
+                >
                     {card.Value} of {card.Suit}
                 </td>
             );

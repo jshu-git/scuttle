@@ -11,7 +11,9 @@ export class PlayCardOptions extends React.Component {
                 <button onClick={this.props.toggleChoosingScuttle}>
                     playCardScuttle
                 </button>
-                <button>playCardEffect</button>
+                <button onClick={this.props.toggleChoosingEffect}>
+                    playCardEffect
+                </button>
             </div>
         );
     }

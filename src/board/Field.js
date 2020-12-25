@@ -2,6 +2,15 @@ import React from "react";
 import "../style/board.css";
 
 export class Field extends React.Component {
+    determineOnClick = (target_card_id) => {
+        if (this.props.choosingScuttle) {
+            return () => this.props.playCardScuttle(target_card_id);
+        } else if (this.props.choosingEffect) {
+            return () => this.props.playCardEffect(target_card_id);
+        }
+        return () => void 0;
+    };
+
     render() {
         let tbody_field = [];
         let cells_field = [];
@@ -12,11 +21,7 @@ export class Field extends React.Component {
                 <td
                     key={card.id}
                     className={this.props.targetable ? "targetable" : ""}
-                    onClick={
-                        this.props.targetable
-                            ? () => this.props.playCardScuttle(card.id)
-                            : () => void 0
-                    }
+                    onClick={this.determineOnClick(card.id)}
                 >
                     {card.Value} of {card.Suit}
                 </td>

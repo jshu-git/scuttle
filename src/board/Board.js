@@ -1,5 +1,5 @@
 import React from "react";
-import "./style/board.css";
+import "../style/board.css";
 
 export class TicTacToeBoard extends React.Component {
     constructor(props) {
