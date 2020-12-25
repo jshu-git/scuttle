@@ -17,7 +17,7 @@ export class TicTacToeBoard extends React.Component {
 
             // effect stuff
             // selected card during an effect (if any)
-            isChoosingEffect: false,
+            choosingEffect: false,
         };
     }
 
@@ -28,28 +28,10 @@ export class TicTacToeBoard extends React.Component {
         ...it also resets...
     */
     togglePlayCardOptions = (card_id) => {
-        this.setState(
-            {
-                choosingPlayCardOption: !this.state.choosingPlayCardOption,
-                selected_card_id: card_id,
-
-                // reset these, in case player changed their mind
-                // choosingScuttle: false,
-                // isChoosingEffect: false,
-            },
-            () => {
-                console.log(
-                    "choosingPlayCardOption is now: ",
-                    this.state.choosingPlayCardOption,
-                    "selected_card_id is: ",
-                    this.state.selected_card_id,
-                    "choosingScuttle is now: ",
-                    this.state.choosingScuttle,
-                    "isChoosingEffect is now: ",
-                    this.state.isChoosingEffect
-                );
-            }
-        );
+        this.setState({
+            choosingPlayCardOption: !this.state.choosingPlayCardOption,
+            selected_card_id: card_id,
+        });
     };
 
     playCardValue = () => {
@@ -82,6 +64,10 @@ export class TicTacToeBoard extends React.Component {
         );
     };
 
+    toggleGraveyard = () => {
+        this.setState({ showGraveyard: !this.state.showGraveyard });
+    };
+
     render() {
         // important props to be passed
         let playerID = this.props.playerID;
@@ -110,9 +96,6 @@ export class TicTacToeBoard extends React.Component {
                 <p>in_effect: {String(in_effect)}</p>
                 {/* <p>isChoosingEffect: {this.state.this.state.isChoosingEffect}</p> */}
 
-
-
-
                 <hr></hr>
                 <p>Current Turn: Player {this.props.ctx.currentPlayer}</p>
 
@@ -120,7 +103,13 @@ export class TicTacToeBoard extends React.Component {
                 <p>Deck Count: {this.props.G.deck.length}</p>
 
                 {/* graveyard */}
-                <Graveyard playerID={playerID} graveyard={graveyard} />
+                <button onClick={() => this.toggleGraveyard()}>
+                    View Graveyard
+                </button>
+                <p>Graveyard Count: {this.props.G.graveyard.length}</p>
+                {this.state.showGraveyard && (
+                    <Graveyard playerID={playerID} graveyard={graveyard} />
+                )}
 
                 {/* fields */}
                 <p>Opponent Field</p>
@@ -147,8 +136,7 @@ export class TicTacToeBoard extends React.Component {
                 {/* draw card */}
                 {in_action &&
                     !this.state.choosingPlayCardOption &&
-                    !this.state.choosingScuttle &&
-                     (
+                    !this.state.choosingScuttle && (
                         <button onClick={() => this.props.moves.drawCard()}>
                             Draw Card
                         </button>

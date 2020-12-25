@@ -21,11 +21,6 @@ export class Graveyard extends React.Component {
 
         return (
             <div>
-                <p>Graveyard Count: {this.props.graveyard.length}</p>
-
-                {/* graveyard toggle */}
-                <button>View Graveyard</button>
-
                 <table>
                     <tbody>{tbody_graveyard}</tbody>
                 </table>
