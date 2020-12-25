@@ -349,6 +349,7 @@ function playCardEffectWithTarget(G, ctx, target_card_id) {
     ctx.events.endTurn();
 }
 
+// counter button only enabled if have 2 in hand, so no need to check again
 function counter(G, ctx) {
     // at this point, ctx.currentPlayer is STILL the player who played the FIRST effect, so we can't use that as a reference
     // this is why we have to use our own G.currentPlayerCounterStage
@@ -360,25 +361,20 @@ function counter(G, ctx) {
     // console.log("index of two is: ",index_of_two)
 
     // alternatively in Board, can search and not allow counter button
-    if (index_of_two === -1) {
-        console.log("no two, forced to accept");
-    } else {
-        console.log("have two");
+    // if (index_of_two === -1) {
+    //     console.log("no two, forced to accept");
+    // } else {
+    //     console.log("have two");
 
-        // toggle countered
-        G.effect_countered = !G.effect_countered;
+    // toggle countered
+    G.effect_countered = !G.effect_countered;
 
-        // play as its own cardEffect
-        // which is added to the counter_chain
-        playCardEffect(
-            G,
-            ctx,
-            G.currentPlayerCounterStage,
-            hand[index_of_two].id
-        );
+    // play as its own cardEffect
+    // which is added to the counter_chain
+    playCardEffect(G, ctx, G.currentPlayerCounterStage, hand[index_of_two].id);
 
-        // discard 2 from hand
-        let remove = hand.splice(index_of_two, 1)[0];
-        G.graveyard.push(remove);
-    }
+    // discard 2 from hand
+    let remove = hand.splice(index_of_two, 1)[0];
+    G.graveyard.push(remove);
+    // }
 }

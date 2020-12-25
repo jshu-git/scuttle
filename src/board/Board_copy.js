@@ -222,6 +222,7 @@ export class TicTacToeBoard extends React.Component {
                         // no passing ()
                         accept={this.props.moves.accept}
                         counter={this.props.moves.counter}
+                        hand={hand}
                     />
                 )}
             </div>
