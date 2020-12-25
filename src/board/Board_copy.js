@@ -3,7 +3,7 @@ import "../style/board.css";
 import { Hand } from "./Hand";
 import { PlayCardOptions } from "./PlayCardOptions";
 import { PlayCardEffectOptions } from "./PlayCardEffectOptions";
-import { Fields } from "./Fields";
+import { Field } from "./Field";
 import { Graveyard } from "./Graveyard";
 
 export class TicTacToeBoard extends React.Component {
@@ -18,8 +18,6 @@ export class TicTacToeBoard extends React.Component {
             // effect stuff
             // selected card during an effect (if any)
             isChoosingEffect: false,
-
-            canDrawCard: true,
         };
     }
 
@@ -34,7 +32,6 @@ export class TicTacToeBoard extends React.Component {
             {
                 choosingPlayCardOption: !this.state.choosingPlayCardOption,
                 selected_card_id: card_id,
-                canDrawCard: !this.state.canDrawCard,
 
                 // reset these, in case player changed their mind
                 // choosingScuttle: false,
@@ -68,26 +65,17 @@ export class TicTacToeBoard extends React.Component {
         choosingScuttle means the player is in the process of choosing a card to scuttle
     */
     toggleChoosingScuttle = () => {
-        this.setState(
-            {
-                choosingPlayCardOption: false,
-                choosingScuttle: true,
-            },
-            () => {
-                console.log(
-                    "choosingPlayCardOption is now: ",
-                    this.state.choosingPlayCardOption,
-                    "choosingScuttle is now: ",
-                    this.state.choosingScuttle
-                );
-            }
-        );
+        this.setState({
+            choosingPlayCardOption: false,
+            choosingScuttle: true,
+        });
     };
 
+    // may need to add check for if opponent field is nonempty
     playCardScuttle = (target_id) => {
-        // turn off scuttling phase
-        this.setState({ isScuttling: false });
-        // make move
+        // toggle off scuttling phase
+        this.setState({ choosingScuttle: false });
+
         this.props.moves.playCardScuttle(
             this.state.selected_card_id,
             target_id
@@ -97,6 +85,7 @@ export class TicTacToeBoard extends React.Component {
     render() {
         // important props to be passed
         let playerID = this.props.playerID;
+        let playerID_opponent = String(1 - parseInt(this.props.playerID));
         let hand = this.props.G.hands[playerID];
         let fields = this.props.G.fields;
         let graveyard = this.props.G.graveyard;
@@ -116,10 +105,13 @@ export class TicTacToeBoard extends React.Component {
                 </p>
                 <p>selected_card_id: {String(this.state.selected_card_id)}</p>
                 <p>choosingScuttle: {String(this.state.choosingScuttle)}</p>
-                <p>canDrawCard: {String(this.state.canDrawCard)}</p>
+                {/* <p>canDrawCard: {String(this.state.canDrawCard)}</p> */}
                 <p>in_action: {String(in_action)}</p>
                 <p>in_effect: {String(in_effect)}</p>
                 {/* <p>isChoosingEffect: {this.state.this.state.isChoosingEffect}</p> */}
+
+
+
 
                 <hr></hr>
                 <p>Current Turn: Player {this.props.ctx.currentPlayer}</p>
@@ -130,8 +122,19 @@ export class TicTacToeBoard extends React.Component {
                 {/* graveyard */}
                 <Graveyard playerID={playerID} graveyard={graveyard} />
 
-                {/* BOTH fields */}
-                <Fields playerID={playerID} fields={fields} />
+                {/* fields */}
+                <p>Opponent Field</p>
+                <Field
+                    playerID={playerID_opponent}
+                    field={this.props.G.fields[playerID_opponent]}
+                    targetable={in_action && this.state.choosingScuttle}
+                    playCardScuttle={this.playCardScuttle}
+                />
+                <p>Your Field</p>
+                <Field
+                    playerID={playerID}
+                    field={this.props.G.fields[playerID]}
+                />
 
                 {/* hand */}
                 <Hand
@@ -142,14 +145,17 @@ export class TicTacToeBoard extends React.Component {
                 />
 
                 {/* draw card */}
-                {this.state.canDrawCard && (
-                    <button onClick={() => this.props.moves.drawCard()}>
-                        Draw Card
-                    </button>
-                )}
+                {in_action &&
+                    !this.state.choosingPlayCardOption &&
+                    !this.state.choosingScuttle &&
+                     (
+                        <button onClick={() => this.props.moves.drawCard()}>
+                            Draw Card
+                        </button>
+                    )}
 
                 {/* playerCard options */}
-                {this.state.choosingPlayCardOption && (
+                {in_action && this.state.choosingPlayCardOption && (
                     <PlayCardOptions
                         playCardValue={this.playCardValue}
                         toggleChoosingScuttle={this.toggleChoosingScuttle}

@@ -3,8 +3,6 @@ import "../style/board.css";
 
 export class Hand extends React.Component {
     render() {
-        // console.log(this.props.active);
-
         let tbody_hand = [];
         let cells_hand = [];
         let hand = this.props.hand;
