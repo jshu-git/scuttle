@@ -39,6 +39,6 @@ td.active:hover {
     background: #eeffff;
 }
 
-td.canTarget:hover {
+td.targetable:hover {
     background: #ff8888;
 }
