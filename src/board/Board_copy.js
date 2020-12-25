@@ -19,10 +19,18 @@ export class TicTacToeBoard extends React.Component {
     }
 
     togglePlayCardOptions = (card_id) => {
-        this.setState({
-            choosingPlayCardOption: !this.state.choosingPlayCardOption,
-            selected_card_id: card_id,
-        });
+        this.setState(
+            {
+                choosingPlayCardOption: !this.state.choosingPlayCardOption,
+                selected_card_id: card_id,
+            },
+            () => {
+                console.log(
+                    "selected_card_id is ",
+                    this.state.selected_card_id
+                );
+            }
+        );
     };
 
     playCardValue = () => {

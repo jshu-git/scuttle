@@ -15,7 +15,6 @@ const setup = ({ playOrder, playOrderPos }) => {
         counter_chain: [],
         effect_countered: false,
         effect_target_card_id: undefined,
-        selected_card_id: undefined,
 
         // used to keep track of currentPlayer during a stage, similar to currentPlayer for a turn
         currentPlayerCounterStage: undefined, // is overwritten whenever a cardeffect is played
@@ -115,20 +114,15 @@ function playCardScuttle(G, ctx, card_id, target_id) {
     card_id is the card_id played (as effect) (by currentPlayerActionStage)
     G.currentPlayerCounterStage is the turn of the player who is ABOUT to counter/accept, aka the "opposite" of currentPlayerActionStage
 */
-function playCardEffect(G, ctx, currentPlayerActionStage, selected_card_id) {
-    // save the selected card
-    G.selected_card_id = selected_card_id;
-
+function playCardEffect(G, ctx, currentPlayerActionStage, card_id) {
     // push card into counter_chain
     // counter_chain is purely for display
-    G.counter_chain.push(selected_card_id);
+    G.counter_chain.push(card_id);
 
     // we don't remove card from hand here since shouldn't be able to infinitely 3 card
 
     // special cards immediately go through
-    if (
-        ["8", "Jack", "Queen", "King"].some((x) => selected_card_id.includes(x))
-    ) {
+    if (["8", "Jack", "Queen", "King"].some((x) => card_id.includes(x))) {
         return accept(G, ctx);
     }
 
@@ -164,7 +158,10 @@ function accept(G, ctx) {
     let opponent_player_hand = G.hands[opponent_player];
 
     // find the card in current player's hand
-    let idx = current_player_hand.findIndex((i) => i.id === G.selected_card_id);
+    let original_effect_card_id = G.counter_chain[0];
+    let idx = current_player_hand.findIndex(
+        (i) => i.id === original_effect_card_id
+    );
     let card = current_player_hand[idx];
 
     // check if effect was countered
@@ -269,6 +266,7 @@ function accept(G, ctx) {
 // this is basically accept but there's a target
 function playCardEffectWithTarget(G, ctx, target_card_id) {
     // same as before
+
     let current_player = ctx.playOrder[ctx.playOrderPos];
     let opponent_player =
         ctx.playOrder[(ctx.playOrderPos + 1) % ctx.playOrder.length];
@@ -278,11 +276,15 @@ function playCardEffectWithTarget(G, ctx, target_card_id) {
     let opponent_player_hand = G.hands[opponent_player];
 
     // find the card in current player's hand
-    let idx = current_player_hand.findIndex((i) => i.id === G.selected_card_id);
+    let original_effect_card_id = G.counter_chain[0];
+    let idx = current_player_hand.findIndex(
+        (i) => i.id === original_effect_card_id
+    );
     let card = current_player_hand[idx];
 
     // check if effect was countered
     if (G.effect_countered) {
+        console.log("reaching");
         // remove card from hand
         let remove = current_player_hand.splice(idx, 1)[0];
         G.graveyard.push(remove);
