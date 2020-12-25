@@ -5,8 +5,8 @@ export class Field extends React.Component {
     determineOnClick = (target_card_id) => {
         if (this.props.choosingScuttle) {
             return () => this.props.playCardScuttle(target_card_id);
-        } else if (this.props.choosingEffect) {
-            return () => this.props.playCardEffect(target_card_id);
+        } else if (this.props.in_choosing) {
+            return () => this.props.playCardEffectWithTarget(target_card_id);
         }
         return () => void 0;
     };

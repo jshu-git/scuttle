@@ -1,15 +1,16 @@
 import React from "react";
 import "../style/board.css";
 
-export class Graveyard extends React.Component {
+export class ChoosingEffect7 extends React.Component {
     render() {
-        let tbody_graveyard = [];
-        let cells_graveyard = [];
-        let graveyard = this.props.graveyard;
+        let tbody = [];
+        let cells = [];
+        let deck = this.props.deck;
 
-        for (let i = 0; i < graveyard.length; i++) {
-            let card = graveyard[i];
-            cells_graveyard.push(
+        for (let i = 0; i < 2; i++) {
+            let idx = deck.length - 1 - i;
+            let card = deck[idx];
+            cells.push(
                 <td
                     key={card.id}
                     className={this.props.targetable ? "targetable" : ""}
@@ -23,14 +24,13 @@ export class Graveyard extends React.Component {
                 </td>
             );
         }
-        tbody_graveyard.push(
-            <tr key={this.props.playerID}>{cells_graveyard}</tr>
-        );
+        tbody.push(<tr key={this.props.playerID}>{cells}</tr>);
 
         return (
             <div>
-                <table id="field">
-                    <tbody>{tbody_graveyard}</tbody>
+                <p>Choose a card to take:</p>
+                <table>
+                    <tbody>{tbody}</tbody>
                 </table>
             </div>
         );
