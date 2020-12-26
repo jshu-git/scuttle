@@ -51,85 +51,16 @@ export function accept(G, ctx) {
         return;
     }
 
-    let current_player = ctx.playOrder[ctx.playOrderPos];
-    let opponent_player =
-        ctx.playOrder[(ctx.playOrderPos + 1) % ctx.playOrder.length];
-    let current_player_field = G.fields[current_player];
-    let opponent_player_field = G.fields[opponent_player];
-    let current_player_hand = G.hands[current_player];
-    let opponent_player_hand = G.hands[opponent_player];
-
-    // effect card is at [0]
-    let card = G.counter_chain[0];
-
-    // check if card effect requires target
+    // effect card is at counter_chain[0]
+    // check if effect requires target
     let no_target = ["Ace", "4", "5", "6", "8", "Queen", "King"].some(
-        (x) => card.Value === x
+        (x) => G.counter_chain[0].Value === x
     );
 
     if (no_target) {
-        switch (card.Value) {
-            // clear field
-            case "Ace":
-                console.log("reaching ace case");
-            // while (current_player_field.length > 0) {
-            //     G.graveyard.push(current_player_field.pop());
-            // }
-            // while (opponent_player_field.length > 0) {
-            //     G.graveyard.push(opponent_player_field.pop());
-            // }
-            // break;
-            // discard 2
-            case "4":
-                console.log("reaching 4 case");
-                // if (opponent_player_hand.length === 0) {
-                //     console.log("bm, no cards to discard");
-                // } else if (opponent_player_hand.length === 1) {
-                //     var discarded = opponent_player_hand.splice(0, 1)[0];
-                //     console.log("discarded:", discarded.id);
-                //     G.graveyard.push(discarded);
-                // } else {
-                //     for (var i = 0; i < 2; i++) {
-                //         var discarded = opponent_player_hand.splice(
-                //             Math.floor(
-                //                 Math.random() * opponent_player_hand.length
-                //             ),
-                //             1
-                //         )[0];
-                //         console.log("discarded:", discarded.id);
-                //         G.graveyard.push(discarded);
-                //     }
-                // }
-                break;
-            // draw 2
-            case "5":
-                console.log("reaching 5 case");
-                // if (G.deck.length === 0) {
-                //     console.log("no cards left in deck");
-                // } else if (G.deck.length === 1) {
-                //     current_player_hand.push(G.deck.pop());
-                // } else {
-                //     current_player_hand.push(G.deck.pop());
-                //     current_player_hand.push(G.deck.pop());
-                // }
-                break;
-            // clear all special cards
-            case "6":
-                console.log("reaching 6 case");
-                break;
-            case "8":
-                console.log("reaching 8 case");
-                break;
-            case "Queen":
-                console.log("reaching Q case");
-                break;
-            case "King":
-                console.log("reaching K case");
-                break;
-            default:
-                console.log("reaching default no_target");
-                break;
-        }
+        // immediate card effect
+        doEffect(G, ctx);
+        // cleanup
         cleanup_counter_chain(G);
         ctx.events.endTurn();
     } else {
@@ -151,6 +82,118 @@ export function chooseTarget(G, ctx, target_card) {
         return;
     }
 
+    // do targeting effect
+    doEffectTarget(G, ctx, target_card);
+    // cleanup
+    cleanup_counter_chain(G);
+    ctx.events.endTurn();
+}
+
+export function counter(G, ctx) {
+    // at this point, ctx.currentPlayer is STILL the player who played the FIRST effect, so we can't use that as a reference
+    // this is why we have to use our own G.currentPlayerCounterStage
+
+    // currentPlayerCounterStage holds which player's "turn" of the stage is aka who has option to counter
+    // check if this player has a 2
+    let hand = G.hands[G.currentPlayerCounterStage];
+    let index_of_two = hand.findIndex((x) => x.Value === "2");
+    // console.log("index of two is: ",index_of_two)
+
+    // toggle countered
+    G.effect_countered = !G.effect_countered;
+
+    // play as its own cardEffect
+    // which is added to the counter_chain
+    playCardEffect(G, ctx, G.currentPlayerCounterStage, hand[index_of_two]);
+}
+
+// helpers
+function cleanup_counter_chain(G) {
+    for (var i = 0; i < G.counter_chain.length; i++) {
+        G.graveyard.push(G.counter_chain[i]);
+    }
+    G.counter_chain = [];
+
+    // reset effect_countered
+    G.effect_countered = false;
+}
+
+function doEffect(G, ctx) {
+    let current_player = ctx.playOrder[ctx.playOrderPos];
+    let opponent_player =
+        ctx.playOrder[(ctx.playOrderPos + 1) % ctx.playOrder.length];
+    let current_player_field = G.fields[current_player];
+    let opponent_player_field = G.fields[opponent_player];
+    let current_player_hand = G.hands[current_player];
+    let opponent_player_hand = G.hands[opponent_player];
+
+    let card = G.counter_chain[0];
+
+    switch (card.Value) {
+        // clear field
+        case "Ace":
+            console.log("reaching ace case");
+            // while (current_player_field.length > 0) {
+            //     G.graveyard.push(current_player_field.pop());
+            // }
+            // while (opponent_player_field.length > 0) {
+            //     G.graveyard.push(opponent_player_field.pop());
+            // }
+            break;
+        // discard 2
+        case "4":
+            console.log("reaching 4 case");
+            // if (opponent_player_hand.length === 0) {
+            //     console.log("bm, no cards to discard");
+            // } else if (opponent_player_hand.length === 1) {
+            //     var discarded = opponent_player_hand.splice(0, 1)[0];
+            //     console.log("discarded:", discarded.id);
+            //     G.graveyard.push(discarded);
+            // } else {
+            //     for (var i = 0; i < 2; i++) {
+            //         var discarded = opponent_player_hand.splice(
+            //             Math.floor(
+            //                 Math.random() * opponent_player_hand.length
+            //             ),
+            //             1
+            //         )[0];
+            //         console.log("discarded:", discarded.id);
+            //         G.graveyard.push(discarded);
+            //     }
+            // }
+            break;
+        // draw 2
+        case "5":
+            console.log("reaching 5 case");
+            // if (G.deck.length === 0) {
+            //     console.log("no cards left in deck");
+            // } else if (G.deck.length === 1) {
+            //     current_player_hand.push(G.deck.pop());
+            // } else {
+            //     current_player_hand.push(G.deck.pop());
+            //     current_player_hand.push(G.deck.pop());
+            // }
+            break;
+        // clear all special cards
+        case "6":
+            console.log("reaching 6 case");
+            break;
+        case "8":
+            console.log("reaching 8 case");
+            break;
+        case "Queen":
+            console.log("reaching Q case");
+            break;
+        case "King":
+            console.log("reaching K case");
+            break;
+        default:
+            console.log("reaching default no_target");
+            break;
+    }
+}
+
+function doEffectTarget(G, ctx, target_card) {
     let current_player = ctx.playOrder[ctx.playOrderPos];
     let opponent_player =
         ctx.playOrder[(ctx.playOrderPos + 1) % ctx.playOrder.length];
@@ -203,34 +246,4 @@ export function chooseTarget(G, ctx, target_card) {
             console.log("reaching default yes target");
             break;
     }
-    cleanup_counter_chain(G);
-    ctx.events.endTurn();
-}
-
-export function counter(G, ctx) {
-    // at this point, ctx.currentPlayer is STILL the player who played the FIRST effect, so we can't use that as a reference
-    // this is why we have to use our own G.currentPlayerCounterStage
-
-    // currentPlayerCounterStage holds which player's "turn" of the stage is aka who has option to counter
-    // check if this player has a 2
-    let hand = G.hands[G.currentPlayerCounterStage];
-    let index_of_two = hand.findIndex((x) => x.Value === "2");
-    // console.log("index of two is: ",index_of_two)
-
-    // toggle countered
-    G.effect_countered = !G.effect_countered;
-
-    // play as its own cardEffect
-    // which is added to the counter_chain
-    playCardEffect(G, ctx, G.currentPlayerCounterStage, hand[index_of_two]);
-}
-
-export function cleanup_counter_chain(G) {
-    for (var i = 0; i < G.counter_chain.length; i++) {
-        G.graveyard.push(G.counter_chain[i]);
-    }
-    G.counter_chain = [];
-
-    // reset effect_countered
-    G.effect_countered = false;
 }
