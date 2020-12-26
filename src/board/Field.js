@@ -23,7 +23,7 @@ export class Field extends React.Component {
                     className={this.props.targetable ? "targetable" : ""}
                     onClick={this.determineOnClick(card)}
                 >
-                    {card.Value} of {card.Suit}
+                    {card.Value} of {card.Suit} (Owner: {} numJacked: {})
                 </td>
             );
         }

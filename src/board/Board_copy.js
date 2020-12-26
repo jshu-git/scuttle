@@ -97,6 +97,7 @@ export class TicTacToeBoard extends React.Component {
         let graveyard = this.props.G.graveyard;
         let deck = this.props.G.deck;
         let fields = this.props.G.fields;
+        let selected_card = this.state.selected_card;
 
         // stages
         let in_action =
@@ -117,15 +118,12 @@ export class TicTacToeBoard extends React.Component {
                 <button onClick={() => this.toggleGraveyard()}>
                     View Graveyard
                 </button>
-                <p>Graveyard Count: {this.props.G.graveyard.length}</p>
+                <p>Graveyard Count: {graveyard.length}</p>
                 {this.state.showGraveyard && (
                     <Graveyard
                         playerID={playerID}
                         graveyard={graveyard}
-                        targetable={
-                            in_choosing &&
-                            this.state.selected_card.Value === "3"
-                        }
+                        targetable={in_choosing && selected_card.Value === "3"}
                         chooseTarget={this.chooseTarget}
                     />
                 )}
@@ -134,15 +132,13 @@ export class TicTacToeBoard extends React.Component {
                 <p>Opponent Field</p>
                 <Field
                     playerID={playerID_opponent}
-                    field={this.props.G.fields[playerID_opponent]}
+                    field={fields[playerID_opponent]}
                     targetable={
                         // scuttling
                         (in_action && this.state.choosingScuttle) ||
                         // using effect
-                        (in_choosing &&
-                            this.state.selected_card.Value === "9") ||
-                        (in_choosing &&
-                            this.state.selected_card.Value === "Jack")
+                        (in_choosing && selected_card.Value === "9") ||
+                        (in_choosing && selected_card.Value === "Jack")
                     }
                     playCardScuttle={this.playCardScuttle}
                     chooseTarget={this.chooseTarget}
@@ -152,10 +148,8 @@ export class TicTacToeBoard extends React.Component {
                 <p>Your Field</p>
                 <Field
                     playerID={playerID}
-                    field={this.props.G.fields[playerID]}
-                    targetable={
-                        in_choosing && this.state.selected_card.Value === "9"
-                    }
+                    field={fields[playerID]}
+                    targetable={in_choosing && selected_card.Value === "9"}
                     chooseTarget={this.chooseTarget}
                     choosingScuttle={this.state.choosingScuttle}
                     in_choosing={in_choosing}
@@ -185,7 +179,7 @@ export class TicTacToeBoard extends React.Component {
                         toggleChoosingScuttle={this.toggleChoosingScuttle}
                         playCardEffect={this.playCardEffect}
                         // used for parameter checks
-                        selected_card={this.state.selected_card}
+                        selected_card={selected_card}
                         deck={deck}
                         graveyard={graveyard}
                         field={fields[playerID]}
