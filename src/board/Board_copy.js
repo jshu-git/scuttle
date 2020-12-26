@@ -1,5 +1,6 @@
 import React from "react";
 import "../style/board.css";
+// components
 import { Hand } from "./Hand";
 import { PlayCardOptions } from "./PlayCardOptions";
 import { PlayCardEffectOptions } from "./PlayCardEffectOptions";
@@ -103,8 +104,8 @@ export class TicTacToeBoard extends React.Component {
         // stages
         let in_action =
             this.props.ctx.activePlayers[this.props.playerID] === "action";
-        let in_effect =
-            this.props.ctx.activePlayers[this.props.playerID] === "effect";
+        let in_countering =
+            this.props.ctx.activePlayers[this.props.playerID] === "countering";
         let in_choosing =
             this.props.ctx.activePlayers[this.props.playerID] === "choosing";
 
@@ -205,7 +206,7 @@ export class TicTacToeBoard extends React.Component {
                 )}
 
                 {/* effectCard options */}
-                {in_effect && (
+                {in_countering && (
                     <PlayCardEffectOptions
                         // no passing ()
                         accept={this.props.moves.accept}

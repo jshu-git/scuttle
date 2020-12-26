@@ -1,126 +1,20 @@
+// playCardEffect moves
+// countering and choosing stage
 import { INVALID_MOVE } from "boardgame.io/core";
-import { initializeGame } from "./setup.js";
-
-const setup = ({ playOrder, playOrderPos }) => {
-    const { deck, hands, fields } = initializeGame(playOrder, playOrderPos);
-
-    // initialize game state G
-    return {
-        deck: deck,
-        hands: hands,
-        fields: fields,
-        graveyard: [],
-
-        // effect stuff
-        counter_chain: [],
-        effect_countered: false,
-
-        // used to keep track of currentPlayer during a stage, similar to currentPlayer for a turn
-        currentPlayerCounterStage: undefined, // is overwritten whenever a cardeffect is played
-    };
-};
-
-export const TicTacToe = {
-    setup: setup,
-    turn: {
-        onBegin: (G, ctx) => {
-            ctx.events.setActivePlayers({
-                currentPlayer: "action",
-                others: "idle",
-            });
-        },
-        stages: {
-            action: {
-                moves: {
-                    drawCard,
-                    playCardValue,
-                    playCardEffect,
-                    playCardScuttle,
-                },
-            },
-            idle: {
-                moves: {},
-            },
-            effect: {
-                moves: {
-                    accept,
-                    counter,
-                },
-            },
-            choosing: {
-                moves: {
-                    playCardEffectWithTarget,
-                },
-            },
-        },
-    },
-};
-
-// action moves
-function drawCard(G, ctx) {
-    const card = G.deck.pop();
-    G.hands[ctx.currentPlayer].push(card);
-    ctx.events.endTurn();
-}
-
-function playCardValue(G, ctx, card) {
-    let hand = G.hands[ctx.currentPlayer];
-    let field = G.fields[ctx.currentPlayer];
-
-    let idx = hand.findIndex((i) => i.id === card.id);
-    let remove = hand.splice(idx, 1)[0];
-    field.push(remove);
-    ctx.events.endTurn();
-}
-
-function playCardScuttle(G, ctx, card, target) {
-    let current_player = ctx.playOrder[ctx.playOrderPos];
-    let opponent_player =
-        ctx.playOrder[(ctx.playOrderPos + 1) % ctx.playOrder.length];
-
-    let current_hand = G.hands[current_player];
-    let opponent_field = G.fields[opponent_player];
-
-    let current_card = current_hand.find((i) => i.id === card.id);
-    let target_card = opponent_field.find((i) => i.id === target.id);
-
-    // card logic
-    var temp = current_card.Value;
-    var temp2 = target_card.Value;
-    if (temp === "Ace") {
-        temp = "1";
-    }
-    if (temp2 === "Ace") {
-        temp2 = "1";
-    }
-    if (parseInt(temp) >= parseInt(temp2)) {
-        let i = current_hand.findIndex((x) => x.id === card.id);
-        let remove1 = current_hand.splice(i, 1)[0];
-        let j = opponent_field.findIndex((y) => y.id === target.id);
-        let remove2 = opponent_field.splice(j, 1)[0];
-
-        G.graveyard.push(remove1);
-        G.graveyard.push(remove2);
-        ctx.events.endTurn();
-    } else {
-        console.log("playCardScuttle error, scuttle failed");
-        return INVALID_MOVE;
-    }
-}
 
 /*
-    currentPlayerActionStage is the player playing the card effect (a number)
-    card_id is the card_id played (as effect) (by currentPlayerActionStage)
+    currentPlayerActionStage is the player playing the card effect
     G.currentPlayerCounterStage is the turn of the player who is ABOUT to counter/accept, aka the "opposite" of currentPlayerActionStage
 */
-function playCardEffect(G, ctx, currentPlayerActionStage, card) {
+export function playCardEffect(G, ctx, currentPlayerActionStage, card) {
     // push card into counter_chain
     G.counter_chain.push(card);
 
-    // remove card from hand, it's now saved in counter_chain
+    // safe to remove card from hand, it's now saved in counter_chain
     let hand = G.hands[currentPlayerActionStage];
     let idx = hand.findIndex((i) => i.id === card.id);
-    let remove = hand.splice(idx, 1)[0];
+    // let remove = hand.splice(idx, 1)[0];
+    hand.splice(idx, 1);
 
     // special cards immediately go through
     if (["8", "Jack", "Queen", "King"].some((x) => card.Value === x)) {
@@ -136,20 +30,20 @@ function playCardEffect(G, ctx, currentPlayerActionStage, card) {
         ctx.events.setActivePlayers({
             value: {
                 0: "idle",
-                1: "effect",
+                1: "countering",
             },
         });
     } else {
         ctx.events.setActivePlayers({
             value: {
-                0: "effect",
+                0: "countering",
                 1: "idle",
             },
         });
     }
 }
 
-function accept(G, ctx) {
+export function accept(G, ctx) {
     // check if effect was countered
     if (G.effect_countered) {
         cleanup_counter_chain(G);
@@ -247,7 +141,7 @@ function accept(G, ctx) {
 }
 
 // this is basically accept but there's a target
-function playCardEffectWithTarget(G, ctx, target_card) {
+export function playCardEffectWithTarget(G, ctx, target_card) {
     // same as before
 
     // check if effect was countered
@@ -313,8 +207,7 @@ function playCardEffectWithTarget(G, ctx, target_card) {
     ctx.events.endTurn();
 }
 
-// counter button only enabled if have 2 in hand, so no need to check again
-function counter(G, ctx) {
+export function counter(G, ctx) {
     // at this point, ctx.currentPlayer is STILL the player who played the FIRST effect, so we can't use that as a reference
     // this is why we have to use our own G.currentPlayerCounterStage
 
@@ -330,11 +223,9 @@ function counter(G, ctx) {
     // play as its own cardEffect
     // which is added to the counter_chain
     playCardEffect(G, ctx, G.currentPlayerCounterStage, hand[index_of_two]);
-
-    // discarded in playCardEffect 2 from hand, added to counter_chain
 }
 
-function cleanup_counter_chain(G) {
+export function cleanup_counter_chain(G) {
     for (var i = 0; i < G.counter_chain.length; i++) {
         G.graveyard.push(G.counter_chain[i]);
     }

@@ -4,7 +4,7 @@ import "../style/board.css";
 export class PlayCardOptions extends React.Component {
     render() {
         // disabled = these checks are true
-        let empty_scuttle = this.props.opponent_field.length == 0;
+        let empty_scuttle = this.props.opponent_field.length === 0;
 
         let special =
             this.props.selected_card.Value === "Jack" ||
