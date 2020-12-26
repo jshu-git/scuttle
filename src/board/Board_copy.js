@@ -91,19 +91,14 @@ export class TicTacToeBoard extends React.Component {
         this.setState({ showGraveyard: !this.state.showGraveyard });
     };
 
-    cancelChoosing = () => {
-        // toggleplaycardoptions is already false
-        this.setState({
-            choosingScuttle: false,
-        });
-    };
-
     render() {
         // important props to be passed
         let playerID = this.props.playerID;
         let playerID_opponent = String(1 - parseInt(this.props.playerID));
         let hand = this.props.G.hands[playerID];
         let graveyard = this.props.G.graveyard;
+        let deck = this.props.G.deck;
+        let fields = this.props.G.fields;
 
         // stages
         let in_action =
@@ -117,7 +112,7 @@ export class TicTacToeBoard extends React.Component {
             <div>
                 <p>Current Turn: Player {this.props.ctx.currentPlayer}</p>
                 {/* deck info */}
-                <p>Deck Count: {this.props.G.deck.length}</p>
+                <p>Deck Count: {deck.length}</p>
                 <hr></hr>
 
                 {/* graveyard */}
@@ -131,7 +126,7 @@ export class TicTacToeBoard extends React.Component {
                         graveyard={graveyard}
                         targetable={
                             in_choosing &&
-                            this.state.selected_card.value === "3"
+                            this.state.selected_card.Value === "3"
                         }
                         playCardEffectWithTarget={this.playCardEffectWithTarget}
                     />
@@ -188,29 +183,25 @@ export class TicTacToeBoard extends React.Component {
                 {/* playerCard options */}
                 {in_action && this.state.choosingPlayCardOption && (
                     <PlayCardOptions
-                        selected_card={this.state.selected_card}
-                        deck={this.props.G.deck}
                         playCardValue={this.playCardValue}
                         toggleChoosingScuttle={this.toggleChoosingScuttle}
                         playCardEffect={this.playCardEffect}
+                        // used for parameter checks
+                        selected_card={this.state.selected_card}
+                        deck={deck}
+                        graveyard={graveyard}
+                        field={fields[playerID]}
+                        opponent_field={fields[playerID_opponent]}
                     />
                 )}
 
                 {in_choosing && this.state.selected_card.Value === "7" && (
                     <ChoosingEffect7
                         playerID={playerID}
-                        deck={this.props.G.deck}
+                        deck={deck}
                         targetable={in_choosing}
                         playCardEffectWithTarget={this.playCardEffectWithTarget}
                     />
-                )}
-
-                {/* cancel button */}
-                {/* cannot cancel while in  */}
-                {in_action && this.state.choosingScuttle && (
-                    <button onClick={() => this.cancelChoosing()}>
-                        Cancel
-                    </button>
                 )}
 
                 {/* effectCard options */}

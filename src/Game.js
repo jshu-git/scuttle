@@ -189,7 +189,7 @@ function accept(G, ctx) {
             case "4":
                 console.log("reaching 4 case");
                 // if (opponent_player_hand.length === 0) {
-                //     console.log("no cards to discard");
+                //     console.log("bm, no cards to discard");
                 // } else if (opponent_player_hand.length === 1) {
                 //     var discarded = opponent_player_hand.splice(0, 1)[0];
                 //     console.log("discarded:", discarded.id);
@@ -275,29 +275,29 @@ function playCardEffectWithTarget(G, ctx, target_card) {
         // search graveyard
         case "3":
             console.log("reaching 3 case");
+            let target_idx = G.graveyard.findIndex(
+                (i) => i.id === target_card.id
+            );
+            // this was failing because i didn't do [0]
+            let found_card = G.graveyard.splice(target_idx, 1)[0];
+            current_player_hand.push(found_card);
             break;
-        // let target_idx = G.graveyard.findIndex(
-        //     (i) => i.id === G.effect_target_card_id
-        // );
-        // // this was failing because i didn't do [0]
-        // let found_card = G.graveyard.splice(target_idx, 1)[0];
-        // current_player_hand.push(found_card);
-        // break;
         // pick 1 of top 2 cards
         case "7":
             console.log("reaching 7 case");
+            // retrieve top 2 cards
+            let one = G.deck.pop();
+            let two = G.deck.pop();
+            console.log("one", one.id, "two", two.id);
+            // check target
+            if (target_card.id === one.id) {
+                current_player_hand.push(one);
+                G.deck.push(two);
+            } else {
+                current_player_hand.push(two);
+                G.deck.push(one);
+            }
             break;
-        // retrieve top 2 cards
-        // let one = G.deck.pop();
-        // let two = G.deck.pop();
-        // // check target_id
-        // if (G.effect_target_card_id === one.id) {
-        //     current_player_hand.push(one);
-        //     G.deck.push(two);
-        // } else if (G.effect_target_card_id === two.id) {
-        //     current_player_hand.push(two);
-        //     G.deck.push(one);
-        // }
         case "9":
             console.log("reaching 9 case");
             break;
