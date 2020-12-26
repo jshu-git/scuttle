@@ -4,13 +4,13 @@ import "../style/board.css";
 export class PlayCardOptions extends React.Component {
     render() {
         let isSpecialCard =
-            this.props.selected_card_id.includes("Jack") ||
-            this.props.selected_card_id.includes("Queen") ||
-            this.props.selected_card_id.includes("King");
-        let isNoEffectCard = this.props.selected_card_id.includes("10");
+            this.props.selected_card.id.includes("Jack") ||
+            this.props.selected_card.id.includes("Queen") ||
+            this.props.selected_card.id.includes("King");
+        let isNoEffectCard = this.props.selected_card.id.includes("10");
         // cannot play 7 on < 2 card deck
         let is7AndEmptyDeck =
-            this.props.selected_card_id.includes("7") &&
+            this.props.selected_card.id.includes("7") &&
             this.props.deck.length < 2;
 
         return (

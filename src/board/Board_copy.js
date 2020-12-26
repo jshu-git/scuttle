@@ -12,31 +12,31 @@ export class TicTacToeBoard extends React.Component {
         super(props);
         this.state = {
             choosingPlayCardOption: false,
-            selected_card_id: undefined,
+            selected_card: undefined,
             showGraveyard: false,
             choosingScuttle: false,
         };
     }
 
-    togglePlayCardOptions = (card_id) => {
+    togglePlayCardOptions = (card) => {
         this.setState(
             {
                 choosingPlayCardOption: !this.state.choosingPlayCardOption,
-                selected_card_id: card_id,
+                selected_card: card,
             },
             () => {
                 console.log(
-                    "selected_card_id is ",
-                    this.state.selected_card_id
+                    "selected_card id is ",
+                    this.state.selected_card.id
                 );
             }
         );
     };
 
     playCardValue = () => {
-        console.log("playCardValue: ", this.state.selected_card_id);
+        console.log("playCardValue: ", this.state.selected_card.id);
         this.setState({ choosingPlayCardOption: false });
-        this.props.moves.playCardValue(this.state.selected_card_id);
+        this.props.moves.playCardValue(this.state.selected_card.id);
     };
 
     toggleChoosingScuttle = () => {
@@ -46,20 +46,17 @@ export class TicTacToeBoard extends React.Component {
         });
     };
 
-    playCardScuttle = (target_card_id) => {
+    playCardScuttle = (target_card) => {
         this.setState({ choosingScuttle: false });
 
         console.log(
             "playCardScuttle: ",
-            this.state.selected_card_id,
+            this.state.selected_card.id,
             "target: ",
-            target_card_id
+            target_card.id
         );
 
-        this.props.moves.playCardScuttle(
-            this.state.selected_card_id,
-            target_card_id
-        );
+        this.props.moves.playCardScuttle(this.state.selected_card, target_card);
     };
 
     playCardEffect = () => {
@@ -67,26 +64,26 @@ export class TicTacToeBoard extends React.Component {
             choosingPlayCardOption: false,
         });
 
-        console.log("playCardEffect: ", this.state.selected_card_id);
+        console.log("playCardEffect: ", this.state.selected_card.id);
 
         // kicks off the playcardeffect code, which can branch into target
         this.props.moves.playCardEffect(
             parseInt(this.props.ctx.currentPlayer),
-            this.state.selected_card_id
+            this.state.selected_card
         );
     };
 
-    playCardEffectWithTarget = (target_card_id) => {
+    playCardEffectWithTarget = (target_card) => {
         console.log(
             "playCardEffectWithTarget: ",
-            this.state.selected_card_id,
+            this.state.selected_card.id,
             "target: ",
-            target_card_id
+            target_card.id
         );
 
         this.props.moves.playCardEffectWithTarget(
             parseInt(this.props.ctx.currentPlayer),
-            target_card_id
+            target_card
         );
     };
 
@@ -134,7 +131,7 @@ export class TicTacToeBoard extends React.Component {
                         graveyard={graveyard}
                         targetable={
                             in_choosing &&
-                            this.state.selected_card_id.includes("3")
+                            this.state.selected_card.value === "3"
                         }
                         playCardEffectWithTarget={this.playCardEffectWithTarget}
                     />
@@ -150,9 +147,9 @@ export class TicTacToeBoard extends React.Component {
                         (in_action && this.state.choosingScuttle) ||
                         // using effect
                         (in_choosing &&
-                            this.state.selected_card_id.includes("9")) ||
+                            this.state.selected_card.Value === "9") ||
                         (in_choosing &&
-                            this.state.selected_card_id.includes("Jack"))
+                            this.state.selected_card.Value === "Jack")
                     }
                     playCardScuttle={this.playCardScuttle}
                     playCardEffectWithTarget={this.playCardEffectWithTarget}
@@ -164,7 +161,7 @@ export class TicTacToeBoard extends React.Component {
                     playerID={playerID}
                     field={this.props.G.fields[playerID]}
                     targetable={
-                        in_choosing && this.state.selected_card_id.includes("9")
+                        in_choosing && this.state.selected_card.Value === "9"
                     }
                     playCardEffectWithTarget={this.playCardEffectWithTarget}
                     choosingScuttle={this.state.choosingScuttle}
@@ -191,7 +188,7 @@ export class TicTacToeBoard extends React.Component {
                 {/* playerCard options */}
                 {in_action && this.state.choosingPlayCardOption && (
                     <PlayCardOptions
-                        selected_card_id={this.state.selected_card_id}
+                        selected_card={this.state.selected_card}
                         deck={this.props.G.deck}
                         playCardValue={this.playCardValue}
                         toggleChoosingScuttle={this.toggleChoosingScuttle}
@@ -199,7 +196,7 @@ export class TicTacToeBoard extends React.Component {
                     />
                 )}
 
-                {in_choosing && this.state.selected_card_id.includes("7") && (
+                {in_choosing && this.state.selected_card.Value === "7" && (
                     <ChoosingEffect7
                         playerID={playerID}
                         deck={this.props.G.deck}

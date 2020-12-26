@@ -2,11 +2,11 @@ import React from "react";
 import "../style/board.css";
 
 export class Field extends React.Component {
-    determineOnClick = (target_card_id) => {
+    determineOnClick = (target_card) => {
         if (this.props.choosingScuttle) {
-            return () => this.props.playCardScuttle(target_card_id);
+            return () => this.props.playCardScuttle(target_card);
         } else if (this.props.in_choosing) {
-            return () => this.props.playCardEffectWithTarget(target_card_id);
+            return () => this.props.playCardEffectWithTarget(target_card);
         }
         return () => void 0;
     };
@@ -21,7 +21,7 @@ export class Field extends React.Component {
                 <td
                     key={card.id}
                     className={this.props.targetable ? "targetable" : ""}
-                    onClick={this.determineOnClick(card.id)}
+                    onClick={this.determineOnClick(card)}
                 >
                     {card.Value} of {card.Suit}
                 </td>

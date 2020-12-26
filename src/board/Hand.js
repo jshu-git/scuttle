@@ -15,7 +15,7 @@ export class Hand extends React.Component {
                     onClick={
                         // note: when using ternary in onClick, have to use ()=>
                         this.props.active
-                            ? () => this.props.togglePlayCardOptions(card.id)
+                            ? () => this.props.togglePlayCardOptions(card)
                             : () => void 0
                     }
                 >

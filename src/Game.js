@@ -14,7 +14,6 @@ const setup = ({ playOrder, playOrderPos }) => {
         // effect stuff
         counter_chain: [],
         effect_countered: false,
-        effect_target_card_id: undefined,
 
         // used to keep track of currentPlayer during a stage, similar to currentPlayer for a turn
         currentPlayerCounterStage: undefined, // is overwritten whenever a cardeffect is played
@@ -64,17 +63,17 @@ function drawCard(G, ctx) {
     ctx.events.endTurn();
 }
 
-function playCardValue(G, ctx, card_id) {
+function playCardValue(G, ctx, card) {
     let hand = G.hands[ctx.currentPlayer];
     let field = G.fields[ctx.currentPlayer];
 
-    let idx = hand.findIndex((i) => i.id === card_id);
+    let idx = hand.findIndex((i) => i.id === card.id);
     let remove = hand.splice(idx, 1)[0];
     field.push(remove);
     ctx.events.endTurn();
 }
 
-function playCardScuttle(G, ctx, card_id, target_id) {
+function playCardScuttle(G, ctx, card, target) {
     let current_player = ctx.playOrder[ctx.playOrderPos];
     let opponent_player =
         ctx.playOrder[(ctx.playOrderPos + 1) % ctx.playOrder.length];
@@ -82,8 +81,8 @@ function playCardScuttle(G, ctx, card_id, target_id) {
     let current_hand = G.hands[current_player];
     let opponent_field = G.fields[opponent_player];
 
-    let current_card = current_hand.find((i) => i.id === card_id);
-    let target_card = opponent_field.find((i) => i.id === target_id);
+    let current_card = current_hand.find((i) => i.id === card.id);
+    let target_card = opponent_field.find((i) => i.id === target.id);
 
     // card logic
     var temp = current_card.Value;
@@ -95,9 +94,9 @@ function playCardScuttle(G, ctx, card_id, target_id) {
         temp2 = "1";
     }
     if (parseInt(temp) >= parseInt(temp2)) {
-        let i = current_hand.findIndex((x) => x.id === card_id);
+        let i = current_hand.findIndex((x) => x.id === card.id);
         let remove1 = current_hand.splice(i, 1)[0];
-        let j = opponent_field.findIndex((y) => y.id === target_id);
+        let j = opponent_field.findIndex((y) => y.id === target.id);
         let remove2 = opponent_field.splice(j, 1)[0];
 
         G.graveyard.push(remove1);
@@ -114,15 +113,17 @@ function playCardScuttle(G, ctx, card_id, target_id) {
     card_id is the card_id played (as effect) (by currentPlayerActionStage)
     G.currentPlayerCounterStage is the turn of the player who is ABOUT to counter/accept, aka the "opposite" of currentPlayerActionStage
 */
-function playCardEffect(G, ctx, currentPlayerActionStage, card_id) {
+function playCardEffect(G, ctx, currentPlayerActionStage, card) {
     // push card into counter_chain
-    // counter_chain is purely for display
-    G.counter_chain.push(card_id);
+    G.counter_chain.push(card);
 
-    // we don't remove card from hand here since shouldn't be able to infinitely 3 card
+    // remove card from hand, it's now saved in counter_chain
+    let hand = G.hands[currentPlayerActionStage];
+    let idx = hand.findIndex((i) => i.id === card.id);
+    let remove = hand.splice(idx, 1)[0];
 
     // special cards immediately go through
-    if (["8", "Jack", "Queen", "King"].some((x) => card_id.includes(x))) {
+    if (["8", "Jack", "Queen", "King"].some((x) => card.Value === x)) {
         return accept(G, ctx);
     }
 
@@ -149,6 +150,13 @@ function playCardEffect(G, ctx, currentPlayerActionStage, card_id) {
 }
 
 function accept(G, ctx) {
+    // check if effect was countered
+    if (G.effect_countered) {
+        cleanup_counter_chain(G);
+        ctx.events.endTurn();
+        return;
+    }
+
     let current_player = ctx.playOrder[ctx.playOrderPos];
     let opponent_player =
         ctx.playOrder[(ctx.playOrderPos + 1) % ctx.playOrder.length];
@@ -157,29 +165,12 @@ function accept(G, ctx) {
     let current_player_hand = G.hands[current_player];
     let opponent_player_hand = G.hands[opponent_player];
 
-    // find the card in current player's hand
-    let original_effect_card_id = G.counter_chain[0];
-    let idx = current_player_hand.findIndex(
-        (i) => i.id === original_effect_card_id
-    );
-    let card = current_player_hand[idx];
-
-    // check if effect was countered
-    if (G.effect_countered) {
-        // remove card from hand
-        let remove = current_player_hand.splice(idx, 1)[0];
-        G.graveyard.push(remove);
-        // clear the counter_chain
-        G.counter_chain = [];
-        // reset effect_countered
-        G.effect_countered = false;
-        ctx.events.endTurn();
-        return;
-    }
+    // effect card is at [0]
+    let card = G.counter_chain[0];
 
     // check if card effect requires target
-    let no_target = ["Ace", "4", "5", "6", "8", "Queen", "King"].some((x) =>
-        card.id.includes(x)
+    let no_target = ["Ace", "4", "5", "6", "8", "Queen", "King"].some(
+        (x) => card.Value === x
     );
 
     if (no_target) {
@@ -245,15 +236,7 @@ function accept(G, ctx) {
                 console.log("reaching default no_target");
                 break;
         }
-
-        // cleanup
-        // remove card from hand
-        let remove = current_player_hand.splice(idx, 1)[0];
-        G.graveyard.push(remove);
-        // clear the counter_chain
-        G.counter_chain = [];
-        // reset effect_countered
-        G.effect_countered = false;
+        cleanup_counter_chain(G);
         ctx.events.endTurn();
     } else {
         ctx.events.setActivePlayers({
@@ -264,8 +247,15 @@ function accept(G, ctx) {
 }
 
 // this is basically accept but there's a target
-function playCardEffectWithTarget(G, ctx, target_card_id) {
+function playCardEffectWithTarget(G, ctx, target_card) {
     // same as before
+
+    // check if effect was countered
+    if (G.effect_countered) {
+        cleanup_counter_chain(G);
+        ctx.events.endTurn();
+        return;
+    }
 
     let current_player = ctx.playOrder[ctx.playOrderPos];
     let opponent_player =
@@ -275,26 +265,7 @@ function playCardEffectWithTarget(G, ctx, target_card_id) {
     let current_player_hand = G.hands[current_player];
     let opponent_player_hand = G.hands[opponent_player];
 
-    // find the card in current player's hand
-    let original_effect_card_id = G.counter_chain[0];
-    let idx = current_player_hand.findIndex(
-        (i) => i.id === original_effect_card_id
-    );
-    let card = current_player_hand[idx];
-
-    // check if effect was countered
-    if (G.effect_countered) {
-        console.log("reaching");
-        // remove card from hand
-        let remove = current_player_hand.splice(idx, 1)[0];
-        G.graveyard.push(remove);
-        // clear the counter_chain
-        G.counter_chain = [];
-        // reset effect_countered
-        G.effect_countered = false;
-        ctx.events.endTurn();
-        return;
-    }
+    let card = G.counter_chain[0];
 
     switch (card.Value) {
         // can only 2 special card
@@ -338,14 +309,7 @@ function playCardEffectWithTarget(G, ctx, target_card_id) {
             console.log("reaching default yes target");
             break;
     }
-    // cleanup
-    // remove card from hand
-    let remove = current_player_hand.splice(idx, 1)[0];
-    G.graveyard.push(remove);
-    // clear the counter_chain
-    G.counter_chain = [];
-    // reset effect_countered
-    G.effect_countered = false;
+    cleanup_counter_chain(G);
     ctx.events.endTurn();
 }
 
@@ -360,21 +324,22 @@ function counter(G, ctx) {
     let index_of_two = hand.findIndex((x) => x.Value === "2");
     // console.log("index of two is: ",index_of_two)
 
-    // alternatively in Board, can search and not allow counter button
-    // if (index_of_two === -1) {
-    //     console.log("no two, forced to accept");
-    // } else {
-    //     console.log("have two");
-
     // toggle countered
     G.effect_countered = !G.effect_countered;
 
     // play as its own cardEffect
     // which is added to the counter_chain
-    playCardEffect(G, ctx, G.currentPlayerCounterStage, hand[index_of_two].id);
+    playCardEffect(G, ctx, G.currentPlayerCounterStage, hand[index_of_two]);
 
-    // discard 2 from hand
-    let remove = hand.splice(index_of_two, 1)[0];
-    G.graveyard.push(remove);
-    // }
+    // discarded in playCardEffect 2 from hand, added to counter_chain
+}
+
+function cleanup_counter_chain(G) {
+    for (var i = 0; i < G.counter_chain.length; i++) {
+        G.graveyard.push(G.counter_chain[i]);
+    }
+    G.counter_chain = [];
+
+    // reset effect_countered
+    G.effect_countered = false;
 }

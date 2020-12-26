@@ -16,7 +16,7 @@ export class ChoosingEffect7 extends React.Component {
                     className={this.props.targetable ? "targetable" : ""}
                     onClick={
                         this.props.targetable
-                            ? () => this.props.playCardEffectWithTarget(card.id)
+                            ? () => this.props.playCardEffectWithTarget(card)
                             : () => void 0
                     }
                 >

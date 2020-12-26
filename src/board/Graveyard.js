@@ -15,7 +15,7 @@ export class Graveyard extends React.Component {
                     className={this.props.targetable ? "targetable" : ""}
                     onClick={
                         this.props.targetable
-                            ? () => this.props.playCardEffectWithTarget(card.id)
+                            ? () => this.props.playCardEffectWithTarget(card)
                             : () => void 0
                     }
                 >
