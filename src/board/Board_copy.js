@@ -98,6 +98,7 @@ export class TicTacToeBoard extends React.Component {
         let deck = this.props.G.deck;
         let fields = this.props.G.fields;
         let selected_card = this.state.selected_card;
+        let jacks = this.props.G.jacks;
 
         // stages
         let in_action =
@@ -133,26 +134,36 @@ export class TicTacToeBoard extends React.Component {
                 <Field
                     playerID={playerID_opponent}
                     field={fields[playerID_opponent]}
-                    targetable={
-                        // scuttling
-                        (in_action && this.state.choosingScuttle) ||
-                        // using effect
-                        (in_choosing && selected_card.Value === "9") ||
-                        (in_choosing && selected_card.Value === "Jack")
-                    }
+                    jacks={jacks}
+                    // for targeting
+                    // targetable={
+                    //     // scuttling
+                    //     (in_action && this.state.choosingScuttle) ||
+                    //     // using effect
+                    //     (in_choosing && selected_card.Value === "9") ||
+                    //     (in_choosing && selected_card.Value === "Jack")
+                    // }
+                    selected_card={selected_card}
+                    choosingScuttle={this.state.choosingScuttle}
+                    in_action={in_action}
+                    in_choosing={in_choosing}
                     playCardScuttle={this.playCardScuttle}
                     chooseTarget={this.chooseTarget}
-                    choosingScuttle={this.state.choosingScuttle}
-                    in_choosing={in_choosing}
                 />
                 <p>Your Field</p>
                 <Field
                     playerID={playerID}
                     field={fields[playerID]}
-                    targetable={in_choosing && selected_card.Value === "9"}
-                    chooseTarget={this.chooseTarget}
+                    jacks={jacks}
+                    // targeting
+                    // targetable={in_choosing && selected_card.Value === "9"}
+                    
+                    // for onclick
+                    selected_card={selected_card}
                     choosingScuttle={this.state.choosingScuttle}
+                    in_action={in_action}
                     in_choosing={in_choosing}
+                    chooseTarget={this.chooseTarget}
                 />
 
                 {/* hand */}

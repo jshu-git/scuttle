@@ -43,6 +43,20 @@ export function playCardScuttle(G, ctx, card, target) {
         let j = opponent_field.findIndex((y) => y.id === target.id);
         let remove2 = opponent_field.splice(j, 1)[0];
 
+        // remove jack
+        let jacks = G.jacks;
+        if(jacks[target.id]) {
+            let card = jacks[target.id][0];
+            let owner = jacks[target.id][1];
+            let jacklist = jacks[target.id][2];
+            //  add jacks to graveyard
+            while (jacklist.length > 0) {
+                G.graveyard.push(jacklist.pop());
+            }
+            // clear key
+            delete jacks[card.id];
+        }
+
         G.graveyard.push(remove1);
         G.graveyard.push(remove2);
         ctx.events.endTurn();

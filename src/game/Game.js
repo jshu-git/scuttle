@@ -8,7 +8,7 @@ import {
 } from "./EffectMoves.js";
 
 const setup = ({ playOrder, playOrderPos }) => {
-    const { deck, hands, fields } = initializeGame(playOrder, playOrderPos);
+    const { deck, hands, fields, special_fields } = initializeGame(playOrder, playOrderPos);
 
     // initialize game state G
     return {
@@ -16,6 +16,7 @@ const setup = ({ playOrder, playOrderPos }) => {
         hands: hands,
         fields: fields,
         graveyard: [],
+        special_fields: special_fields,
 
         // effect stuff
         counter_chain: [],
@@ -23,6 +24,11 @@ const setup = ({ playOrder, playOrderPos }) => {
 
         // used to keep track of currentPlayer during a stage, similar to currentPlayer for a turn
         currentPlayerCounterStage: undefined, // is overwritten whenever a cardeffect is played
+
+        // jacks stuff
+        // key=card object, value=[owner, list of jacks]
+        // i.e. jacks[4 of Hearts ID] = [card object, "1", [Jack of Hearts, Jack of Spades]]
+        jacks: {},
     };
 };
 

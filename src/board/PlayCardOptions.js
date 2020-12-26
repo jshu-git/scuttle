@@ -3,28 +3,31 @@ import "../style/board.css";
 
 export class PlayCardOptions extends React.Component {
     render() {
+        // variables
+        let selected_card = this.props.selected_card;
+        let opponent_field = this.props.opponent_field;
+        let graveyard = this.props.graveyard;
+        let deck = this.props.deck;
+
         // disabled = these checks are true
-        let empty_scuttle = this.props.opponent_field.length === 0;
+        let empty_scuttle = opponent_field.length === 0;
 
         let special =
-            this.props.selected_card.Value === "Jack" ||
-            this.props.selected_card.Value === "Queen" ||
-            this.props.selected_card.Value === "King";
+            selected_card.Value === "Jack" ||
+            selected_card.Value === "Queen" ||
+            selected_card.Value === "King";
 
         // check for jack in opponent? and special fields
         // let two = this.props.selected_card.Value === "2";
 
-        let three =
-            this.props.selected_card.Value === "3" &&
-            this.props.graveyard.length === 0;
+        let three = selected_card.Value === "3" && graveyard.length === 0;
 
         // let four = this.props.selected_card.Value === "4";
-        // let five = this.props.selected_card.Value === "5";
+        let five = selected_card.Value === "5" && deck.length < 2;
         // let six = this.props.selected_card.Value === "6";
 
         let seven =
-            this.props.selected_card.Value === "7" &&
-            this.props.deck.length < 2;
+            this.props.selected_card.Value === "7" && deck.length < 2;
 
         // let eight =
         //     this.props.selected_card.Value === "8"
@@ -60,7 +63,7 @@ export class PlayCardOptions extends React.Component {
                     playCardScuttle
                 </button>
                 <button
-                    disabled={three || seven || nine || ten || jack}
+                    disabled={three || five || seven || nine || ten || jack}
                     onClick={this.props.playCardEffect}
                 >
                     playCardEffect

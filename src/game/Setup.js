@@ -4,25 +4,26 @@ export const initializeGame = (playOrder, playOrderPos) => {
 
     let hands = drawHands(deck, playOrder, playOrderPos);
     let fields = setFields(playOrder, playOrderPos);
-    return { deck, hands, fields };
+    let special_fields = setSpecialFields(playOrder, playOrderPos);
+    return { deck, hands, fields, special_fields };
 };
 
 function createDeck() {
     var suits = ["Spades", "Diamonds", "Clubs", "Hearts"];
     var values = [
         "Ace",
-        "2",
-        "3",
-        "4",
-        "5",
+        // "2",
+        // "3",
+        // "4",
+        // "5",
         "6",
-        "7",
-        "8",
-        "9",
-        "10",
+        // "7",
+        // "8",
+        // "9",
+        // "10",
         "Jack",
-        "Queen",
-        "King",
+        // "Queen",
+        // "King",
     ];
     var deck = [];
     for (var i = 0; i < suits.length; i++) {
@@ -78,4 +79,15 @@ function setFields(playOrder, playOrderPos) {
     fields[current] = [];
     fields[next] = [];
     return fields;
+}
+
+function setSpecialFields(playOrder, playOrderPos) {
+    let special_fields = {};
+
+    let current = playOrder[playOrderPos];
+    let next = playOrder[(playOrderPos + 1) % playOrder.length];
+
+    special_fields[current] = [];
+    special_fields[next] = [];
+    return special_fields;
 }
