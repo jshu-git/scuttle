@@ -51,5 +51,3 @@ export function playCardScuttle(G, ctx, card, target) {
         return INVALID_MOVE;
     }
 }
-
-// countering and choosing stage

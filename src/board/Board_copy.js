@@ -37,7 +37,7 @@ export class TicTacToeBoard extends React.Component {
     playCardValue = () => {
         console.log("playCardValue: ", this.state.selected_card.id);
         this.setState({ choosingPlayCardOption: false });
-        this.props.moves.playCardValue(this.state.selected_card.id);
+        this.props.moves.playCardValue(this.state.selected_card);
     };
 
     toggleChoosingScuttle = () => {
@@ -74,18 +74,15 @@ export class TicTacToeBoard extends React.Component {
         );
     };
 
-    playCardEffectWithTarget = (target_card) => {
+    chooseTarget = (target_card) => {
         console.log(
-            "playCardEffectWithTarget: ",
+            "chooseTarget: ",
             this.state.selected_card.id,
             "target: ",
             target_card.id
         );
 
-        this.props.moves.playCardEffectWithTarget(
-            parseInt(this.props.ctx.currentPlayer),
-            target_card
-        );
+        this.props.moves.chooseTarget(target_card);
     };
 
     toggleGraveyard = () => {
@@ -129,7 +126,7 @@ export class TicTacToeBoard extends React.Component {
                             in_choosing &&
                             this.state.selected_card.Value === "3"
                         }
-                        playCardEffectWithTarget={this.playCardEffectWithTarget}
+                        chooseTarget={this.chooseTarget}
                     />
                 )}
 
@@ -148,7 +145,7 @@ export class TicTacToeBoard extends React.Component {
                             this.state.selected_card.Value === "Jack")
                     }
                     playCardScuttle={this.playCardScuttle}
-                    playCardEffectWithTarget={this.playCardEffectWithTarget}
+                    chooseTarget={this.chooseTarget}
                     choosingScuttle={this.state.choosingScuttle}
                     in_choosing={in_choosing}
                 />
@@ -159,7 +156,7 @@ export class TicTacToeBoard extends React.Component {
                     targetable={
                         in_choosing && this.state.selected_card.Value === "9"
                     }
-                    playCardEffectWithTarget={this.playCardEffectWithTarget}
+                    chooseTarget={this.chooseTarget}
                     choosingScuttle={this.state.choosingScuttle}
                     in_choosing={in_choosing}
                 />
@@ -201,7 +198,7 @@ export class TicTacToeBoard extends React.Component {
                         playerID={playerID}
                         deck={deck}
                         targetable={in_choosing}
-                        playCardEffectWithTarget={this.playCardEffectWithTarget}
+                        chooseTarget={this.chooseTarget}
                     />
                 )}
 

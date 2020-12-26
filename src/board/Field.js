@@ -6,7 +6,7 @@ export class Field extends React.Component {
         if (this.props.choosingScuttle) {
             return () => this.props.playCardScuttle(target_card);
         } else if (this.props.in_choosing) {
-            return () => this.props.playCardEffectWithTarget(target_card);
+            return () => this.props.chooseTarget(target_card);
         }
         return () => void 0;
     };

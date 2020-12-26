@@ -4,7 +4,7 @@ import {
     playCardEffect,
     counter,
     accept,
-    playCardEffectWithTarget,
+    chooseTarget,
 } from "./EffectMoves.js";
 
 const setup = ({ playOrder, playOrderPos }) => {
@@ -58,7 +58,7 @@ export const TicTacToe = {
             // see EffectMoves.js
             choosing: {
                 moves: {
-                    playCardEffectWithTarget,
+                    chooseTarget,
                 },
             },
         },

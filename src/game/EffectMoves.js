@@ -141,7 +141,7 @@ export function accept(G, ctx) {
 }
 
 // this is basically accept but there's a target
-export function playCardEffectWithTarget(G, ctx, target_card) {
+export function chooseTarget(G, ctx, target_card) {
     // same as before
 
     // check if effect was countered
