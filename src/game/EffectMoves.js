@@ -188,12 +188,6 @@ function doEffect(G, ctx) {
                 graveyard.push(opponent_player_special_field.pop());
             }
 
-            // no jacks
-            if (Object.keys(jacks).length === 0) {
-                console.log("no jacks on field");
-                break;
-            }
-
             for (let id in jacks) {
                 let card = jacks[id][0];
                 let owner = jacks[id][1];
