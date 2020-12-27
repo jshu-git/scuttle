@@ -12,10 +12,10 @@ export class Graveyard extends React.Component {
             cells_graveyard.push(
                 <td
                     key={card.id}
-                    className={this.props.targetable ? "targetable" : ""}
+                    // className={this.props.choosingEffect ? "targetable" : ""}
                     onClick={
-                        this.props.targetable
-                            ? () => this.props.chooseTarget(card)
+                        this.props.choosingEffect
+                            ? () => this.props.chooseEffectTarget(card)
                             : () => void 0
                     }
                 >

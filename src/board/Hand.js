@@ -11,11 +11,11 @@ export class Hand extends React.Component {
             cells_hand.push(
                 <td
                     key={card.id}
-                    className={this.props.active ? "active" : ""}
+                    className={this.props.in_action ? "active" : ""}
                     onClick={
                         // note: when using ternary in onClick, have to use ()=>
-                        this.props.active
-                            ? () => this.props.togglePlayCardOptions(card)
+                        this.props.in_action
+                            ? () => this.props.toggleSelectedCard(card)
                             : () => void 0
                     }
                 >

@@ -1,14 +1,18 @@
 import { initializeGame } from "./Setup.js";
-import { drawCard, playCardValue, playCardScuttle } from "./ActionMoves.js";
+import { drawCard, playCardValue } from "./ActionMoves.js";
+import { playCardScuttle, chooseScuttleTarget } from "./ScuttleMoves.js";
 import {
     playCardEffect,
+    chooseEffectTarget,
     counter,
     accept,
-    chooseTarget,
 } from "./EffectMoves.js";
 
 const setup = ({ playOrder, playOrderPos }) => {
-    const { deck, hands, fields, special_fields } = initializeGame(playOrder, playOrderPos);
+    const { deck, hands, fields, specialFields } = initializeGame(
+        playOrder,
+        playOrderPos
+    );
 
     // initialize game state G
     return {
@@ -16,17 +20,16 @@ const setup = ({ playOrder, playOrderPos }) => {
         hands: hands,
         fields: fields,
         graveyard: [],
-        special_fields: special_fields,
+        specialFields: specialFields,
 
         // effect stuff
-        counter_chain: [],
-        effect_countered: false,
-
+        counterChain: [],
+        effectCountered: false,
         // used to keep track of currentPlayer during a stage, similar to currentPlayer for a turn
         currentPlayerCounterStage: undefined, // is overwritten whenever a cardeffect is played
 
         // jacks stuff
-        // key=card object, value=[owner, list of jacks]
+        // key=card object, value=[card obj, owner, list of jacks]
         // i.e. jacks[4 of Hearts ID] = [card object, "1", [Jack of Hearts, Jack of Spades]]
         jacks: {},
     };
@@ -61,10 +64,14 @@ export const TicTacToe = {
                     counter,
                 },
             },
-            // see EffectMoves.js
-            choosing: {
+            choosingScuttle: {
                 moves: {
-                    chooseTarget,
+                    chooseScuttleTarget,
+                },
+            },
+            choosingEffect: {
+                moves: {
+                    chooseEffectTarget,
                 },
             },
         },

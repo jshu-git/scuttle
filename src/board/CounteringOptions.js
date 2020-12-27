@@ -1,7 +1,7 @@
 import React from "react";
 import "../style/board.css";
 
-export class PlayCardEffectOptions extends React.Component {
+export class CounteringOptions extends React.Component {
     render() {
         let has2 = this.props.hand.some((x) => x.Value === "2");
 

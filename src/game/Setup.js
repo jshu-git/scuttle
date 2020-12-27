@@ -4,8 +4,8 @@ export const initializeGame = (playOrder, playOrderPos) => {
 
     let hands = drawHands(deck, playOrder, playOrderPos);
     let fields = setFields(playOrder, playOrderPos);
-    let special_fields = setSpecialFields(playOrder, playOrderPos);
-    return { deck, hands, fields, special_fields };
+    let specialFields = setSpecialFields(playOrder, playOrderPos);
+    return { deck, hands, fields, specialFields };
 };
 
 function createDeck() {
@@ -82,12 +82,12 @@ function setFields(playOrder, playOrderPos) {
 }
 
 function setSpecialFields(playOrder, playOrderPos) {
-    let special_fields = {};
+    let specialFields = {};
 
     let current = playOrder[playOrderPos];
     let next = playOrder[(playOrderPos + 1) % playOrder.length];
 
-    special_fields[current] = [];
-    special_fields[next] = [];
-    return special_fields;
+    specialFields[current] = [];
+    specialFields[next] = [];
+    return specialFields;
 }

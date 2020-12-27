@@ -10,16 +10,13 @@ export class ChoosingEffect7 extends React.Component {
         for (let i = 0; i < 2; i++) {
             let idx = deck.length - 1 - i;
             let card = deck[idx];
-            console.log("for loop i", card.id);
+
             cells.push(
                 <td
                     key={card.id}
-                    className={this.props.targetable ? "targetable" : ""}
-                    onClick={
-                        this.props.targetable
-                            ? () => this.props.chooseTarget(card)
-                            : () => void 0
-                    }
+                    // className={this.props.targetable ? "targetable" : ""}
+                    // className={"targetable"}
+                    onClick={this.props.chooseEffectTarget(card)}
                 >
                     {card.Value} of {card.Suit}
                 </td>
