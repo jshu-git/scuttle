@@ -3,9 +3,9 @@ import "../style/board.css";
 
 export class Field extends React.Component {
     onClick = (targetCard) => {
-        if (this.props.choosingScuttle) {
+        if (this.props.choosingScuttleStage) {
             return () => this.props.chooseScuttleTarget(targetCard);
-        } else if (this.props.choosingEffect) {
+        } else if (this.props.choosingEffectStage) {
             return () => this.props.chooseEffectTarget(targetCard);
         }
         return () => void 0;

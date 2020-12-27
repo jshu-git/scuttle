@@ -64,7 +64,7 @@ export function counter(G, ctx) {
 export function accept(G, ctx) {
     // check if effect was countered
     if (G.effectCountered) {
-        cleanup_counterChain(G);
+        cleanupCounterChain(G);
         ctx.events.endTurn();
         return;
     }
@@ -79,7 +79,7 @@ export function accept(G, ctx) {
         // immediate card effect
         doEffect(G, ctx);
         // cleanup
-        cleanup_counterChain(G);
+        cleanupCounterChain(G);
         ctx.events.endTurn();
     } else {
         ctx.events.setActivePlayers({
@@ -104,8 +104,8 @@ function doEffect(G, ctx) {
     let card = G.counterChain[0];
     let deck = G.deck;
 
-    let current_player_special_field = G.special_fields[current_player];
-    let opponent_player_special_field = G.special_fields[opponent_player];
+    let current_player_special_field = G.specialFields[current_player];
+    let opponent_player_special_field = G.specialFields[opponent_player];
 
     switch (card.Value) {
         // clear field
@@ -210,6 +210,10 @@ function doEffect(G, ctx) {
             break;
         case "Queen":
             console.log("reaching Q case");
+            // remove from counter chain
+            // let queen = G.counterChain.splice(0, 1)[0];
+            // current_player_special_field.push(queen);
+
             break;
         case "King":
             console.log("reaching K case");
@@ -226,7 +230,7 @@ export function chooseEffectTarget(G, ctx, target_card) {
 
     // check if effect was countered
     if (G.effectCountered) {
-        cleanup_counterChain(G);
+        cleanupCounterChain(G);
         ctx.events.endTurn();
         return;
     }
@@ -234,7 +238,7 @@ export function chooseEffectTarget(G, ctx, target_card) {
     // do targeting effect
     doEffectTarget(G, ctx, target_card);
     // cleanup
-    cleanup_counterChain(G);
+    cleanupCounterChain(G);
     ctx.events.endTurn();
 }
 
@@ -292,14 +296,13 @@ function doEffectTarget(G, ctx, target_card) {
             let jack = G.counterChain.splice(0, 1)[0];
 
             // first time
-            if (jacks[target_card.id] === undefined) {
+            if (!jacks[target_card.id]) {
                 // set key=card.id and value=[card object, "owner", [list of jacks]] (2 element list)
                 jacks[target_card.id] = [target_card, opponent_player, [jack]];
             } else {
-                // let owner, list =
                 jacks[target_card.id][2].push(jack);
             }
-            // console.log(JSON.parse(JSON.stringify(jacks)));
+
             // remove from opponent side and add to your side
             let idx = opponent_player_field.findIndex(
                 (i) => i.id === target_card.id
@@ -314,7 +317,8 @@ function doEffectTarget(G, ctx, target_card) {
 }
 
 // takes everything in counter chain and adds it to graveyard
-function cleanup_counterChain(G) {
+// so if you need anything from counter chain for an effect, it has to be extracted first
+function cleanupCounterChain(G) {
     for (var i = 0; i < G.counterChain.length; i++) {
         G.graveyard.push(G.counterChain[i]);
     }

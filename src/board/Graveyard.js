@@ -14,7 +14,7 @@ export class Graveyard extends React.Component {
                     key={card.id}
                     // className={this.props.choosingEffect ? "targetable" : ""}
                     onClick={
-                        this.props.choosingEffect
+                        this.props.choosingEffectStage
                             ? () => this.props.chooseEffectTarget(card)
                             : () => void 0
                     }

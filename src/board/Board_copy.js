@@ -99,10 +99,10 @@ export class TicTacToeBoard extends React.Component {
             this.props.ctx.activePlayers[this.props.playerID] === "action";
         let in_countering =
             this.props.ctx.activePlayers[this.props.playerID] === "countering";
-        let choosingEffect =
+        let choosingEffectStage =
             this.props.ctx.activePlayers[this.props.playerID] ===
             "choosingEffect";
-        let choosingScuttle =
+        let choosingScuttleStage =
             this.props.ctx.activePlayers[this.props.playerID] ===
             "choosingScuttle";
 
@@ -134,7 +134,7 @@ export class TicTacToeBoard extends React.Component {
                     <Graveyard
                         playerID={playerID}
                         graveyard={graveyard}
-                        choosingEffect={choosingEffect}
+                        choosingEffectStage={choosingEffectStage}
                         chooseEffectTarget={this.chooseEffectTarget}
                     />
                 )}
@@ -147,9 +147,9 @@ export class TicTacToeBoard extends React.Component {
                     field={fields[playerIDOpponent]}
                     jacks={jacks}
                     // stages
-                    choosingScuttle={choosingScuttle}
-                    choosingEffect={choosingEffect}
-                    // for functions
+                    choosingScuttleStage={choosingScuttleStage}
+                    choosingEffectStage={choosingEffectStage}
+                    // functions
                     selectedCard={selectedCard}
                     chooseScuttleTarget={this.chooseScuttleTarget}
                     chooseEffectTarget={this.chooseEffectTarget}
@@ -161,11 +161,11 @@ export class TicTacToeBoard extends React.Component {
                     field={fields[playerID]}
                     jacks={jacks}
                     // stages
-                    choosingScuttle={choosingScuttle}
-                    choosingEffect={choosingEffect}
-                    // for functions
+                    choosingScuttleStage={choosingScuttleStage}
+                    choosingEffectStage={choosingEffectStage}
+                    // functions
                     selectedCard={selectedCard}
-                    chooseScuttleTarget={this.chooseScuttleTarget}
+                    // chooseScuttleTarget={this.chooseScuttleTarget}
                     chooseEffectTarget={this.chooseEffectTarget}
                 />
 
@@ -173,6 +173,7 @@ export class TicTacToeBoard extends React.Component {
                 <Hand
                     playerID={playerID}
                     hand={hand}
+                    // for targetable/onclick
                     in_action={in_action}
                     toggleSelectedCard={this.toggleSelectedCard}
                 />
@@ -190,14 +191,19 @@ export class TicTacToeBoard extends React.Component {
                         playCardValue={this.playCardValue}
                         playCardScuttle={this.playCardScuttle}
                         playCardEffect={this.playCardEffect}
+                        // for disabling buttons
+                        selectedCard={selectedCard}
+                        opponentField={fields[playerIDOpponent]}
+                        graveyard={graveyard}
+                        deck={deck}
                     />
                 )}
 
-                {choosingEffect && selectedCard.Value === "7" && (
+                {choosingEffectStage && selectedCard.Value === "7" && (
                     <ChoosingEffect7
                         playerID={playerID}
                         deck={deck}
-                        // targetable={in_choosing}
+                        // for targetable/onclick
                         chooseEffectTarget={this.chooseEffectTarget}
                     />
                 )}
@@ -205,9 +211,9 @@ export class TicTacToeBoard extends React.Component {
                 {/* effectCard options */}
                 {in_countering && (
                     <CounteringOptions
-                        // no passing ()
                         accept={this.props.moves.accept}
                         counter={this.props.moves.counter}
+                        // for disabled
                         hand={hand}
                     />
                 )}
