@@ -13,14 +13,14 @@ function createDeck() {
     var values = [
         "Ace",
         "2",
-        // "3",
-        // "4",
-        // "5",
-        // "6",
-        // "7",
-        // "8",
-        // "9",
-        // "10",
+        "3",
+        "4",
+        "5",
+        "6",
+        "7",
+        "8",
+        "9",
+        "10",
         "Jack",
         "Queen",
         "King",
@@ -32,6 +32,12 @@ function createDeck() {
                 Value: values[x],
                 Suit: suits[i],
                 id: values[x] + suits[i],
+                Point:
+                    values[x] === "Ace"
+                        ? 1
+                        : parseInt(values[x])
+                        ? parseInt(values[x])
+                        : 0,
             };
             deck.push(card);
         }
