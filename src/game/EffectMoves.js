@@ -411,7 +411,13 @@ function doEffectTarget(G, ctx, targetCard, targetField) {
                         deck.push(remove);
                     } else {
                         // there's no reason why you should be doing this
-                        console.log("no reason to 9 your own card");
+                        // console.log("no reason to 9 your own card");
+                        // remove from yourself
+                        let idx = current_player_field.findIndex(
+                            (i) => i.id === targetCard.id
+                        );
+                        let remove = current_player_field.splice(idx, 1)[0];
+                        deck.push(remove);
                         return false;
                     }
                 }
