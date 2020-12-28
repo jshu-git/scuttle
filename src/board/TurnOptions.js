@@ -6,12 +6,13 @@ export class TurnOptions extends React.Component {
     render() {
         // props
         let selectedCard = this.props.selectedCard;
+        let deck = this.props.deck;
 
         return (
             <React.Fragment>
                 <Button
                     size="sm"
-                    disabled={selectedCard !== -1}
+                    disabled={selectedCard !== -1 || deck.length === 0}
                     onClick={this.props.drawCard}
                 >
                     Draw

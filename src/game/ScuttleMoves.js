@@ -4,7 +4,6 @@ export function playCardScuttle(G, ctx) {
         currentPlayer: "choosingScuttle",
         others: "idle",
     });
-    // do validation in here?
 }
 
 export function chooseScuttleTarget(G, ctx, card, target) {

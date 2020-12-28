@@ -183,8 +183,7 @@ function doEffect(G, ctx) {
             //         );
             //         let remove = current_player_field.splice(idx, 1)[0];
             //         opponent_player_field.push(remove);
-            //     } else if (
-            //         opponent_player_field.some(owner !== opponent_player
+            //     } else if (owner !== opponent_player
             //         )
             //     ) {
             //         let idx = opponent_player_field.findIndex(

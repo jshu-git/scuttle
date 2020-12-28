@@ -219,11 +219,15 @@ export class TicTacToeBoard extends React.Component {
                             playCardValue={this.playCardValue}
                             playCardScuttle={this.playCardScuttle}
                             playCardEffect={this.playCardEffect}
-                            // for disabling buttons
+                            // props for disabling buttons
+                            playerID={playerID}
+                            playerIDOpponent={playerIDOpponent}
+                            fields={fields}
+                            specialFields={specialFields}
                             selectedCard={selectedCard}
-                            opponentField={fields[playerIDOpponent]}
                             graveyard={graveyard}
                             deck={deck}
+                            jacks={jacks}
                         />
                     </Container>
                 )}
@@ -259,6 +263,7 @@ export class TicTacToeBoard extends React.Component {
                             // draw card
                             selectedCard={selectedCard}
                             drawCard={this.props.moves.drawCard}
+                            deck={deck}
                             // concede
                             // TODO
                         />
