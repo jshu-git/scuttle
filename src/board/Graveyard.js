@@ -2,7 +2,6 @@ import React from "react";
 import "../style/board.css";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
-import Button from "react-bootstrap/Button";
 
 export class Graveyard extends React.Component {
     render() {
@@ -15,17 +14,12 @@ export class Graveyard extends React.Component {
                 <Col
                     key={card.id}
                     className={
-                        this.props.inChoosingEffectStage
-                            ? "border targetable"
-                            : "border"
+                        this.props.inPopup ? "border targetable" : "border"
                     }
                     onClick={
-                        this.props.inChoosingEffectStage
-                            ? () =>
-                                  this.props.chooseEffectTarget(
-                                      card,
-                                      "graveyard"
-                                  )
+                        this.props.inPopup
+                            ? // we know we're in graveyard, so don't need to pass targetField
+                              () => this.props.chooseEffectTarget(card)
                             : () => void 0
                     }
                 >
@@ -34,17 +28,6 @@ export class Graveyard extends React.Component {
             );
         }
 
-        return (
-            <React.Fragment>
-                <Button
-                    size="sm"
-                    disabled={graveyard.length === 0}
-                    onClick={this.props.toggleGraveyard}
-                >
-                    View Graveyard ({graveyard.length})
-                </Button>
-                {this.props.showGraveyard && <Row md={5}>{cells}</Row>}
-            </React.Fragment>
-        );
+        return <Row md={5}>{cells}</Row>;
     }
 }

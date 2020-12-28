@@ -6,19 +6,21 @@ import Col from "react-bootstrap/Col";
 
 export class SpecialField extends React.Component {
     onClick = (targetCard) => {
-        if (this.props.inChoosingEffectStage) {
-            if (this.props.isOpponentSpecialField) {
-                return () =>
-                    this.props.chooseEffectTarget(
-                        targetCard,
-                        "opponentSpecialField"
-                    );
-            } else if (this.props.isPlayerSpecialField) {
-                return () =>
-                    this.props.chooseEffectTarget(
-                        targetCard,
-                        "playerSpecialField"
-                    );
+        if (this.props.inPopup) {
+            if (this.props.inChoosingEffectStage) {
+                if (this.props.isOpponentSpecialField) {
+                    return () =>
+                        this.props.chooseEffectTarget(
+                            targetCard,
+                            "opponentSpecialField"
+                        );
+                } else if (this.props.isPlayerSpecialField) {
+                    return () =>
+                        this.props.chooseEffectTarget(
+                            targetCard,
+                            "playerSpecialField"
+                        );
+                }
             }
         }
         return () => void 0;
@@ -34,9 +36,7 @@ export class SpecialField extends React.Component {
                 <Col
                     key={card.id}
                     className={
-                        this.props.inChoosingEffectStage
-                            ? "border targetable"
-                            : "border"
+                        this.props.inPopup ? "border targetable" : "border"
                     }
                     onClick={this.onClick(card)}
                 >

@@ -23,7 +23,7 @@ export class CounteringOptions extends React.Component {
                 <Button
                     size="sm"
                     onClick={this.props.counter}
-                    disabled={!has2 || numQueensInOpponentSpecialField > 1}
+                    disabled={!has2 || numQueensInOpponentSpecialField > 0}
                 >
                     Counter
                 </Button>

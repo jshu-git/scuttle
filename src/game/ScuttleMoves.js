@@ -1,4 +1,4 @@
-import { INVALID_MOVE } from "boardgame.io/core";
+// import { INVALID_MOVE } from "boardgame.io/core";
 export function playCardScuttle(G, ctx) {
     ctx.events.setActivePlayers({
         currentPlayer: "choosingScuttle",
@@ -37,7 +37,7 @@ export function chooseScuttleTarget(G, ctx, card, target) {
         let jacks = G.jacks;
         if (jacks[target.id]) {
             let card = jacks[target.id][0];
-            let owner = jacks[target.id][1];
+            // let owner = jacks[target.id][1];
             let jacklist = jacks[target.id][2];
             //  add jacks to graveyard
             while (jacklist.length > 0) {
@@ -52,6 +52,11 @@ export function chooseScuttleTarget(G, ctx, card, target) {
         ctx.events.endTurn();
     } else {
         console.log("playCardScuttle error, scuttle failed");
-        return INVALID_MOVE;
+        // reset stages
+        ctx.events.setActivePlayers({
+            currentPlayer: "action",
+            others: "idle",
+        });
+        // return INVALID_MOVE;
     }
 }

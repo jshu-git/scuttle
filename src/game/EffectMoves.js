@@ -1,7 +1,3 @@
-// playCardEffect moves
-// countering and choosing stage
-import { INVALID_MOVE, PlayerView } from "boardgame.io/core";
-
 /*
     currentPlayerActionStage is the player playing the card effect
     G.currentPlayerCounterStage is the turn of the player who is ABOUT to counter/accept, aka the "opposite" of currentPlayerActionStage
@@ -250,13 +246,6 @@ function doEffectTarget(G, ctx, targetCard, targetField) {
         // can only 2 special card
         case "2":
             console.log("reaching 2 case");
-            if (
-                targetField === "graveyard" ||
-                // can't 2 own field
-                targetField === "playerField"
-            ) {
-                return false;
-            }
 
             // queen checks
             if (
@@ -312,23 +301,17 @@ function doEffectTarget(G, ctx, targetCard, targetField) {
         // search graveyard
         case "3":
             console.log("reaching 3 case");
-            // if (targetField !== "graveyard") {
-            //     return false;
-            // }
+
             // let target_idx = G.graveyard.findIndex(
             //     (i) => i.id === targetCard.id
             // );
-            // // // this was failing because i didn't do [0]
+            // this was failing because i didn't do [0]
             // let found_card = G.graveyard.splice(target_idx, 1)[0];
             // current_player_hand.push(found_card);
             break;
         // pick 1 of top 2 cards
         case "7":
             console.log("reaching 7 case");
-            // if (targetField !== "7Field") {
-            //     return false;
-            // }
-
             // // retrieve top 2 cards
             // let one = G.deck.pop();
             // let two = G.deck.pop();
@@ -345,15 +328,6 @@ function doEffectTarget(G, ctx, targetCard, targetField) {
             break;
         case "9":
             console.log("reaching 9 case", targetField);
-
-            if (
-                targetField === "graveyard" ||
-                // can't 9 in own SPECIAL field. if we change this, have to add another if down there or bad things may happen
-                targetField === "playerSpecialField"
-            ) {
-                return false;
-            }
-
             // queen checks
             if (
                 // must select queen in special field (if there is one)
@@ -376,62 +350,75 @@ function doEffectTarget(G, ctx, targetCard, targetField) {
                 let remove = opponent_player_special_field.splice(idx, 1)[0];
                 deck.push(remove);
             }
-            // jacks on either opponent/player field
+            // either opponent/player field
             else if (
                 targetField === "opponentField" ||
                 targetField === "playerField"
             ) {
-                if (!jacks[targetCard.id]) {
-                    console.log("did not select a jacked card");
-                    return false;
-                }
-
-                /*  steps:
+                // check if it was a jack
+                if (jacks[targetCard.id]) {
+                    /*  steps:
                     1. 9 goes to graveyard and 1 jack goes to the top of deck
                     2. if that card now has no jacks on it, change its owner to current player
                     3. if the card is not on your field, add it your field. if it was already on your field, don't have to do anything
                 */
-                // begin step 1
-                // 9 already goes into graveyard from counter chain cleanup
-                // the targetCard should just be the card with jacks on it
-                console.log(
-                    "sanity check for 9",
-                    targetCard.id,
-                    jacks[targetCard.id][0].id
-                );
-
-                // let card = jacks[targetCard.id][0]; // this always stays the same
-                let owner = jacks[targetCard.id][1];
-                let jacklist = jacks[targetCard.id][2];
-
-                // find 1 jack and put on top of deck
-                let idx_jack = jacklist.findIndex((i) => i.Value === "Jack");
-                let remove_jack = jacklist.splice(idx_jack, 1)[0];
-                deck.push(remove_jack);
-
-                // step 2
-                // this effectively changes the owner to the current player (if jacklist === 0), because the next time this card is jacked, its owner will be set in jacks{}
-                // in other words, the card just becomes a plain old card as if it was never jacked
-                if (jacklist.length === 0) {
-                    delete jacks[targetCard.id];
-                }
-
-                // step 3
-                if (targetField === "opponentField") {
-                    // remove from opponent and add card to your side
-                    let idx = opponent_player_field.findIndex(
-                        (i) => i.id === targetCard.id
+                    // begin step 1
+                    // 9 already goes into graveyard from counter chain cleanup
+                    // the targetCard should just be the card with jacks on it
+                    console.log(
+                        "sanity check for 9",
+                        targetCard.id,
+                        jacks[targetCard.id][0].id
                     );
-                    let remove = opponent_player_field.splice(idx, 1)[0];
-                    current_player_field.push(remove);
+
+                    // let card = jacks[targetCard.id][0]; // this always stays the same
+                    let owner = jacks[targetCard.id][1];
+                    let jacklist = jacks[targetCard.id][2];
+
+                    // find 1 jack and put on top of deck
+                    let idx_jack = jacklist.findIndex(
+                        (i) => i.Value === "Jack"
+                    );
+                    let remove_jack = jacklist.splice(idx_jack, 1)[0];
+                    deck.push(remove_jack);
+
+                    // step 2
+                    // this effectively changes the owner to the current player (if jacklist === 0), because the next time this card is jacked, its owner will be set in jacks{}
+                    // in other words, the card just becomes a plain old card as if it was never jacked
+                    if (jacklist.length === 0) {
+                        delete jacks[targetCard.id];
+                    }
+
+                    // step 3
+                    if (targetField === "opponentField") {
+                        // remove from opponent and add card to your side
+                        let idx = opponent_player_field.findIndex(
+                            (i) => i.id === targetCard.id
+                        );
+                        let remove = opponent_player_field.splice(idx, 1)[0];
+                        current_player_field.push(remove);
+                    }
+                    // don't need to do anything for playerField since card is already on player side
+                }
+                // not a jack, then just push to deck
+                else {
+                    if (targetField === "opponentField") {
+                        // remove from opponent
+                        let idx = opponent_player_field.findIndex(
+                            (i) => i.id === targetCard.id
+                        );
+                        let remove = opponent_player_field.splice(idx, 1)[0];
+                        deck.push(remove);
+                    } else {
+                        // there's no reason why you should be doing this
+                        console.log("no reason to 9 your own card");
+                        return false;
+                    }
                 }
             }
             break;
         case "Jack":
             console.log("reaching jack case");
-            if (targetField !== "opponentField") {
-                return false;
-            }
 
             // remove from counter chain since it's going into jacks{}
             let jack = G.counterChain.splice(0, 1)[0];

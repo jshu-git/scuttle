@@ -6,18 +6,29 @@ import Col from "react-bootstrap/Col";
 
 export class Field extends React.Component {
     onClick = (targetCard) => {
-        if (this.props.inChoosingScuttleStage && this.props.isOpponentField) {
-            return () =>
-                // doesn't need targetField since can only scuttle opponent field
-                // however for chooseEffectTarget, needs targetField because effect can target EITHER field, and need a way to differentiate
-                this.props.chooseScuttleTarget(targetCard);
-        } else if (this.props.inChoosingEffectStage) {
-            if (this.props.isOpponentField) {
+        if (this.props.inPopup) {
+            if (
+                this.props.inChoosingScuttleStage &&
+                this.props.isOpponentField
+            ) {
                 return () =>
-                    this.props.chooseEffectTarget(targetCard, "opponentField");
-            } else if (this.props.isPlayerField) {
-                return () =>
-                    this.props.chooseEffectTarget(targetCard, "playerField");
+                    // doesn't need targetField since can only scuttle opponent field
+                    // however for chooseEffectTarget, needs targetField because effect can target EITHER field, and need a way to differentiate
+                    this.props.chooseScuttleTarget(targetCard);
+            } else if (this.props.inChoosingEffectStage) {
+                if (this.props.isOpponentField) {
+                    return () =>
+                        this.props.chooseEffectTarget(
+                            targetCard,
+                            "opponentField"
+                        );
+                } else if (this.props.isPlayerField) {
+                    return () =>
+                        this.props.chooseEffectTarget(
+                            targetCard,
+                            "playerField"
+                        );
+                }
             }
         }
         return () => void 0;
@@ -25,13 +36,18 @@ export class Field extends React.Component {
 
     // the same as onclick
     targetable = () => {
-        if (this.props.inChoosingScuttleStage && this.props.isOpponentField) {
-            return true;
-        } else if (this.props.inChoosingEffectStage) {
-            if (this.props.isOpponentField) {
+        if (this.props.inPopup) {
+            if (
+                this.props.inChoosingScuttleStage &&
+                this.props.isOpponentField
+            ) {
                 return true;
-            } else if (this.props.isPlayerField) {
-                return true;
+            } else if (this.props.inChoosingEffectStage) {
+                if (this.props.isOpponentField) {
+                    return true;
+                } else if (this.props.isPlayerField) {
+                    return true;
+                }
             }
         }
         return false;
@@ -53,7 +69,7 @@ export class Field extends React.Component {
             cells.push(
                 <Col
                     className={
-                        this.targetable() ? "border targetable" : "border"
+                        this.props.inPopup ? "border targetable" : "border"
                     }
                     key={card.id}
                     onClick={this.onClick(card)}

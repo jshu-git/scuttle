@@ -33,7 +33,7 @@ export class PlayCardOptions extends React.Component {
         let jackInOpponentField = fields[playerIDOpponent].some(
             (x) => jacks[x.id]
         );
-        let jackInPlayerField = fields[playerID].some((x) => jacks[x.id]);
+        // let jackInPlayerField = fields[playerID].some((x) => jacks[x.id]);
         let numQueensInOpponentSpecialField = specialFields[
             playerIDOpponent
         ].filter((x) => x.Value === "Queen").length;
@@ -45,21 +45,21 @@ export class PlayCardOptions extends React.Component {
                 !jackInOpponentField &&
                 specialFields[playerIDOpponent].length === 0) ||
             // or >1 queen
-            (selectedCard.Value === "2" &&
-                numQueensInOpponentSpecialField > 1) ||
+            // (selectedCard.Value === "2" &&
+            // numQueensInOpponentSpecialField > 1) ||
             // 3 on empty graveyard
             (selectedCard.Value === "3" && graveyard.length === 0) ||
             // 5 on < 2 deck
             (selectedCard.Value === "5" && deck.length < 2) ||
             // 7 on < 2 deck
             (selectedCard.Value === "7" && deck.length < 2) ||
-            // 9 (same as 2), except can 9 your own field so have to check for jack in own field
+            // 9 when no cards on field
             (selectedCard.Value === "9" &&
-                !jackInOpponentField &&
-                !jackInPlayerField &&
+                fields[playerID].length === 0 &&
+                fields[playerIDOpponent].length === 0 &&
                 specialFields[playerIDOpponent].length === 0) ||
-            (selectedCard.Value === "9" &&
-                numQueensInOpponentSpecialField > 1) ||
+            // (selectedCard.Value === "9" &&
+            // numQueensInOpponentSpecialField > 1) ||
             // 10 no effect
             selectedCard.Value === "10" ||
             // jack on empty opponent field
