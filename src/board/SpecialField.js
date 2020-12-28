@@ -5,6 +5,19 @@ import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 
 export class SpecialField extends React.Component {
+    onClick = (targetCard) => {
+        if (this.props.inChoosingEffectStage) {
+            if (this.props.isOpponentSpecialField) {
+                return () =>
+                    this.props.chooseEffectTarget(targetCard, "opponentField");
+            } else if (this.props.isPlayerSpecialField) {
+                return () =>
+                    this.props.chooseEffectTarget(targetCard, "playerField");
+            }
+        }
+        return () => void 0;
+    };
+
     render() {
         let cells = [];
         let specialField = this.props.specialField;
@@ -15,11 +28,7 @@ export class SpecialField extends React.Component {
                 <Col
                     key={card.id}
                     className={"border"}
-                    onClick={
-                        this.props.choosingEffectStage
-                            ? () => this.props.chooseEffectTarget(card)
-                            : () => void 0
-                    }
+                    onClick={this.onClick(card)}
                 >
                     {card.Value} of {card.Suit}
                 </Col>

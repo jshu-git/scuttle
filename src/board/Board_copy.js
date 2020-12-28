@@ -53,11 +53,11 @@ export class TicTacToeBoard extends React.Component {
         this.props.moves.playCardScuttle();
     };
 
-    chooseScuttleTarget = (targetCard) => {
+    chooseScuttleTarget = (targetCard, targetField) => {
         console.log(
-            "scuttleCard: ",
+            "scuttleCard:",
             this.state.selectedCard.id,
-            "target: ",
+            "target:",
             targetCard.id
         );
 
@@ -78,14 +78,14 @@ export class TicTacToeBoard extends React.Component {
         this.setState({ selectedCard: -1 });
     };
 
-    chooseEffectTarget = (targetCard) => {
+    chooseEffectTarget = (targetCard, targetField) => {
         console.log(
-            "chooseEffectTarget: ",
+            "chooseEffectTarget:",
             this.state.selectedCard.id,
-            "target: ",
+            "target:",
             targetCard.id
         );
-        this.props.moves.chooseEffectTarget(targetCard);
+        this.props.moves.chooseEffectTarget(targetCard, targetField);
     };
 
     toggleGraveyard = () => {
@@ -146,12 +146,14 @@ export class TicTacToeBoard extends React.Component {
                                     inChoosingEffectStage={
                                         inChoosingEffectStage
                                     }
-                                    // functions
+                                    // onclick
                                     selectedCard={selectedCard}
                                     chooseScuttleTarget={
                                         this.chooseScuttleTarget
                                     }
                                     chooseEffectTarget={this.chooseEffectTarget}
+                                    isOpponentField={true}
+                                    // isPlayerField={false}
                                 />
                             </Col>
                             <Col>
@@ -165,6 +167,8 @@ export class TicTacToeBoard extends React.Component {
                                         inChoosingEffectStage
                                     }
                                     chooseEffectTarget={this.chooseEffectTarget}
+                                    isOpponentSpecialField={true}
+                                    // isPlayerSpecialField={false}
                                 />
                             </Col>
                         </Row>
@@ -184,9 +188,11 @@ export class TicTacToeBoard extends React.Component {
                                     inChoosingEffectStage={
                                         inChoosingEffectStage
                                     }
-                                    // functions
+                                    // onclick
                                     selectedCard={selectedCard}
                                     chooseEffectTarget={this.chooseEffectTarget}
+                                    // isOpponentField={true}
+                                    isPlayerField={true}
                                 />
                             </Col>
                             <Col>
@@ -198,6 +204,8 @@ export class TicTacToeBoard extends React.Component {
                                         inChoosingEffectStage
                                     }
                                     chooseEffectTarget={this.chooseEffectTarget}
+                                    // isOpponentSpecialField={false}
+                                    isPlayerSpecialField={true}
                                 />
                             </Col>
                         </Row>

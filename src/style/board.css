@@ -9,7 +9,7 @@
     /* background-color: #e9ecef; */
 }
 .row {
-    padding: .5rem;
+    padding: 0.5rem;
     /* padding-top: .5rem; */
     /* padding-bottom: .5rem; */
 }
@@ -55,6 +55,11 @@ h6 {
     margin-right: 0.5rem;
 }
 
+/* targetable stuff */
+/* change to hover later */
 .targetable {
     background: #ffb0af;
+}
+.targetable:hover {
+    cursor: pointer;
 }

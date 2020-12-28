@@ -19,7 +19,7 @@ export class ChoosingEffect7 extends React.Component {
                     className={"border"}
                     // className={this.props.targetable ? "targetable" : ""}
                     // not sure why i have to do () =>, maybe bc it takes a param
-                    onClick={() => this.props.chooseEffectTarget(card)}
+                    onClick={() => this.props.chooseEffectTarget(card, "7Field")}
                 >
                     {card.Value} of {card.Suit}
                 </Col>

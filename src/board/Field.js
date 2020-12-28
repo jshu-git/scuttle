@@ -6,12 +6,35 @@ import Col from "react-bootstrap/Col";
 
 export class Field extends React.Component {
     onClick = (targetCard) => {
-        if (this.props.inChoosingScuttleStage) {
-            return () => this.props.chooseScuttleTarget(targetCard);
+        if (this.props.inChoosingScuttleStage && this.props.isOpponentField) {
+            return () =>
+                // doesn't need targetField since can only scuttle opponent field
+                // however for chooseEffectTarget, needs targetField because effect can target EITHER field, and need a way to differentiate
+                this.props.chooseScuttleTarget(targetCard);
         } else if (this.props.inChoosingEffectStage) {
-            return () => this.props.chooseEffectTarget(targetCard);
+            if (this.props.isOpponentField) {
+                return () =>
+                    this.props.chooseEffectTarget(targetCard, "opponentField");
+            } else if (this.props.isPlayerField) {
+                return () =>
+                    this.props.chooseEffectTarget(targetCard, "playerField");
+            }
         }
         return () => void 0;
+    };
+
+    // the same as onclick
+    targetable = () => {
+        if (this.props.inChoosingScuttleStage && this.props.isOpponentField) {
+            return true;
+        } else if (this.props.inChoosingEffectStage) {
+            if (this.props.isOpponentField) {
+                return true;
+            } else if (this.props.isPlayerField) {
+                return true;
+            }
+        }
+        return false;
     };
 
     render() {
@@ -29,7 +52,9 @@ export class Field extends React.Component {
 
             cells.push(
                 <Col
-                    className={"border"}
+                    className={
+                        this.targetable() ? "border targetable" : "border"
+                    }
                     key={card.id}
                     onClick={this.onClick(card)}
                 >
