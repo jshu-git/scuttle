@@ -36,7 +36,7 @@ export class PlayCardOptions extends React.Component {
         let jackInPlayerField = fields[playerID].some((x) => jacks[x.id]);
         let numQueensInOpponentSpecialField = specialFields[
             playerIDOpponent
-        ].filter((x) => x === "Queen").length;
+        ].filter((x) => x.Value === "Queen").length;
 
         // effect
         let disabledEffect =

@@ -241,15 +241,72 @@ function doEffectTarget(G, ctx, targetCard, targetField) {
 
     let card = G.counterChain[0];
 
-    // queens in opponent special field check
+    // queens in opponent special field
     let numQueensInOpponentSpecialField = opponent_player_special_field.filter(
-        (x) => x === "Queen"
+        (x) => x.Value === "Queen"
     ).length;
 
     switch (card.Value) {
         // can only 2 special card
         case "2":
             console.log("reaching 2 case");
+            if (
+                targetField === "graveyard" ||
+                // can't 2 own field
+                targetField === "playerField"
+            ) {
+                return false;
+            }
+
+            // queen checks
+            if (
+                // must select queen in special field (if there is one)
+                numQueensInOpponentSpecialField > 0 &&
+                targetCard.Value !== "Queen"
+            ) {
+                console.log(
+                    "queen is up, have to choose queen in opponent specialfield"
+                );
+                return false;
+            }
+
+            // opponent special field
+            if (targetField === "opponentSpecialField") {
+                // 2 goes to graveyard (done in counter chain cleanup)
+                // targetCard goes to graveyard
+                let idx = opponent_player_special_field.findIndex(
+                    (i) => i.id === targetCard.id
+                );
+                let remove = opponent_player_special_field.splice(idx, 1)[0];
+                graveyard.push(remove);
+            }
+            // jacks, only in opponent field, since cant 2 own field
+            else if (targetField === "opponentField") {
+                if (!jacks[targetCard.id]) {
+                    console.log("did not select a jacked card");
+                    return false;
+                }
+
+                let owner = jacks[targetCard.id][1];
+                let jacklist = jacks[targetCard.id][2];
+
+                // find 1 jack and REMOVE
+                let idx_jack = jacklist.findIndex((i) => i.Value === "Jack");
+                let remove_jack = jacklist.splice(idx_jack, 1)[0];
+                graveyard.push(remove_jack);
+
+                // see 9 for explanation
+                if (jacklist.length === 0) {
+                    delete jacks[targetCard.id];
+                }
+
+                // remove from opponent and add to your side
+                let idx = opponent_player_field.findIndex(
+                    (i) => i.id === targetCard.id
+                );
+                let remove = opponent_player_field.splice(idx, 1)[0];
+                current_player_field.push(remove);
+            }
 
             break;
         // search graveyard
@@ -288,23 +345,28 @@ function doEffectTarget(G, ctx, targetCard, targetField) {
             break;
         case "9":
             console.log("reaching 9 case", targetField);
+
             if (
                 targetField === "graveyard" ||
-                // can't 9 own SPECIAL field
-                targetField === "playerSpecialField" ||
-                // queen checks
-                (numQueensInOpponentSpecialField > 1 &&
-                    targetField === "playerField") ||
-                (numQueensInOpponentSpecialField > 1 &&
-                    targetCard.Value !== "Queen")
+                // can't 9 in own SPECIAL field. if we change this, have to add another if down there or bad things may happen
+                targetField === "playerSpecialField"
+            ) {
+                return false;
+            }
+
+            // queen checks
+            if (
+                // must select queen in special field (if there is one)
+                numQueensInOpponentSpecialField > 0 &&
+                targetCard.Value !== "Queen"
             ) {
                 console.log(
-                    "may have to choose queen in opponent specialfield"
+                    "queen is up, have to choose queen in opponent specialfield"
                 );
                 return false;
             }
 
-            // special fields
+            // opponent special field
             if (targetField === "opponentSpecialField") {
                 // 9 goes to graveyard (done in counter chain cleanup)
                 // targetCard goes to top of deck
@@ -314,15 +376,11 @@ function doEffectTarget(G, ctx, targetCard, targetField) {
                 let remove = opponent_player_special_field.splice(idx, 1)[0];
                 deck.push(remove);
             }
-            // jack processing
-            else {
-                if (
-                    targetField !== "opponentField" &&
-                    targetField !== "playerField"
-                ) {
-                    return false;
-                }
-
+            // jacks on either opponent/player field
+            else if (
+                targetField === "opponentField" ||
+                targetField === "playerField"
+            ) {
                 if (!jacks[targetCard.id]) {
                     console.log("did not select a jacked card");
                     return false;
@@ -368,10 +426,7 @@ function doEffectTarget(G, ctx, targetCard, targetField) {
                     current_player_field.push(remove);
                 }
             }
-
-            // remember trying to 9 something in GY
             break;
-        // not possible to play 10 as effect
         case "Jack":
             console.log("reaching jack case");
             if (targetField !== "opponentField") {

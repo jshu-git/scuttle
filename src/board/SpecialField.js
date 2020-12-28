@@ -9,10 +9,16 @@ export class SpecialField extends React.Component {
         if (this.props.inChoosingEffectStage) {
             if (this.props.isOpponentSpecialField) {
                 return () =>
-                    this.props.chooseEffectTarget(targetCard, "opponentSpecialField");
+                    this.props.chooseEffectTarget(
+                        targetCard,
+                        "opponentSpecialField"
+                    );
             } else if (this.props.isPlayerSpecialField) {
                 return () =>
-                    this.props.chooseEffectTarget(targetCard, "playerSpecialField");
+                    this.props.chooseEffectTarget(
+                        targetCard,
+                        "playerSpecialField"
+                    );
             }
         }
         return () => void 0;
@@ -27,7 +33,11 @@ export class SpecialField extends React.Component {
             cells.push(
                 <Col
                     key={card.id}
-                    className={"border"}
+                    className={
+                        this.props.inChoosingEffectStage
+                            ? "border targetable"
+                            : "border"
+                    }
                     onClick={this.onClick(card)}
                 >
                     {card.Value} of {card.Suit}
