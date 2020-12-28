@@ -5,8 +5,18 @@ import { Hand } from "./Hand";
 import { PlayCardOptions } from "./PlayCardOptions";
 import { CounteringOptions } from "./CounteringOptions";
 import { Field } from "./Field";
+import { SpecialField } from "./SpecialField";
 import { Graveyard } from "./Graveyard";
 import { ChoosingEffect7 } from "./ChoosingEffect7";
+import { TurnOptions } from "./TurnOptions";
+import { TurnInfo } from "./TurnInfo";
+
+// bootstrap
+import Container from "react-bootstrap/Container";
+import Button from "react-bootstrap/Button";
+import Jumbotron from "react-bootstrap/Jumbotron";
+import Row from "react-bootstrap/Row";
+import Col from "react-bootstrap/Col";
 
 export class TicTacToeBoard extends React.Component {
     constructor(props) {
@@ -64,13 +74,13 @@ export class TicTacToeBoard extends React.Component {
             parseInt(this.props.ctx.currentPlayer),
             this.state.selectedCard
         );
-        // at this point, selectedCard is already in counter_chain, so we can reset it
+        // at this point, selectedCard is at counter_chain[0], so we can reset it
         this.setState({ selectedCard: -1 });
     };
 
     chooseEffectTarget = (targetCard) => {
         console.log(
-            "chooseTarget: ",
+            "chooseEffectTarget: ",
             this.state.selectedCard.id,
             "target: ",
             targetCard.id
@@ -86,6 +96,7 @@ export class TicTacToeBoard extends React.Component {
         // important props to be passed
         let playerID = this.props.playerID;
         let playerIDOpponent = String(1 - parseInt(this.props.playerID));
+        let currentPlayer = this.props.ctx.currentPlayer;
         let hand = this.props.G.hands[playerID];
         let graveyard = this.props.G.graveyard;
         let deck = this.props.G.deck;
@@ -95,128 +106,181 @@ export class TicTacToeBoard extends React.Component {
         let jacks = this.props.G.jacks;
 
         // stages
-        let in_action =
+        let inActionStage =
             this.props.ctx.activePlayers[this.props.playerID] === "action";
-        let in_countering =
+        let inCounteringStage =
             this.props.ctx.activePlayers[this.props.playerID] === "countering";
-        let choosingEffectStage =
+        let inChoosingEffectStage =
             this.props.ctx.activePlayers[this.props.playerID] ===
             "choosingEffect";
-        let choosingScuttleStage =
+        let inChoosingScuttleStage =
             this.props.ctx.activePlayers[this.props.playerID] ===
             "choosingScuttle";
 
-        // let targeting_disabled =
-        //     graveyard.length === 0 &&
-        //     fields[playerID].length === 0 &&
-        //     fields[playerIDOpponent].length === 0 &&
-        //     specialFields[playerID].length === 0 &&
-        //     specialFields[playerIDOpponent].length === 0;
-
         return (
             <div>
-                <p>Current Turn: Player {this.props.ctx.currentPlayer}</p>
-                {/* deck info */}
-                <p>Deck Count: {deck.length}</p>
-                <hr></hr>
-                <p>
-                    {this.state.selectedCard === -1
-                        ? "undefed"
-                        : this.state.selectedCard.id}
-                </p>
+                {/* turn information */}
+                <Container>
+                    <TurnInfo
+                        currentPlayer={currentPlayer}
+                        deck={deck}
+                        selectedCard={selectedCard}
+                    />
+                </Container>
 
-                {/* graveyard */}
-                <button onClick={() => this.toggleGraveyard()}>
-                    View Graveyard
-                </button>
-                <p>Graveyard Count: {graveyard.length}</p>
-                {this.state.showGraveyard && (
+                {/* fields */}
+                <Container>
+                    <Jumbotron>
+                        {/* opponent player fields */}
+                        <Row>
+                            <Col>
+                                <h6>Opponent Field</h6>
+                                <Field
+                                    // for display
+                                    field={fields[playerIDOpponent]}
+                                    jacks={jacks}
+                                    // stages
+                                    inChoosingScuttleStage={
+                                        inChoosingScuttleStage
+                                    }
+                                    inChoosingEffectStage={
+                                        inChoosingEffectStage
+                                    }
+                                    // functions
+                                    selectedCard={selectedCard}
+                                    chooseScuttleTarget={
+                                        this.chooseScuttleTarget
+                                    }
+                                    chooseEffectTarget={this.chooseEffectTarget}
+                                />
+                            </Col>
+                            <Col>
+                                <h6>Opponent Special Field</h6>
+                                <SpecialField
+                                    // for display
+                                    specialField={
+                                        specialFields[playerIDOpponent]
+                                    }
+                                />
+                            </Col>
+                        </Row>
+
+                        <hr></hr>
+
+                        {/* current player fields */}
+                        <Row>
+                            <Col>
+                                <h6>Your Field</h6>
+                                <Field
+                                    // for display
+                                    field={fields[playerID]}
+                                    jacks={jacks}
+                                    // stages
+                                    inChoosingScuttleStage={
+                                        inChoosingScuttleStage
+                                    }
+                                    inChoosingEffectStage={
+                                        inChoosingEffectStage
+                                    }
+                                    // functions
+                                    selectedCard={selectedCard}
+                                    // chooseScuttleTarget={this.chooseScuttleTarget} // no scuttling on your field
+                                    chooseEffectTarget={this.chooseEffectTarget}
+                                />
+                            </Col>
+                            <Col>
+                                <h6>Your Special Field</h6>
+                                <SpecialField
+                                    // for display
+                                    specialField={specialFields[playerID]}
+                                />
+                            </Col>
+                        </Row>
+                    </Jumbotron>
+                </Container>
+                {/* <p>Your Special Field</p> */}
+
+                {/* hand */}
+                <Container>
+                    <Hand
+                        playerID={playerID}
+                        hand={hand}
+                        // for targetable/onclick
+                        inActionStage={inActionStage}
+                        toggleSelectedCard={this.toggleSelectedCard}
+                    />
+                </Container>
+
+                {/* turn stuff */}
+                {/* playcard options */}
+                {inActionStage && selectedCard !== -1 && (
+                    <Container>
+                        <PlayCardOptions
+                            playCardValue={this.playCardValue}
+                            playCardScuttle={this.playCardScuttle}
+                            playCardEffect={this.playCardEffect}
+                            // for disabling buttons
+                            selectedCard={selectedCard}
+                            opponentField={fields[playerIDOpponent]}
+                            graveyard={graveyard}
+                            deck={deck}
+                        />
+                    </Container>
+                )}
+
+                {/* countering options */}
+                {inCounteringStage && (
+                    <Container>
+                        <CounteringOptions
+                            accept={this.props.moves.accept}
+                            counter={this.props.moves.counter}
+                            // for disabled
+                            hand={hand}
+                        />
+                    </Container>
+                )}
+
+                {/* 7 effect */}
+                {inChoosingEffectStage &&
+                    this.props.G.counterChain[0].Value === "7" && (
+                        <Container>
+                            <ChoosingEffect7
+                                deck={deck}
+                                // function
+                                chooseEffectTarget={this.chooseEffectTarget}
+                            />
+                        </Container>
+                    )}
+
+                {/* turn options */}
+                {inActionStage && (
+                    <Container>
+                        <TurnOptions
+                            // draw card
+                            selectedCard={selectedCard}
+                            drawCard={this.props.moves.drawCard}
+                            // concede
+                            // TODO
+                        />
+                    </Container>
+                )}
+
+                {/* graveyard is always visible */}
+
+                <Container>
                     <Graveyard
                         playerID={playerID}
                         graveyard={graveyard}
-                        choosingEffectStage={choosingEffectStage}
+                        showGraveyard={this.state.showGraveyard}
+                        toggleGraveyard={this.toggleGraveyard}
+                        // effects
+                        inChoosingEffectStage={inChoosingEffectStage}
                         chooseEffectTarget={this.chooseEffectTarget}
                     />
-                )}
+                </Container>
 
-                {/* fields */}
-                <p>Opponent Field</p>
-                <Field
-                    // for display
-                    playerID={playerIDOpponent}
-                    field={fields[playerIDOpponent]}
-                    jacks={jacks}
-                    // stages
-                    choosingScuttleStage={choosingScuttleStage}
-                    choosingEffectStage={choosingEffectStage}
-                    // functions
-                    selectedCard={selectedCard}
-                    chooseScuttleTarget={this.chooseScuttleTarget}
-                    chooseEffectTarget={this.chooseEffectTarget}
-                />
-                <p>Your Field</p>
-                <Field
-                    // for display
-                    playerID={playerID}
-                    field={fields[playerID]}
-                    jacks={jacks}
-                    // stages
-                    choosingScuttleStage={choosingScuttleStage}
-                    choosingEffectStage={choosingEffectStage}
-                    // functions
-                    selectedCard={selectedCard}
-                    // chooseScuttleTarget={this.chooseScuttleTarget}
-                    chooseEffectTarget={this.chooseEffectTarget}
-                />
-
-                {/* hand */}
-                <Hand
-                    playerID={playerID}
-                    hand={hand}
-                    // for targetable/onclick
-                    in_action={in_action}
-                    toggleSelectedCard={this.toggleSelectedCard}
-                />
-
-                {/* draw card */}
-                {in_action && selectedCard === -1 && (
-                    <button onClick={() => this.props.moves.drawCard()}>
-                        Draw Card
-                    </button>
-                )}
-
-                {/* playerCard options */}
-                {in_action && selectedCard !== -1 && (
-                    <PlayCardOptions
-                        playCardValue={this.playCardValue}
-                        playCardScuttle={this.playCardScuttle}
-                        playCardEffect={this.playCardEffect}
-                        // for disabling buttons
-                        selectedCard={selectedCard}
-                        opponentField={fields[playerIDOpponent]}
-                        graveyard={graveyard}
-                        deck={deck}
-                    />
-                )}
-
-                {choosingEffectStage && selectedCard.Value === "7" && (
-                    <ChoosingEffect7
-                        playerID={playerID}
-                        deck={deck}
-                        // for targetable/onclick
-                        chooseEffectTarget={this.chooseEffectTarget}
-                    />
-                )}
-
-                {/* effectCard options */}
-                {in_countering && (
-                    <CounteringOptions
-                        accept={this.props.moves.accept}
-                        counter={this.props.moves.counter}
-                        // for disabled
-                        hand={hand}
-                    />
-                )}
+                <hr></hr>
+                <hr></hr>
             </div>
         );
     }

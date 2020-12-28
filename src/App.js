@@ -16,6 +16,7 @@ const TicTacToeClient = Client({
         persist: false,
         // storageKey: "bgio",
     }),
+    // debug: false,
 });
 
 const App = () => (

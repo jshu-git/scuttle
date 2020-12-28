@@ -1,41 +1,39 @@
 import React from "react";
 import "../style/board.css";
 
+import Row from "react-bootstrap/Row";
+import Col from "react-bootstrap/Col";
+
 export class Hand extends React.Component {
     render() {
-        let tbody_hand = [];
-        let cells_hand = [];
         let hand = this.props.hand;
+        let cells = [];
+
         for (let i = 0; i < hand.length; i++) {
             let card = hand[i];
-            cells_hand.push(
-                <td
+            cells.push(
+                <Col
+                    className={
+                        this.props.inActionStage ? "activeHand border" : "border"
+                    }
                     key={card.id}
-                    className={this.props.in_action ? "active" : ""}
                     onClick={
                         // note: when using ternary in onClick, have to use ()=>
-                        this.props.in_action
+                        this.props.inActionStage
                             ? () => this.props.toggleSelectedCard(card)
                             : () => void 0
                     }
                 >
-                    {card.Value} of {card.Suit}
-                </td>
+                    {card.id}
+                </Col>
             );
         }
-        // // the key here is tied to playerID
-        // // console.log("tbody_hand key " + this.props.playerID);
-        tbody_hand.push(<tr key={this.props.playerID}>{cells_hand}</tr>);
 
         return (
-            <table id="hand">
-                <thead>
-                    <tr>
-                        <th colSpan={hand.length}>Your Hand</th>
-                    </tr>
-                </thead>
-                <tbody>{tbody_hand}</tbody>
-            </table>
+            <React.Fragment>
+                <h6>Your Hand</h6>
+                <Row md={5}>{cells}</Row>
+            </React.Fragment>
         );
     }
 }

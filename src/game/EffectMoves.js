@@ -50,15 +50,15 @@ export function counter(G, ctx) {
     // currentPlayerCounterStage holds which player's "turn" of the stage is aka who has option to counter
     // check if this player has a 2
     let hand = G.hands[G.currentPlayerCounterStage];
-    let index_of_two = hand.findIndex((x) => x.Value === "2");
-    // console.log("index of two is: ",index_of_two)
+    let twoIndex = hand.findIndex((x) => x.Value === "2");
+    // console.log("index of two is: ",twoIndex)
 
     // toggle countered
     G.effectCountered = !G.effectCountered;
 
     // play as its own cardEffect
     // which is added to the counterChain
-    playCardEffect(G, ctx, G.currentPlayerCounterStage, hand[index_of_two]);
+    playCardEffect(G, ctx, G.currentPlayerCounterStage, hand[twoIndex]);
 }
 
 export function accept(G, ctx) {
@@ -93,19 +93,19 @@ function doEffect(G, ctx) {
     let current_player = ctx.playOrder[ctx.playOrderPos];
     let opponent_player =
         ctx.playOrder[(ctx.playOrderPos + 1) % ctx.playOrder.length];
-    let current_player_field = G.fields[current_player];
-    let opponent_player_field = G.fields[opponent_player];
     let current_player_hand = G.hands[current_player];
     let opponent_player_hand = G.hands[opponent_player];
-    let jacks = G.jacks;
-    let graveyard = G.graveyard;
-
-    let fields = G.fields;
-    let card = G.counterChain[0];
-    let deck = G.deck;
-
+    let current_player_field = G.fields[current_player];
+    let opponent_player_field = G.fields[opponent_player];
     let current_player_special_field = G.specialFields[current_player];
     let opponent_player_special_field = G.specialFields[opponent_player];
+
+    let jacks = G.jacks;
+    let graveyard = G.graveyard;
+    let fields = G.fields;
+    let deck = G.deck;
+
+    let card = G.counterChain[0];
 
     switch (card.Value) {
         // clear field
@@ -175,23 +175,20 @@ function doEffect(G, ctx) {
             //     let jacklist = jacks[id][2];
 
             //     // the jacked card can only be in 1 of these fields
-            //     if (
-            //         current_player_field.some(
-            //             (x) => card.id === x.id && owner !== current_player
+            //     if (owner !== current_player
             //         )
             //     ) {
             //         let idx = current_player_field.findIndex(
-            //             (x) => card.id === x.id && owner !== current_player
+            //             (x) => card.id === x.id
             //         );
             //         let remove = current_player_field.splice(idx, 1)[0];
             //         opponent_player_field.push(remove);
             //     } else if (
-            //         opponent_player_field.some(
-            //             (x) => card.id === x.id && owner !== opponent_player
+            //         opponent_player_field.some(owner !== opponent_player
             //         )
             //     ) {
             //         let idx = opponent_player_field.findIndex(
-            //             (x) => card.id === x.id && owner !== current_player
+            //             (x) => card.id === x.id
             //         );
             //         let remove = opponent_player_field.splice(idx, 1)[0];
             //         current_player_field.push(remove);
@@ -205,18 +202,14 @@ function doEffect(G, ctx) {
             //     delete jacks[card.id];
             // }
             break;
+        // fall through
         case "8":
-            console.log("reaching 8 case");
-            break;
         case "Queen":
-            console.log("reaching Q case");
-            // remove from counter chain
-            // let queen = G.counterChain.splice(0, 1)[0];
-            // current_player_special_field.push(queen);
-
-            break;
         case "King":
-            console.log("reaching K case");
+            console.log("reaching 8||Q||K case");
+            // remove from counter chain
+            let special = G.counterChain.splice(0, 1)[0];
+            current_player_special_field.push(special);
             break;
         default:
             console.log("reaching default no_target");
@@ -273,17 +266,17 @@ function doEffectTarget(G, ctx, target_card) {
         case "7":
             console.log("reaching 7 case");
             // retrieve top 2 cards
-            // let one = G.deck.pop();
-            // let two = G.deck.pop();
+            let one = G.deck.pop();
+            let two = G.deck.pop();
             // console.log("one", one.id, "two", two.id);
-            // // check target
-            // if (target_card.id === one.id) {
-            //     current_player_hand.push(one);
-            //     G.deck.push(two);
-            // } else {
-            //     current_player_hand.push(two);
-            //     G.deck.push(one);
-            // }
+            // check target
+            if (target_card.id === one.id) {
+                current_player_hand.push(one);
+                G.deck.push(two);
+            } else {
+                current_player_hand.push(two);
+                G.deck.push(one);
+            }
             break;
         case "9":
             console.log("reaching 9 case");

@@ -1,5 +1,6 @@
 import React from "react";
 import "../style/board.css";
+import Button from "react-bootstrap/Button";
 
 export class PlayCardOptions extends React.Component {
     render() {
@@ -25,7 +26,7 @@ export class PlayCardOptions extends React.Component {
 
         // effect
         let disabledEffect =
-            // 2 unimplemented, but should be no special cards on field
+            // 2 unimplemented, should be no special cards on field
             selectedCard.Value === "2" ||
             // 3 on empty graveyard
             (selectedCard.Value === "3" && graveyard.length === 0) ||
@@ -41,26 +42,29 @@ export class PlayCardOptions extends React.Component {
             (selectedCard.Value === "Jack" && opponentField.length === 0);
 
         return (
-            <div>
-                <button
+            <React.Fragment>
+                <Button
+                    size="sm"
                     disabled={disabledValue}
                     onClick={this.props.playCardValue}
                 >
                     playCardValue
-                </button>
-                <button
+                </Button>
+                <Button
+                    size="sm"
                     disabled={disabledScuttle}
                     onClick={this.props.playCardScuttle}
                 >
                     playCardScuttle
-                </button>
-                <button
+                </Button>
+                <Button
+                    size="sm"
                     disabled={disabledEffect}
                     onClick={this.props.playCardEffect}
                 >
                     playCardEffect
-                </button>
-            </div>
+                </Button>
+            </React.Fragment>
         );
     }
 }

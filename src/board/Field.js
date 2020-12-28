@@ -1,21 +1,24 @@
 import React from "react";
+
 import "../style/board.css";
+import Row from "react-bootstrap/Row";
+import Col from "react-bootstrap/Col";
 
 export class Field extends React.Component {
     onClick = (targetCard) => {
-        if (this.props.choosingScuttleStage) {
+        if (this.props.inChoosingScuttleStage) {
             return () => this.props.chooseScuttleTarget(targetCard);
-        } else if (this.props.choosingEffectStage) {
+        } else if (this.props.inChoosingEffectStage) {
             return () => this.props.chooseEffectTarget(targetCard);
         }
         return () => void 0;
     };
 
     render() {
-        let tbody_field = [];
-        let cells_field = [];
         let field = this.props.field;
+        
         let jacks = this.props.jacks;
+        let cells = [];
 
         for (let i = 0; i < field.length; i++) {
             let card = field[i];
@@ -25,10 +28,10 @@ export class Field extends React.Component {
             //     numJacked = jacks[card][1].length;
             // }
 
-            cells_field.push(
-                <td
+            cells.push(
+                <Col
+                    className={"border"}
                     key={card.id}
-                    // className={"targetable"}
                     onClick={this.onClick(card)}
                 >
                     {card.Value} of {card.Suit}{" "}
@@ -38,17 +41,9 @@ export class Field extends React.Component {
                             {jacks[card.id][2].length})
                         </span>
                     )}
-                </td>
+                </Col>
             );
         }
-        tbody_field.push(<tr key={this.props.playerID}>{cells_field}</tr>);
-
-        return (
-            <div>
-                <table id="field">
-                    <tbody>{tbody_field}</tbody>
-                </table>
-            </div>
-        );
+        return <Row md={5}>{cells}</Row>;
     }
 }

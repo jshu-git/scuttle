@@ -1,18 +1,23 @@
 import React from "react";
 import "../style/board.css";
+import Row from "react-bootstrap/Row";
+import Col from "react-bootstrap/Col";
+import Button from "react-bootstrap/Button";
 
 export class Graveyard extends React.Component {
     render() {
-        let tbody_graveyard = [];
-        let cells_graveyard = [];
         let graveyard = this.props.graveyard;
+        let cells = [];
 
         for (let i = 0; i < graveyard.length; i++) {
             let card = graveyard[i];
-            cells_graveyard.push(
-                <td
+            cells.push(
+                <Col
                     key={card.id}
-                    // className={this.props.choosingEffect ? "targetable" : ""}
+                    className={
+                        "border"
+                        // this.props.choosingEffect ? "targetable" : ""
+                    }
                     onClick={
                         this.props.choosingEffectStage
                             ? () => this.props.chooseEffectTarget(card)
@@ -20,19 +25,21 @@ export class Graveyard extends React.Component {
                     }
                 >
                     {card.Value} of {card.Suit}
-                </td>
+                </Col>
             );
         }
-        tbody_graveyard.push(
-            <tr key={this.props.playerID}>{cells_graveyard}</tr>
-        );
 
         return (
-            <div>
-                <table id="field">
-                    <tbody>{tbody_graveyard}</tbody>
-                </table>
-            </div>
+            <React.Fragment>
+                <Button
+                    size="sm"
+                    disabled={graveyard.length === 0}
+                    onClick={this.props.toggleGraveyard}
+                >
+                    View Graveyard ({graveyard.length})
+                </Button>
+                {this.props.showGraveyard && <Row md={5}>{cells}</Row>}
+            </React.Fragment>
         );
     }
 }

@@ -1,9 +1,11 @@
 import React from "react";
+
 import "../style/board.css";
+import Row from "react-bootstrap/Row";
+import Col from "react-bootstrap/Col";
 
 export class ChoosingEffect7 extends React.Component {
     render() {
-        let tbody = [];
         let cells = [];
         let deck = this.props.deck;
 
@@ -12,25 +14,23 @@ export class ChoosingEffect7 extends React.Component {
             let card = deck[idx];
 
             cells.push(
-                <td
+                <Col
                     key={card.id}
+                    className={"border"}
                     // className={this.props.targetable ? "targetable" : ""}
-                    // className={"targetable"}
-                    onClick={this.props.chooseEffectTarget(card)}
+                    // not sure why i have to do () =>, maybe bc it takes a param
+                    onClick={() => this.props.chooseEffectTarget(card)}
                 >
                     {card.Value} of {card.Suit}
-                </td>
+                </Col>
             );
         }
-        tbody.push(<tr key={this.props.playerID}>{cells}</tr>);
 
         return (
-            <div>
-                <p>Choose a card to take:</p>
-                <table>
-                    <tbody>{tbody}</tbody>
-                </table>
-            </div>
+            <React.Fragment>
+                <h5>Choose a card</h5>
+                <Row md={5}>{cells}</Row>
+            </React.Fragment>
         );
     }
 }
