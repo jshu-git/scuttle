@@ -232,6 +232,7 @@ function doEffectTarget(G, ctx, targetCard, targetField) {
         ctx.playOrder[(ctx.playOrderPos + 1) % ctx.playOrder.length];
     let current_player_field = G.fields[current_player];
     let opponent_player_field = G.fields[opponent_player];
+    let opponent_player_special_field = G.specialFields[opponent_player];
     let current_player_hand = G.hands[current_player];
     let opponent_player_hand = G.hands[opponent_player];
     let jacks = G.jacks;
@@ -240,10 +241,16 @@ function doEffectTarget(G, ctx, targetCard, targetField) {
 
     let card = G.counterChain[0];
 
+    // queens in opponent special field check
+    let numQueensInOpponentSpecialField = opponent_player_special_field.filter(
+        (x) => x === "Queen"
+    ).length;
+
     switch (card.Value) {
         // can only 2 special card
         case "2":
             console.log("reaching 2 case");
+
             break;
         // search graveyard
         case "3":
@@ -283,14 +290,29 @@ function doEffectTarget(G, ctx, targetCard, targetField) {
             console.log("reaching 9 case", targetField);
             if (
                 targetField === "graveyard" ||
-                targetField === "playerSpecialField"
+                // can't 9 own SPECIAL field
+                targetField === "playerSpecialField" ||
+                // queen checks
+                (numQueensInOpponentSpecialField > 1 &&
+                    targetField === "playerField") ||
+                (numQueensInOpponentSpecialField > 1 &&
+                    targetCard.Value !== "Queen")
             ) {
+                console.log(
+                    "may have to choose queen in opponent specialfield"
+                );
                 return false;
             }
 
             // special fields
             if (targetField === "opponentSpecialField") {
-                // do specialfield processing
+                // 9 goes to graveyard (done in counter chain cleanup)
+                // targetCard goes to top of deck
+                let idx = opponent_player_special_field.findIndex(
+                    (i) => i.id === targetCard.id
+                );
+                let remove = opponent_player_special_field.splice(idx, 1)[0];
+                deck.push(remove);
             }
             // jack processing
             else {
