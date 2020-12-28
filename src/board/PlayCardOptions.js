@@ -65,9 +65,9 @@ export class PlayCardOptions extends React.Component {
             // jack on empty opponent field
             (selectedCard.Value === "Jack" &&
                 fields[playerIDOpponent].length === 0) ||
-            // or >1 queen
+            // or > 0 queen
             (selectedCard.Value === "Jack" &&
-                numQueensInOpponentSpecialField > 1);
+                numQueensInOpponentSpecialField > 0);
 
         return (
             <React.Fragment>
