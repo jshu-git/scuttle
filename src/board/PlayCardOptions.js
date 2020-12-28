@@ -44,9 +44,6 @@ export class PlayCardOptions extends React.Component {
             (selectedCard.Value === "2" &&
                 !jackInOpponentField &&
                 specialFields[playerIDOpponent].length === 0) ||
-            // or >1 queen
-            // (selectedCard.Value === "2" &&
-            // numQueensInOpponentSpecialField > 1) ||
             // 3 on empty graveyard
             (selectedCard.Value === "3" && graveyard.length === 0) ||
             // 5 on < 2 deck
@@ -58,8 +55,6 @@ export class PlayCardOptions extends React.Component {
                 fields[playerID].length === 0 &&
                 fields[playerIDOpponent].length === 0 &&
                 specialFields[playerIDOpponent].length === 0) ||
-            // (selectedCard.Value === "9" &&
-            // numQueensInOpponentSpecialField > 1) ||
             // 10 no effect
             selectedCard.Value === "10" ||
             // jack on empty opponent field

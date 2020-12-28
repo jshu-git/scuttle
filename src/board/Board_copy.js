@@ -108,7 +108,6 @@ export class TicTacToeBoard extends React.Component {
         let selectedCard = this.state.selectedCard;
         let jacks = this.props.G.jacks;
 
-
         // stages
         let inActionStage =
             this.props.ctx.activePlayers[this.props.playerID] === "action";
@@ -131,6 +130,19 @@ export class TicTacToeBoard extends React.Component {
                         selectedCard={selectedCard}
                     />
                 </Container>
+
+                {/* 8 effect */}
+                {specialFields[playerIDOpponent].some(
+                    (x) => x.Value === "8"
+                ) && (
+                    <Container>
+                        <h6>Opponent Hand</h6>
+                        <Hand
+                            playerID={playerIDOpponent}
+                            hand={this.props.G.hands[playerIDOpponent]}
+                        />
+                    </Container>
+                )}
 
                 {/* fields */}
                 <Container>
@@ -179,6 +191,7 @@ export class TicTacToeBoard extends React.Component {
 
                 {/* hand */}
                 <Container>
+                    <h6>Your Hand</h6>
                     <Hand
                         playerID={playerID}
                         hand={hand}

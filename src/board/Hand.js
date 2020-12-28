@@ -31,7 +31,7 @@ export class Hand extends React.Component {
 
         return (
             <React.Fragment>
-                <h6>Your Hand</h6>
+                
                 <Row md={5}>{cells}</Row>
             </React.Fragment>
         );
