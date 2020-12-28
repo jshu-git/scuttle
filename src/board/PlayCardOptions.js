@@ -34,9 +34,9 @@ export class PlayCardOptions extends React.Component {
             (x) => jacks[x.id]
         );
         let jackInPlayerField = fields[playerID].some((x) => jacks[x.id]);
-        let queenInOpponentSpecialField = specialFields[playerIDOpponent].some(
-            (x) => x.Value === "Queen"
-        );
+        let numQueensInOpponentSpecialField = specialFields[
+            playerIDOpponent
+        ].filter((x) => x === "Queen").length;
 
         // effect
         let disabledEffect =
@@ -44,8 +44,9 @@ export class PlayCardOptions extends React.Component {
             (selectedCard.Value === "2" &&
                 !jackInOpponentField &&
                 specialFields[playerIDOpponent].length === 0) ||
-            // or queen up
-            (selectedCard.Value === "2" && queenInOpponentSpecialField) ||
+            // or >1 queen
+            (selectedCard.Value === "2" &&
+                numQueensInOpponentSpecialField > 1) ||
             // 3 on empty graveyard
             (selectedCard.Value === "3" && graveyard.length === 0) ||
             // 5 on < 2 deck
@@ -53,19 +54,21 @@ export class PlayCardOptions extends React.Component {
             // 7 on < 2 deck
             (selectedCard.Value === "7" && deck.length < 2) ||
             // 9 on no special cards on both fields
-            // or queen up
             (selectedCard.Value === "9" &&
                 !jackInOpponentField &&
                 !jackInPlayerField &&
                 specialFields[playerIDOpponent].length === 0) ||
-            (selectedCard.Value === "9" && queenInOpponentSpecialField) ||
+            // or >1 queen
+            (selectedCard.Value === "9" &&
+                numQueensInOpponentSpecialField > 1) ||
             // 10 no effect
             selectedCard.Value === "10" ||
             // jack on empty opponent field
-            // or queen up
             (selectedCard.Value === "Jack" &&
                 fields[playerIDOpponent].length === 0) ||
-            (selectedCard.Value === "Jack" && queenInOpponentSpecialField);
+            // or >1 queen
+            (selectedCard.Value === "Jack" &&
+                numQueensInOpponentSpecialField > 1);
 
         return (
             <React.Fragment>

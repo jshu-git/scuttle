@@ -240,6 +240,8 @@ export class TicTacToeBoard extends React.Component {
                             counter={this.props.moves.counter}
                             // for disabled
                             hand={hand}
+                            playerIDOpponent={playerIDOpponent}
+                            specialFields={specialFields}
                         />
                     </Container>
                 )}
