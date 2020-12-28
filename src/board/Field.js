@@ -16,7 +16,6 @@ export class Field extends React.Component {
 
     render() {
         let field = this.props.field;
-        
         let jacks = this.props.jacks;
         let cells = [];
 

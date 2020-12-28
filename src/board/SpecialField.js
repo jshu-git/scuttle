@@ -13,9 +13,13 @@ export class SpecialField extends React.Component {
             let card = specialField[i];
             cells.push(
                 <Col
-                    className={"border"}
                     key={card.id}
-                    // onClick={this.onClick(card)}
+                    className={"border"}
+                    onClick={
+                        this.props.choosingEffectStage
+                            ? () => this.props.chooseEffectTarget(card)
+                            : () => void 0
+                    }
                 >
                     {card.Value} of {card.Suit}
                 </Col>

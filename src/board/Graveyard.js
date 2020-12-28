@@ -14,10 +14,7 @@ export class Graveyard extends React.Component {
             cells.push(
                 <Col
                     key={card.id}
-                    className={
-                        "border"
-                        // this.props.choosingEffect ? "targetable" : ""
-                    }
+                    className={"border"}
                     onClick={
                         this.props.choosingEffectStage
                             ? () => this.props.chooseEffectTarget(card)

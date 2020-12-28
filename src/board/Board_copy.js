@@ -157,10 +157,14 @@ export class TicTacToeBoard extends React.Component {
                             <Col>
                                 <h6>Opponent Special Field</h6>
                                 <SpecialField
-                                    // for display
                                     specialField={
                                         specialFields[playerIDOpponent]
                                     }
+                                    // onclick
+                                    inChoosingEffectStage={
+                                        inChoosingEffectStage
+                                    }
+                                    chooseEffectTarget={this.chooseEffectTarget}
                                 />
                             </Col>
                         </Row>
@@ -176,29 +180,29 @@ export class TicTacToeBoard extends React.Component {
                                     field={fields[playerID]}
                                     jacks={jacks}
                                     // stages
-                                    inChoosingScuttleStage={
-                                        inChoosingScuttleStage
-                                    }
+                                    // don't pass scuttle stuff since you can't scuttle own field
                                     inChoosingEffectStage={
                                         inChoosingEffectStage
                                     }
                                     // functions
                                     selectedCard={selectedCard}
-                                    // chooseScuttleTarget={this.chooseScuttleTarget} // no scuttling on your field
                                     chooseEffectTarget={this.chooseEffectTarget}
                                 />
                             </Col>
                             <Col>
                                 <h6>Your Special Field</h6>
                                 <SpecialField
-                                    // for display
                                     specialField={specialFields[playerID]}
+                                    // onclick
+                                    inChoosingEffectStage={
+                                        inChoosingEffectStage
+                                    }
+                                    chooseEffectTarget={this.chooseEffectTarget}
                                 />
                             </Col>
                         </Row>
                     </Jumbotron>
                 </Container>
-                {/* <p>Your Special Field</p> */}
 
                 {/* hand */}
                 <Container>
@@ -280,7 +284,7 @@ export class TicTacToeBoard extends React.Component {
                         graveyard={graveyard}
                         showGraveyard={this.state.showGraveyard}
                         toggleGraveyard={this.toggleGraveyard}
-                        // effects
+                        // onclick
                         inChoosingEffectStage={inChoosingEffectStage}
                         chooseEffectTarget={this.chooseEffectTarget}
                     />
