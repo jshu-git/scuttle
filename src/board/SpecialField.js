@@ -9,10 +9,10 @@ export class SpecialField extends React.Component {
         if (this.props.inChoosingEffectStage) {
             if (this.props.isOpponentSpecialField) {
                 return () =>
-                    this.props.chooseEffectTarget(targetCard, "opponentField");
+                    this.props.chooseEffectTarget(targetCard, "opponentSpecialField");
             } else if (this.props.isPlayerSpecialField) {
                 return () =>
-                    this.props.chooseEffectTarget(targetCard, "playerField");
+                    this.props.chooseEffectTarget(targetCard, "playerSpecialField");
             }
         }
         return () => void 0;

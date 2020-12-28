@@ -53,12 +53,11 @@ export class PlayCardOptions extends React.Component {
             (selectedCard.Value === "5" && deck.length < 2) ||
             // 7 on < 2 deck
             (selectedCard.Value === "7" && deck.length < 2) ||
-            // 9 on no special cards on both fields
+            // 9 (same as 2), except can 9 your own field so have to check for jack in own field
             (selectedCard.Value === "9" &&
                 !jackInOpponentField &&
                 !jackInPlayerField &&
                 specialFields[playerIDOpponent].length === 0) ||
-            // or >1 queen
             (selectedCard.Value === "9" &&
                 numQueensInOpponentSpecialField > 1) ||
             // 10 no effect

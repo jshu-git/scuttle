@@ -11,7 +11,7 @@ export const initializeGame = (playOrder, playOrderPos) => {
 function createDeck() {
     var suits = ["Spades", "Diamonds", "Clubs", "Hearts"];
     var values = [
-        "Ace",
+        // "Ace",
         "2",
         "3",
         // "4",
@@ -19,9 +19,9 @@ function createDeck() {
         // "6",
         // "7",
         // "8",
-        // "9",
+        "9",
         // "10",
-        // "Jack",
+        "Jack",
         // "Queen",
         // "King",
     ];

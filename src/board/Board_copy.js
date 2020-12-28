@@ -80,10 +80,12 @@ export class TicTacToeBoard extends React.Component {
 
     chooseEffectTarget = (targetCard, targetField) => {
         console.log(
-            "chooseEffectTarget:",
-            this.state.selectedCard.id,
+            // "chooseEffectTarget:",
+            // this.state.selectedCard.id,
             "target:",
-            targetCard.id
+            targetCard.id,
+            "targetField",
+            targetField
         );
         this.props.moves.chooseEffectTarget(targetCard, targetField);
     };
