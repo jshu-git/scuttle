@@ -76,4 +76,21 @@ export const TicTacToe = {
             },
         },
     },
+
+    // victory condition
+    endIf: (G, ctx) => {
+        if (isVictory(G, ctx)) {
+            return { winner: ctx.currentPlayer };
+        }
+    },
+};
+
+const isVictory = (G, ctx) => {
+    let player = ctx.currentPlayer;
+    let field = G.fields[player];
+    let specialField = G.specialFields[player];
+    let points = field.map((x) => x.Point).reduce((a, b) => a + b, 0);
+    let numKings = specialField.filter((x) => x.Value === "King").length;
+
+    return points >= 21 - 7 * numKings;
 };

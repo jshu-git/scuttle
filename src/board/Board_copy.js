@@ -96,6 +96,10 @@ export class TicTacToeBoard extends React.Component {
     };
 
     render() {
+        if (this.props.ctx.gameover) {
+            return <div>Winner: vindara chowdavarapu aka Player{this.props.ctx.gameover.winner}</div>;
+        }
+
         // important props to be passed
         let playerID = this.props.playerID;
         let playerIDOpponent = String(1 - parseInt(this.props.playerID));
