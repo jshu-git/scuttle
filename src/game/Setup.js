@@ -1,5 +1,6 @@
 export const initializeGame = (playOrder, playOrderPos) => {
     let deck = createDeck();
+
     shuffle(deck);
 
     let hands = drawHands(deck, playOrder, playOrderPos);
@@ -8,7 +9,8 @@ export const initializeGame = (playOrder, playOrderPos) => {
     return { deck, hands, fields, specialFields };
 };
 
-function createDeck() {
+// also used for create images
+export function createDeck() {
     var suits = ["Spades", "Diamonds", "Clubs", "Hearts"];
     var values = [
         "Ace",

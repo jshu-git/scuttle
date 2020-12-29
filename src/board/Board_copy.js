@@ -1,5 +1,6 @@
 import React from "react";
 import "../style/board.css";
+
 // components
 import { Hand } from "./Hand";
 import { PlayCardOptions } from "./PlayCardOptions";
@@ -7,7 +8,6 @@ import { CounteringOptions } from "./CounteringOptions";
 import { Field } from "./Field";
 import { SpecialField } from "./SpecialField";
 import { Graveyard } from "./Graveyard";
-// import { ChoosingEffect7 } from "./ChoosingEffect7";
 import { TurnOptions } from "./TurnOptions";
 import { TurnInfo } from "./TurnInfo";
 import { ChoosingPopup } from "./ChoosingPopup";
@@ -117,7 +117,7 @@ export class TicTacToeBoard extends React.Component {
             "choosingScuttle";
 
         return (
-            <div>
+            <Container>
                 {/* turn information */}
                 <Container>
                     {this.props.ctx.gameover && this.props.ctx.gameover.winner && (
@@ -294,7 +294,7 @@ export class TicTacToeBoard extends React.Component {
                 )}
                 <hr></hr>
                 <hr></hr>
-            </div>
+            </Container>
         );
     }
 }

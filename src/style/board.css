@@ -13,9 +13,11 @@
     /* padding-top: .5rem; */
     /* padding-bottom: .5rem; */
 }
-.col {
-    padding-top: 1rem;
-    padding-bottom: 1rem;
+
+/* https://stackoverflow.com/questions/8903313/using-regular-expression-in-css/8903451#8903451 */
+.row div[class^="col"] {
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
     /* padding-left: 1rem; */
     /* padding-right: 1rem; */
 
@@ -40,12 +42,11 @@ h6 {
 }
 
 /* hand */
-.activeHand {
-    cursor: pointer;
+.active {
     background: #eeffe9;
 }
-.activeHand:hover {
-    background: #eeffff;
+.activeHover:hover {
+    cursor: pointer;
 }
 
 /* turn options */
@@ -58,7 +59,7 @@ h6 {
 /* targetable stuff */
 /* change to hover later */
 .targetable {
-    background: #ffb0af;
+    /* background: #ffb0af; */
 }
 .targetable:hover {
     cursor: pointer;
