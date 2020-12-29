@@ -71,21 +71,21 @@ export class PlayCardOptions extends React.Component {
                     disabled={disabledValue}
                     onClick={this.props.playCardValue}
                 >
-                    playCardValue
-                </Button>
+                    Play Value
+                </Button>{" "}
                 <Button
                     size="sm"
                     disabled={disabledScuttle}
                     onClick={this.props.playCardScuttle}
                 >
-                    playCardScuttle
-                </Button>
+                    Scuttle
+                </Button>{" "}
                 <Button
                     size="sm"
                     disabled={disabledEffect}
                     onClick={this.props.playCardEffect}
                 >
-                    playCardEffect
+                    Play Effect
                 </Button>
             </React.Fragment>
         );

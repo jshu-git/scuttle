@@ -12,16 +12,19 @@ import { CardImages } from "../assets/Cards.js";
 export class ChoosingPopup extends React.Component {
     scuttle = () => {
         return (
-            <Field
-                inPopup={true}
-                // for display
-                field={this.props.opponentField}
-                jacks={this.props.jacks}
-                // onclick
-                inChoosingScuttleStage={true}
-                chooseScuttleTarget={this.props.chooseScuttleTarget}
-                isOpponentField={true}
-            />
+            <React.Fragment>
+                <h6>Opponent Field</h6>
+                <Field
+                    inPopup={true}
+                    // for display
+                    field={this.props.opponentField}
+                    jacks={this.props.jacks}
+                    // onclick
+                    inChoosingScuttleStage={true}
+                    chooseScuttleTarget={this.props.chooseScuttleTarget}
+                    isOpponentField={true}
+                />
+            </React.Fragment>
         );
     };
 
@@ -75,7 +78,7 @@ export class ChoosingPopup extends React.Component {
             );
         }
 
-        return <Row md={5}>{cells}</Row>;
+        return <Row>{cells}</Row>;
     };
 
     effect9 = () => {
@@ -130,26 +133,32 @@ export class ChoosingPopup extends React.Component {
 
     effectJ = () => {
         return (
-            <Field
-                inPopup={true}
-                field={this.props.opponentField}
-                jacks={this.props.jacks}
-                inChoosingEffectStage={this.props.inChoosingEffectStage}
-                chooseEffectTarget={this.props.chooseEffectTarget}
-                isOpponentField={true}
-            />
+            <React.Fragment>
+                <h6>Opponent Field</h6>
+                <Field
+                    inPopup={true}
+                    field={this.props.opponentField}
+                    jacks={this.props.jacks}
+                    inChoosingEffectStage={this.props.inChoosingEffectStage}
+                    chooseEffectTarget={this.props.chooseEffectTarget}
+                    isOpponentField={true}
+                />
+            </React.Fragment>
         );
     };
 
     effect3 = () => {
         return (
-            <Graveyard
-                inPopup={true}
-                graveyard={this.props.graveyard}
-                // onclick
-                inChoosingEffectStage={this.props.inChoosingEffectStage}
-                chooseEffectTarget={this.props.chooseEffectTarget}
-            />
+            <React.Fragment>
+                <h6>Graveyard</h6>
+                <Graveyard
+                    inPopup={true}
+                    graveyard={this.props.graveyard}
+                    // onclick
+                    inChoosingEffectStage={this.props.inChoosingEffectStage}
+                    chooseEffectTarget={this.props.chooseEffectTarget}
+                />
+            </React.Fragment>
         );
     };
 
@@ -161,7 +170,7 @@ export class ChoosingPopup extends React.Component {
         let inChoosingEffectStage = this.props.inChoosingEffectStage;
 
         return (
-            <Container className="border">
+            <Container className="border popup">
                 {/* scuttling, opponent field */}
                 {inChoosingScuttleStage && (
                     <React.Fragment>{this.scuttle()}</React.Fragment>
@@ -178,7 +187,10 @@ export class ChoosingPopup extends React.Component {
                 )}
                 {/* 7 */}
                 {selectedCard.Value === "7" && inChoosingEffectStage && (
-                    <React.Fragment>{this.effect7()}</React.Fragment>
+                    <React.Fragment>
+                        <h6>Choose One</h6>
+                        {this.effect7()}
+                    </React.Fragment>
                 )}
                 {/* 9 ALL fields */}
                 {selectedCard.Value === "9" && inChoosingEffectStage && (

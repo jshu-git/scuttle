@@ -12,9 +12,7 @@ export class Hand extends React.Component {
 
         for (let i = 0; i < hand.length; i++) {
             let card = hand[i];
-            let img = !this.props.isOpponentHand
-                ? CardImages[card.id].default
-                : CardImages["hidden"].default;
+            let img = CardImages[card.id].default;
 
             cells.push(
                 <Col key={card.id}>
@@ -34,14 +32,12 @@ export class Hand extends React.Component {
         }
 
         return (
-            <React.Fragment>
-                <Row
-                    md={5}
-                    className={this.props.inActionStage ? "active" : ""}
-                >
-                    {cells}
-                </Row>
-            </React.Fragment>
+            <Row
+                //  md={5}
+                className={this.props.inActionStage ? "active" : ""}
+            >
+                {cells}
+            </Row>
         );
     }
 }

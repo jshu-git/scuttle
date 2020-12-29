@@ -30,6 +30,14 @@ export class Graveyard extends React.Component {
             );
         }
 
-        return <Row md={5}>{cells}</Row>;
+        return (
+            <Row
+                // md={5}
+                className="border"
+            >
+                <h6>Graveyard</h6>
+                {cells}
+            </Row>
+        );
     }
 }

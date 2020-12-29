@@ -47,6 +47,6 @@ export class SpecialField extends React.Component {
             );
         }
 
-        return <Row md={5}>{cells}</Row>;
+        return <Row md={3}>{cells}</Row>;
     }
 }

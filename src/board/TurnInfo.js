@@ -12,11 +12,6 @@ export class TurnInfo extends React.Component {
         return (
             <React.Fragment>
                 <h5>Current Turn: Player {currentPlayer}</h5>
-                <h5>Deck Count: {deck.length}</h5>
-                <h5>
-                    Selected Card:{" "}
-                    {selectedCard === -1 ? "none" : selectedCard.id}
-                </h5>
                 <hr></hr>
             </React.Fragment>
         );

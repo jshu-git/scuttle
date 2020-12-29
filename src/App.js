@@ -10,7 +10,7 @@ const TicTacToeClient = Client({
     game: TicTacToe,
     board: TicTacToeBoard,
     numPlayers: 2,
-    
+
     // local master
     multiplayer: Local({
         persist: false,
@@ -21,8 +21,8 @@ const TicTacToeClient = Client({
 
 const App = () => (
     <div>
-        <TicTacToeClient playerID="0" />
-        <TicTacToeClient playerID="1" />
+        <TicTacToeClient playerID="0" playerName="jshu" />
+        <TicTacToeClient playerID="1" playerName="vindara" />
 
         {/* spectator */}
         {/* <TicTacToeClient playerID="2" /> */}

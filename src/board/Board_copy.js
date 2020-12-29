@@ -117,37 +117,34 @@ export class TicTacToeBoard extends React.Component {
             "choosingScuttle";
 
         return (
-            <Container sm>
+            <div>
                 {/* turn information */}
                 <Container>
                     {this.props.ctx.gameover && this.props.ctx.gameover.winner && (
                         <h1>
-                            WINNER: vindara chowdavarapu aka Player
-                            {this.props.ctx.gameover.winner}
+                            WINNER: {this.props.ctx.gameover.winner} (
+                            {this.props.playerName})
+                            {/* playerName is tied to playerID which is tied to winner */}
                         </h1>
                     )}
                     {this.props.ctx.gameover &&
                         !this.props.ctx.gameover.winner && <h1>DRAW!</h1>}
-                    <TurnInfo
-                        currentPlayer={currentPlayer}
-                        deck={deck}
-                        selectedCard={selectedCard}
-                    />
+                    <TurnInfo currentPlayer={currentPlayer} />
                 </Container>
 
                 {/* 8 effect */}
-                {/* {specialFields[playerIDOpponent].some(
-                    (x) => x.Value === "8"
-                ) && ( */}
-                {/* <Container>
-                        <h6>Opponent Hand</h6>
+                <Container>
+                    <h6>
+                        Opponent Hand (
+                        {this.props.G.hands[playerIDOpponent].length})
+                    </h6>
+                    {specialFields[playerID].some((x) => x.Value === "8") && (
                         <Hand
                             playerID={playerIDOpponent}
                             hand={this.props.G.hands[playerIDOpponent]}
-                            isOpponentHand={true}
                         />
-                    </Container> */}
-                {/* ) } */}
+                    )}
+                </Container>
 
                 {/* fields */}
                 <Container>
@@ -196,7 +193,12 @@ export class TicTacToeBoard extends React.Component {
 
                 {/* hand */}
                 <Container>
-                    <h6>Your Hand</h6>
+                    <h6>
+                        Your Hand ({hand.length}){" "}
+                        {selectedCard !== -1 && (
+                            <span>(selected: {selectedCard.id})</span>
+                        )}
+                    </h6>
                     <Hand
                         playerID={playerID}
                         hand={hand}
@@ -235,8 +237,6 @@ export class TicTacToeBoard extends React.Component {
                             counter={this.props.moves.counter}
                             // for disabled
                             hand={hand}
-                            playerIDOpponent={playerIDOpponent}
-                            specialFields={specialFields}
                         />
                     </Container>
                 )}
@@ -259,8 +259,10 @@ export class TicTacToeBoard extends React.Component {
                 <Container>
                     <Button
                         size="sm"
+                        variant="outline-secondary"
                         disabled={graveyard.length === 0}
                         onClick={this.toggleGraveyard}
+                        id="graveyardButton"
                     >
                         View Graveyard ({graveyard.length})
                     </Button>
@@ -295,7 +297,7 @@ export class TicTacToeBoard extends React.Component {
                 )}
                 <hr></hr>
                 <hr></hr>
-            </Container>
+            </div>
         );
     }
 }

@@ -12,13 +12,15 @@ export class TurnOptions extends React.Component {
             <React.Fragment>
                 <Button
                     size="sm"
+                    variant="success"
                     disabled={selectedCard !== -1 || deck.length === 0}
                     onClick={this.props.drawCard}
                 >
-                    Draw
-                </Button>
+                    Draw ({deck.length})
+                </Button>{" "}
                 <Button
                     size="sm"
+                    variant="danger"
                     disabled={deck.length !== 0}
                     onClick={this.props.endTurn}
                 >

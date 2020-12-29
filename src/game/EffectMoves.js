@@ -107,50 +107,50 @@ function doEffect(G, ctx) {
         // clear field
         case "Ace":
             console.log("reaching ace case");
-            // while (current_player_field.length > 0) {
-            //     graveyard.push(current_player_field.pop());
-            // }
-            // while (opponent_player_field.length > 0) {
-            //     graveyard.push(opponent_player_field.pop());
-            // }
+            while (current_player_field.length > 0) {
+                graveyard.push(current_player_field.pop());
+            }
+            while (opponent_player_field.length > 0) {
+                graveyard.push(opponent_player_field.pop());
+            }
 
-            // // clear jacks
-            // for (let id in jacks) {
-            //     let card = jacks[id][0];
-            //     let owner = jacks[id][1];
-            //     let jacklist = jacks[id][2];
+            // clear jacks
+            for (let id in jacks) {
+                let card = jacks[id][0];
+                let owner = jacks[id][1];
+                let jacklist = jacks[id][2];
 
-            //     //  add jacks to graveyard
-            //     while (jacklist.length > 0) {
-            //         graveyard.push(jacklist.pop());
-            //     }
-            //     // clear key
-            //     delete jacks[card.id];
-            // }
+                //  add jacks to graveyard
+                while (jacklist.length > 0) {
+                    graveyard.push(jacklist.pop());
+                }
+                // clear key
+                delete jacks[card.id];
+            }
             break;
         // discard 2
         case "4":
             console.log("reaching 4 case");
-            // if (opponent_player_hand.length === 0) {
-            //     console.log("bm, no cards to discard");
-            // } else if (opponent_player_hand.length === 1) {
-            //     var discarded = opponent_player_hand.splice(0, 1)[0];
-            //     graveyard.push(discarded);
-            // } else {
-            //     for (var i = 0; i < 2; i++) {
-            //         var discarded = opponent_player_hand.splice(
-            //             Math.floor(Math.random() * opponent_player_hand.length),
-            //             1
-            //         )[0];
-            //         graveyard.push(discarded);
-            //     }
-            // }
+            if (opponent_player_hand.length === 0) {
+                console.log("bm, no cards to discard");
+            } else if (opponent_player_hand.length === 1) {
+                var discarded = opponent_player_hand.splice(0, 1)[0];
+                graveyard.push(discarded);
+            } else {
+                for (var i = 0; i < 2; i++) {
+                    var discarded = opponent_player_hand.splice(
+                        Math.floor(Math.random() * opponent_player_hand.length),
+                        1
+                    )[0];
+                    graveyard.push(discarded);
+                }
+            }
             break;
         // draw 2
         case "5":
             console.log("reaching 5 case");
-            // current_player_hand.push(deck.pop());
-            // current_player_hand.push(deck.pop());
+            current_player_hand.push(deck.pop());
+            current_player_hand.push(deck.pop());
             break;
         // clear all special cards
         case "6":
@@ -306,29 +306,29 @@ function doEffectTarget(G, ctx, targetCard, targetField) {
         case "3":
             console.log("reaching 3 case");
 
-            // let target_idx = G.graveyard.findIndex(
-            //     (i) => i.id === targetCard.id
-            // );
+            let target_idx = G.graveyard.findIndex(
+                (i) => i.id === targetCard.id
+            );
             // this was failing because i didn't do [0]
-            // let found_card = G.graveyard.splice(target_idx, 1)[0];
-            // current_player_hand.push(found_card);
+            let found_card = G.graveyard.splice(target_idx, 1)[0];
+            current_player_hand.push(found_card);
             break;
         // pick 1 of top 2 cards
         case "7":
             console.log("reaching 7 case");
             // retrieve top 2 cards
-            // let one = G.deck.pop();
-            // let two = G.deck.pop();
-            // // console.log("one", one.id, "two", two.id);
+            let one = G.deck.pop();
+            let two = G.deck.pop();
+            // console.log("one", one.id, "two", two.id);
 
-            // // check target
-            // if (targetCard.id === one.id) {
-            //     current_player_hand.push(one);
-            //     G.deck.push(two);
-            // } else {
-            //     current_player_hand.push(two);
-            //     G.deck.push(one);
-            // }
+            // check target
+            if (targetCard.id === one.id) {
+                current_player_hand.push(one);
+                G.deck.push(two);
+            } else {
+                current_player_hand.push(two);
+                G.deck.push(one);
+            }
             break;
         case "9":
             console.log("reaching 9 case", targetField);

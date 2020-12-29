@@ -69,23 +69,22 @@ export class Field extends React.Component {
             // }
 
             cells.push(
-                <Col key={card.id}>
+                <Col key={card.id} style={{ textAlign: "center" }}>
                     <Image
                         src={img}
                         thumbnail
                         className={this.props.inPopup ? "targetable" : ""}
                         onClick={this.onClick(card)}
-                    >
-                        {jacks[card.id] && (
-                            <span>
-                                (Owner: {jacks[card.id][1]} numJacked:{" "}
-                                {jacks[card.id][2].length})
-                            </span>
-                        )}
-                    </Image>
+                    ></Image>
+                    {jacks[card.id] && (
+                        <span>
+                            ({jacks[card.id][1]},j
+                            {jacks[card.id][2].length})
+                        </span>
+                    )}
                 </Col>
             );
         }
-        return <Row md={5}>{cells}</Row>;
+        return <Row md={3}>{cells}</Row>;
     }
 }
