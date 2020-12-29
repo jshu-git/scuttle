@@ -83,6 +83,14 @@ export const TicTacToe = {
             return { winner: ctx.currentPlayer };
         }
     },
+    onEnd: (G, ctx) => {
+        ctx.events.setActivePlayers({
+            value: {
+                0: "idle",
+                1: "idle",
+            },
+        });
+    },
 };
 
 const isVictory = (G, ctx) => {

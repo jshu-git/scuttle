@@ -14,7 +14,9 @@ export class Hand extends React.Component {
             cells.push(
                 <Col
                     className={
-                        this.props.inActionStage ? "activeHand border" : "border"
+                        this.props.inActionStage
+                            ? "activeHand border"
+                            : "border"
                     }
                     key={card.id}
                     onClick={
@@ -31,7 +33,6 @@ export class Hand extends React.Component {
 
         return (
             <React.Fragment>
-                
                 <Row md={5}>{cells}</Row>
             </React.Fragment>
         );

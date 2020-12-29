@@ -96,10 +96,6 @@ export class TicTacToeBoard extends React.Component {
     };
 
     render() {
-        if (this.props.ctx.gameover) {
-            return <div>Winner: vindara chowdavarapu aka Player{this.props.ctx.gameover.winner}</div>;
-        }
-
         // important props to be passed
         let playerID = this.props.playerID;
         let playerIDOpponent = String(1 - parseInt(this.props.playerID));
@@ -128,6 +124,12 @@ export class TicTacToeBoard extends React.Component {
             <div>
                 {/* turn information */}
                 <Container>
+                    {this.props.ctx.gameover && (
+                        <h1>
+                            WINNER: vindara chowdavarapu aka Player
+                            {this.props.ctx.gameover.winner}
+                        </h1>
+                    )}
                     <TurnInfo
                         currentPlayer={currentPlayer}
                         deck={deck}
