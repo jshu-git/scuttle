@@ -55,6 +55,7 @@ export const TicTacToe = {
                     playCardValue,
                     playCardEffect,
                     playCardScuttle,
+                    endTurn,
                 },
             },
             // see EffectMoves.js
@@ -82,6 +83,9 @@ export const TicTacToe = {
         if (isVictory(G, ctx)) {
             return { winner: ctx.currentPlayer };
         }
+        if (isDraw(G, ctx)) {
+            return { draw: true };
+        }
     },
     onEnd: (G, ctx) => {
         ctx.events.setActivePlayers({
@@ -102,3 +106,32 @@ const isVictory = (G, ctx) => {
 
     return points >= 21 - 7 * numKings;
 };
+
+const isDraw = (G, ctx) => {
+    let player = ctx.playOrder[ctx.playOrderPos];
+    let opponent = ctx.playOrder[(ctx.playOrderPos + 1) % ctx.playOrder.length];
+    let hand = G.hands[player];
+    let opponentHand = G.hands[opponent];
+    let deck = G.deck;
+
+    console.log(
+        String(deck.length === 0),
+        String(hand.every((i) => i.Value === "Jack")),
+        String(hand.length === 0),
+        String(opponentHand.every((i) => i.Value === "Jack")),
+        String(opponentHand.length === 0)
+    );
+
+    return (
+        deck.length === 0 &&
+        (hand.every((i) => i.Value === "Jack") || hand.length === 0) &&
+        opponentHand.every(
+            (i) => i.Value === "Jack" || opponentHand.length === 0
+        )
+    );
+};
+
+// game moves
+export function endTurn(G, ctx) {
+    ctx.events.endTurn();
+}

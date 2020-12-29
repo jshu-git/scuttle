@@ -124,12 +124,14 @@ export class TicTacToeBoard extends React.Component {
             <div>
                 {/* turn information */}
                 <Container>
-                    {this.props.ctx.gameover && (
+                    {this.props.ctx.gameover && this.props.ctx.gameover.winner && (
                         <h1>
                             WINNER: vindara chowdavarapu aka Player
                             {this.props.ctx.gameover.winner}
                         </h1>
                     )}
+                    {this.props.ctx.gameover &&
+                        !this.props.ctx.gameover.winner && <h1>DRAW!</h1>}
                     <TurnInfo
                         currentPlayer={currentPlayer}
                         deck={deck}
@@ -250,8 +252,8 @@ export class TicTacToeBoard extends React.Component {
                             selectedCard={selectedCard}
                             drawCard={this.props.moves.drawCard}
                             deck={deck}
-                            // concede
-                            // TODO
+                            // end turn
+                            endTurn={this.props.moves.endTurn}
                         />
                     </Container>
                 )}
@@ -260,7 +262,7 @@ export class TicTacToeBoard extends React.Component {
                 <Container>
                     <Button
                         size="sm"
-                        // disabled={graveyard.length === 0}
+                        disabled={graveyard.length === 0}
                         onClick={this.toggleGraveyard}
                     >
                         View Graveyard ({graveyard.length})

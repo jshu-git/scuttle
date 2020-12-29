@@ -55,6 +55,7 @@ export class ChoosingPopup extends React.Component {
     };
 
     effect7 = () => {
+        if (this.props.deck.length < 2) return;
         let cells = [];
         let deck = this.props.deck;
 
@@ -152,13 +153,6 @@ export class ChoosingPopup extends React.Component {
     };
 
     render() {
-        let scuttle = this.scuttle();
-        let effect2 = this.effect2();
-        let effect3 = this.effect3();
-        let effect7 = this.effect7();
-        let effect9 = this.effect9();
-        let effectJ = this.effectJ();
-
         // props
         let selectedCard = this.props.selectedCard;
         // stages
@@ -169,29 +163,29 @@ export class ChoosingPopup extends React.Component {
             <Container>
                 {/* scuttling, opponent field */}
                 {inChoosingScuttleStage && (
-                    <React.Fragment>{scuttle}</React.Fragment>
+                    <React.Fragment>{this.scuttle()}</React.Fragment>
                 )}
 
                 {/* 2 opponent field and opponent special field */}
                 {selectedCard.Value === "2" && inChoosingEffectStage && (
-                    <React.Fragment>{effect2}</React.Fragment>
+                    <React.Fragment>{this.effect2()}</React.Fragment>
                 )}
 
                 {/* 3 graveyard */}
                 {selectedCard.Value === "3" && inChoosingEffectStage && (
-                    <React.Fragment>{effect3}</React.Fragment>
+                    <React.Fragment>{this.effect3()}</React.Fragment>
                 )}
                 {/* 7 */}
                 {selectedCard.Value === "7" && inChoosingEffectStage && (
-                    <React.Fragment>{effect7}</React.Fragment>
+                    <React.Fragment>{this.effect7()}</React.Fragment>
                 )}
                 {/* 9 ALL fields */}
                 {selectedCard.Value === "9" && inChoosingEffectStage && (
-                    <React.Fragment>{effect9}</React.Fragment>
+                    <React.Fragment>{this.effect9()}</React.Fragment>
                 )}
                 {/* J opponent field */}
                 {selectedCard.Value === "Jack" && inChoosingEffectStage && (
-                    <React.Fragment>{effectJ}</React.Fragment>
+                    <React.Fragment>{this.effectJ()}</React.Fragment>
                 )}
             </Container>
         );

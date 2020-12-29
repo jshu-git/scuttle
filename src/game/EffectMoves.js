@@ -312,7 +312,7 @@ function doEffectTarget(G, ctx, targetCard, targetField) {
         // pick 1 of top 2 cards
         case "7":
             console.log("reaching 7 case");
-            // // retrieve top 2 cards
+            // retrieve top 2 cards
             // let one = G.deck.pop();
             // let two = G.deck.pop();
             // // console.log("one", one.id, "two", two.id);

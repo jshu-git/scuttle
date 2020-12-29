@@ -17,8 +17,12 @@ export class TurnOptions extends React.Component {
                 >
                     Draw
                 </Button>
-                <Button size="sm" disabled={true}>
-                    Concede
+                <Button
+                    size="sm"
+                    disabled={deck.length !== 0}
+                    onClick={this.props.endTurn}
+                >
+                    End Turn
                 </Button>
             </React.Fragment>
         );
