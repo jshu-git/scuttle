@@ -1,10 +1,14 @@
 import React from "react";
-import "../style/board.css";
 
-import Row from "react-bootstrap/Row";
-import Col from "react-bootstrap/Col";
+import "../style/board.css";
+import { Row, Col, Image } from "react-bootstrap";
+import { temp1, temp2 } from "../assets/cards.js";
 
 export class Hand extends React.Component {
+    getImage = (id) => {
+        return temp2;
+    };
+
     render() {
         let hand = this.props.hand;
         let cells = [];
@@ -26,7 +30,8 @@ export class Hand extends React.Component {
                             : () => void 0
                     }
                 >
-                    {card.id}
+                    <Image src={this.getImage(card.id)} thumbnail />
+                    {/* {card.id} */}
                 </Col>
             );
         }

@@ -6,9 +6,7 @@ import { SpecialField } from "./SpecialField";
 import { Graveyard } from "./Graveyard";
 
 import "../style/board.css";
-import Container from "react-bootstrap/Container";
-import Row from "react-bootstrap/Row";
-import Col from "react-bootstrap/Col";
+import { Container, Row, Col } from "react-bootstrap";
 
 export class ChoosingPopup extends React.Component {
     scuttle = () => {

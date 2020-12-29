@@ -13,11 +13,7 @@ import { TurnInfo } from "./TurnInfo";
 import { ChoosingPopup } from "./ChoosingPopup";
 
 // bootstrap
-import Container from "react-bootstrap/Container";
-import Button from "react-bootstrap/Button";
-import Jumbotron from "react-bootstrap/Jumbotron";
-import Row from "react-bootstrap/Row";
-import Col from "react-bootstrap/Col";
+import { Container, Button, Jumbotron, Row, Col } from "react-bootstrap";
 
 export class TicTacToeBoard extends React.Component {
     constructor(props) {

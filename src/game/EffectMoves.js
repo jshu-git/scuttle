@@ -174,14 +174,18 @@ function doEffect(G, ctx) {
                     let idx = current_player_field.findIndex(
                         (x) => card.id === x.id
                     );
-                    let remove = current_player_field.splice(idx, 1)[0];
-                    opponent_player_field.push(remove);
+                    if (idx !== -1) {
+                        let remove = current_player_field.splice(idx, 1)[0];
+                        opponent_player_field.push(remove);
+                    }
                 } else if (owner !== opponent_player) {
                     let idx = opponent_player_field.findIndex(
                         (x) => card.id === x.id
                     );
-                    let remove = opponent_player_field.splice(idx, 1)[0];
-                    current_player_field.push(remove);
+                    if (idx !== -1) {
+                        let remove = opponent_player_field.splice(idx, 1)[0];
+                        current_player_field.push(remove);
+                    }
                 }
 
                 //  add jacks to graveyard

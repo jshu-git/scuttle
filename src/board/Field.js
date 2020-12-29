@@ -1,8 +1,7 @@
 import React from "react";
 
 import "../style/board.css";
-import Row from "react-bootstrap/Row";
-import Col from "react-bootstrap/Col";
+import { Row, Col } from "react-bootstrap";
 
 export class Field extends React.Component {
     onClick = (targetCard) => {

@@ -114,13 +114,13 @@ const isDraw = (G, ctx) => {
     let opponentHand = G.hands[opponent];
     let deck = G.deck;
 
-    console.log(
-        String(deck.length === 0),
-        String(hand.every((i) => i.Value === "Jack")),
-        String(hand.length === 0),
-        String(opponentHand.every((i) => i.Value === "Jack")),
-        String(opponentHand.length === 0)
-    );
+    // console.log(
+    //     String(deck.length === 0),
+    //     String(hand.every((i) => i.Value === "Jack")),
+    //     String(hand.length === 0),
+    //     String(opponentHand.every((i) => i.Value === "Jack")),
+    //     String(opponentHand.length === 0)
+    // );
 
     return (
         deck.length === 0 &&
