@@ -1,3 +1,20 @@
+@media (min-width: 576px) {
+    .container,
+    .container-lg,
+    .container-md,
+    .container-sm {
+        /* need !important to override other styles */
+        max-width: 650px !important;
+    }
+}
+
+@media (min-width: 576px) {
+    .container-large {
+        /* need !important to override other styles */
+        max-width: 800px !important;
+    }
+}
+
 /* bootstrap */
 .container {
     font-family: monospace;
@@ -10,8 +27,6 @@
 }
 .row {
     padding: 0.5rem;
-    /* padding-top: .5rem; */
-    /* padding-bottom: .5rem; */
 }
 
 /* https://stackoverflow.com/questions/8903313/using-regular-expression-in-css/8903451#8903451 */
@@ -32,9 +47,9 @@
 
 /* field */
 .jumbotron {
-    padding: 2rem 2rem;
-    margin-top: 2rem;
-    margin-bottom: 2rem;
+    padding: 1rem 1rem;
+    /* margin-top: 2rem;
+    margin-bottom: 2rem; */
     background-color: #e9ecef;
 }
 

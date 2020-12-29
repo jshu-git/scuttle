@@ -122,8 +122,8 @@ export class TicTacToeBoard extends React.Component {
                 <Container>
                     {this.props.ctx.gameover && this.props.ctx.gameover.winner && (
                         <h1>
-                            WINNER: {this.props.ctx.gameover.winner} (
-                            {this.props.playerName})
+                            WINNER: {/* {this.props.ctx.gameover.winner} */}
+                            {this.props.playerName}
                             {/* playerName is tied to playerID which is tied to winner */}
                         </h1>
                     )}
@@ -147,7 +147,7 @@ export class TicTacToeBoard extends React.Component {
                 </Container>
 
                 {/* fields */}
-                <Container>
+                <Container className="container-large">
                     <Jumbotron>
                         {/* opponent player fields */}
                         <Row>
@@ -192,7 +192,7 @@ export class TicTacToeBoard extends React.Component {
                 </Container>
 
                 {/* hand */}
-                <Container>
+                <Container >
                     <h6>
                         Your Hand ({hand.length}){" "}
                         {selectedCard !== -1 && (

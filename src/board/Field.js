@@ -59,6 +59,11 @@ export class Field extends React.Component {
         let jacks = this.props.jacks;
         let cells = [];
 
+        const style = {
+            // for jack text
+            textAlign: "center",
+        };
+
         for (let i = 0; i < field.length; i++) {
             let card = field[i];
             let img = CardImages[card.id].default;
@@ -69,10 +74,11 @@ export class Field extends React.Component {
             // }
 
             cells.push(
-                <Col key={card.id} style={{ textAlign: "center" }}>
+                <Col key={card.id} style={{}}>
                     <Image
                         src={img}
                         thumbnail
+                        style={style}
                         className={this.props.inPopup ? "targetable" : ""}
                         onClick={this.onClick(card)}
                     ></Image>
