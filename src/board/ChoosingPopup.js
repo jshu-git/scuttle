@@ -6,7 +6,8 @@ import { SpecialField } from "./SpecialField";
 import { Graveyard } from "./Graveyard";
 
 import "../style/board.css";
-import { Container, Row, Col } from "react-bootstrap";
+import { Container, Row, Col, Image } from "react-bootstrap";
+import { CardImages } from "../assets/Cards.js";
 
 export class ChoosingPopup extends React.Component {
     scuttle = () => {
@@ -53,21 +54,23 @@ export class ChoosingPopup extends React.Component {
     };
 
     effect7 = () => {
-        if (this.props.deck.length < 2) return;
+        // if (this.props.deck.length < 2) return;
         let cells = [];
         let deck = this.props.deck;
 
         for (let i = 0; i < 2; i++) {
             let idx = deck.length - 1 - i;
             let card = deck[idx];
+            let img = CardImages[card.id].default;
 
             cells.push(
-                <Col
-                    key={card.id}
-                    className={"border targetable"}
-                    onClick={() => this.props.chooseEffectTarget(card)}
-                >
-                    {card.Value} of {card.Suit}
+                <Col key={card.id}>
+                    <Image
+                        src={img}
+                        thumbnail
+                        className={"targetable"}
+                        onClick={() => this.props.chooseEffectTarget(card)}
+                    ></Image>
                 </Col>
             );
         }
@@ -158,7 +161,7 @@ export class ChoosingPopup extends React.Component {
         let inChoosingEffectStage = this.props.inChoosingEffectStage;
 
         return (
-            <Container>
+            <Container className="border">
                 {/* scuttling, opponent field */}
                 {inChoosingScuttleStage && (
                     <React.Fragment>{this.scuttle()}</React.Fragment>

@@ -1,7 +1,9 @@
 import React from "react";
 
 import "../style/board.css";
-import { Row, Col } from "react-bootstrap";
+import { Row, Col, Image } from "react-bootstrap";
+
+import { CardImages } from "../assets/Cards.js";
 
 export class Field extends React.Component {
     onClick = (targetCard) => {
@@ -59,6 +61,7 @@ export class Field extends React.Component {
 
         for (let i = 0; i < field.length; i++) {
             let card = field[i];
+            let img = CardImages[card.id].default;
             // let owner, numJacked;
             // if (jacks[card]) {
             //     owner = jacks[card][0];
@@ -66,20 +69,20 @@ export class Field extends React.Component {
             // }
 
             cells.push(
-                <Col
-                    className={
-                        this.props.inPopup ? "border targetable" : "border"
-                    }
-                    key={card.id}
-                    onClick={this.onClick(card)}
-                >
-                    {card.Value} of {card.Suit}{" "}
-                    {jacks[card.id] && (
-                        <span>
-                            (Owner: {jacks[card.id][1]} numJacked:{" "}
-                            {jacks[card.id][2].length})
-                        </span>
-                    )}
+                <Col key={card.id}>
+                    <Image
+                        src={img}
+                        thumbnail
+                        className={this.props.inPopup ? "targetable" : ""}
+                        onClick={this.onClick(card)}
+                    >
+                        {jacks[card.id] && (
+                            <span>
+                                (Owner: {jacks[card.id][1]} numJacked:{" "}
+                                {jacks[card.id][2].length})
+                            </span>
+                        )}
+                    </Image>
                 </Col>
             );
         }

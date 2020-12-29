@@ -1,7 +1,9 @@
 import React from "react";
 import "../style/board.css";
 
-import { Row, Col } from "react-bootstrap/";
+import { Row, Col, Image } from "react-bootstrap/";
+
+import { CardImages } from "../assets/Cards.js";
 
 export class SpecialField extends React.Component {
     onClick = (targetCard) => {
@@ -31,15 +33,16 @@ export class SpecialField extends React.Component {
 
         for (let i = 0; i < specialField.length; i++) {
             let card = specialField[i];
+            let img = CardImages[card.id].default;
+
             cells.push(
-                <Col
-                    key={card.id}
-                    className={
-                        this.props.inPopup ? "border targetable" : "border"
-                    }
-                    onClick={this.onClick(card)}
-                >
-                    {card.Value} of {card.Suit}
+                <Col key={card.id}>
+                    <Image
+                        src={img}
+                        thumbnail
+                        className={this.props.inPopup ? "targetable" : ""}
+                        onClick={this.onClick(card)}
+                    ></Image>
                 </Col>
             );
         }

@@ -99,3 +99,4 @@ function setSpecialFields(playOrder, playOrderPos) {
     specialFields[next] = [];
     return specialFields;
 }
+

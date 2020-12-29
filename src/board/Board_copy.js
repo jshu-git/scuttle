@@ -117,7 +117,7 @@ export class TicTacToeBoard extends React.Component {
             "choosingScuttle";
 
         return (
-            <Container>
+            <Container sm>
                 {/* turn information */}
                 <Container>
                     {this.props.ctx.gameover && this.props.ctx.gameover.winner && (
@@ -136,17 +136,18 @@ export class TicTacToeBoard extends React.Component {
                 </Container>
 
                 {/* 8 effect */}
-                {specialFields[playerIDOpponent].some(
+                {/* {specialFields[playerIDOpponent].some(
                     (x) => x.Value === "8"
-                ) && (
-                    <Container>
+                ) && ( */}
+                {/* <Container>
                         <h6>Opponent Hand</h6>
                         <Hand
                             playerID={playerIDOpponent}
                             hand={this.props.G.hands[playerIDOpponent]}
+                            isOpponentHand={true}
                         />
-                    </Container>
-                )}
+                    </Container> */}
+                {/* ) } */}
 
                 {/* fields */}
                 <Container>
