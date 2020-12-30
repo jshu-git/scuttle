@@ -54,10 +54,10 @@ export const TicTacToe = {
             action: {
                 moves: {
                     drawCard,
+                    endTurn,
                     playCardValue,
                     playCardScuttle,
                     playCardEffect,
-                    endTurn,
                 },
             },
             countering: {

@@ -24,6 +24,7 @@ export class TicTacToeBoard extends React.Component {
         };
     }
 
+    // togglers
     toggleSelectedCard = (card) => {
         this.setState(
             {
@@ -39,17 +40,44 @@ export class TicTacToeBoard extends React.Component {
             }
         );
     };
+    toggleGraveyard = () => {
+        this.setState({ showGraveyard: !this.state.showGraveyard });
+    };
 
+    // action moves
+    drawCard = () => {
+        this.props.moves.drawCard();
+    };
+    endTurn = () => {
+        this.props.moves.endTurn();
+    };
     playCardValue = () => {
         console.log("playCardValue: ", this.state.selectedCard.id);
         this.props.moves.playCardValue(this.state.selectedCard);
         this.setState({ selectedCard: -1 });
     };
-
     playCardScuttle = () => {
         this.props.moves.playCardScuttle();
     };
+    playCardEffect = () => {
+        // kicks off the playcardeffect code, which can branch into target
+        this.props.moves.playCardEffect(
+            this.props.playerID,
+            this.state.selectedCard
+        );
+        // at this point, selectedCard is at counter_chain[0], so we can reset it
+        this.setState({ selectedCard: -1 });
+    };
 
+    // countering moves
+    accept = () => {
+        this.props.moves.accept();
+    };
+    counter = () => {
+        this.props.moves.counter(this.props.playerID);
+    };
+
+    // choosing moves
     chooseScuttleTarget = (targetCard, targetField) => {
         console.log(
             "scuttleCard:",
@@ -64,17 +92,6 @@ export class TicTacToeBoard extends React.Component {
         );
         this.setState({ selectedCard: -1 });
     };
-
-    playCardEffect = () => {
-        // kicks off the playcardeffect code, which can branch into target
-        this.props.moves.playCardEffect(
-            this.props.playerID,
-            this.state.selectedCard
-        );
-        // at this point, selectedCard is at counter_chain[0], so we can reset it
-        this.setState({ selectedCard: -1 });
-    };
-
     chooseEffectTarget = (targetCard, targetField) => {
         console.log(
             // "chooseEffectTarget:",
@@ -85,10 +102,6 @@ export class TicTacToeBoard extends React.Component {
             targetField
         );
         this.props.moves.chooseEffectTarget(targetCard, targetField);
-    };
-
-    toggleGraveyard = () => {
-        this.setState({ showGraveyard: !this.state.showGraveyard });
     };
 
     render() {
@@ -266,8 +279,8 @@ export class TicTacToeBoard extends React.Component {
                     <Container>
                         <CounteringOptions
                             playerID={playerID}
-                            accept={this.props.moves.accept}
-                            counter={this.props.moves.counter}
+                            accept={this.accept}
+                            counter={this.counter}
                             has2={hands[playerID].some((x) => x.Value === "2")}
                         />
                     </Container>
@@ -279,10 +292,10 @@ export class TicTacToeBoard extends React.Component {
                         <TurnOptions
                             // draw card
                             selectedCard={selectedCard}
-                            drawCard={this.props.moves.drawCard}
+                            drawCard={this.drawCard}
                             deck={deck}
                             // end turn
-                            endTurn={this.props.moves.endTurn}
+                            endTurn={this.endTurn}
                         />
                     </Container>
                 )}
