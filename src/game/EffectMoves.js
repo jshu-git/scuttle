@@ -422,7 +422,6 @@ function doEffectTarget(G, ctx, targetCard, targetField) {
                         );
                         let remove = current_player_field.splice(idx, 1)[0];
                         deck.push(remove);
-                        return false;
                     }
                 }
             }

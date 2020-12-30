@@ -91,6 +91,6 @@ export class Field extends React.Component {
                 </Col>
             );
         }
-        return <Row md={3}>{cells}</Row>;
+        return cells;
     }
 }

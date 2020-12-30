@@ -9,13 +9,12 @@
 }
 
 @media (min-width: 576px) {
-    .container-large {
+    .container-field {
         /* need !important to override other styles */
         max-width: 800px !important;
     }
 }
 
-/* bootstrap */
 .container {
     font-family: monospace;
     /* font-weight: bold; */
@@ -27,22 +26,6 @@
 }
 .row {
     padding: 0.5rem;
-}
-
-/* https://stackoverflow.com/questions/8903313/using-regular-expression-in-css/8903451#8903451 */
-.row div[class^="col"] {
-    /* padding-top: 0.5rem;
-    padding-bottom: 0.5rem; */
-    /* padding-left: 1rem; */
-    /* padding-right: 1rem; */
-
-    /* padding: .5rem; */
-    /* margin: 0.5rem 0.5rem; */
-    /* margin-left: 0.1rem; */
-    /* margin-right: 0.1rem; */
-
-    /* font-family: monospace; */
-    /* text-align: center; */
 }
 
 /* field */
@@ -61,13 +44,6 @@
     cursor: pointer;
 }
 
-/* turn options */
-#graveyardButton {
-    /* margin-top: 0.5rem; */
-    margin-bottom: 1rem;
-    /* margin-right: 0.5rem; */
-}
-
 h6 {
     text-align: center;
 }
@@ -75,4 +51,10 @@ h6 {
 .popup {
     padding: 0.5rem;
     background-color: #ffd1d8;
+}
+
+.center-block {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
 }

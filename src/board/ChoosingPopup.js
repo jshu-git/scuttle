@@ -14,16 +14,18 @@ export class ChoosingPopup extends React.Component {
         return (
             <React.Fragment>
                 <h6>Opponent Field</h6>
-                <Field
-                    inPopup={true}
-                    // for display
-                    field={this.props.opponentField}
-                    jacks={this.props.jacks}
-                    // onclick
-                    inChoosingScuttleStage={true}
-                    chooseScuttleTarget={this.props.chooseScuttleTarget}
-                    isOpponentField={true}
-                />
+                <Row md={5}>
+                    <Field
+                        inPopup={true}
+                        // for display
+                        field={this.props.opponentField}
+                        jacks={this.props.jacks}
+                        // onclick
+                        inChoosingScuttleStage={true}
+                        chooseScuttleTarget={this.props.chooseScuttleTarget}
+                        isOpponentField={true}
+                    />
+                </Row>
             </React.Fragment>
         );
     };
@@ -33,24 +35,32 @@ export class ChoosingPopup extends React.Component {
             <Row>
                 <Col>
                     <h6>Opponent Field</h6>
-                    <Field
-                        inPopup={true}
-                        field={this.props.opponentField}
-                        jacks={this.props.jacks}
-                        inChoosingEffectStage={this.props.inChoosingEffectStage}
-                        chooseEffectTarget={this.props.chooseEffectTarget}
-                        isOpponentField={true}
-                    />
+                    <Row md={3}>
+                        <Field
+                            inPopup={true}
+                            field={this.props.opponentField}
+                            jacks={this.props.jacks}
+                            inChoosingEffectStage={
+                                this.props.inChoosingEffectStage
+                            }
+                            chooseEffectTarget={this.props.chooseEffectTarget}
+                            isOpponentField={true}
+                        />
+                    </Row>
                 </Col>
                 <Col>
                     <h6>Opponent Special Field</h6>
-                    <SpecialField
-                        inPopup={true}
-                        specialField={this.props.opponentSpecialField}
-                        inChoosingEffectStage={this.props.inChoosingEffectStage}
-                        chooseEffectTarget={this.props.chooseEffectTarget}
-                        isOpponentSpecialField={true}
-                    />
+                    <Row md={3}>
+                        <SpecialField
+                            inPopup={true}
+                            specialField={this.props.opponentSpecialField}
+                            inChoosingEffectStage={
+                                this.props.inChoosingEffectStage
+                            }
+                            chooseEffectTarget={this.props.chooseEffectTarget}
+                            isOpponentSpecialField={true}
+                        />
+                    </Row>
                 </Col>
             </Row>
         );
@@ -78,7 +88,7 @@ export class ChoosingPopup extends React.Component {
             );
         }
 
-        return <Row>{cells}</Row>;
+        return <Row md={5}>{cells}</Row>;
     };
 
     effect9 = () => {
@@ -87,44 +97,56 @@ export class ChoosingPopup extends React.Component {
                 <Row>
                     <Col>
                         <h6>Opponent Field</h6>
-                        <Field
-                            inPopup={true}
-                            field={this.props.opponentField}
-                            jacks={this.props.jacks}
-                            inChoosingEffectStage={
-                                this.props.inChoosingEffectStage
-                            }
-                            chooseEffectTarget={this.props.chooseEffectTarget}
-                            isOpponentField={true}
-                        />
+                        <Row md={3}>
+                            <Field
+                                inPopup={true}
+                                field={this.props.opponentField}
+                                jacks={this.props.jacks}
+                                inChoosingEffectStage={
+                                    this.props.inChoosingEffectStage
+                                }
+                                chooseEffectTarget={
+                                    this.props.chooseEffectTarget
+                                }
+                                isOpponentField={true}
+                            />
+                        </Row>
                     </Col>
                     <Col>
                         <h6>Opponent Special Field</h6>
-                        <SpecialField
-                            inPopup={true}
-                            specialField={this.props.opponentSpecialField}
-                            inChoosingEffectStage={
-                                this.props.inChoosingEffectStage
-                            }
-                            chooseEffectTarget={this.props.chooseEffectTarget}
-                            isOpponentSpecialField={true}
-                        />
+                        <Row md={3}>
+                            <SpecialField
+                                inPopup={true}
+                                specialField={this.props.opponentSpecialField}
+                                inChoosingEffectStage={
+                                    this.props.inChoosingEffectStage
+                                }
+                                chooseEffectTarget={
+                                    this.props.chooseEffectTarget
+                                }
+                                isOpponentSpecialField={true}
+                            />
+                        </Row>
                     </Col>
                 </Row>
-
+                <hr></hr>
                 <Row>
                     <Col>
                         <h6>Your Field</h6>
-                        <Field
-                            inPopup={true}
-                            field={this.props.playerField}
-                            jacks={this.props.jacks}
-                            inChoosingEffectStage={
-                                this.props.inChoosingEffectStage
-                            }
-                            chooseEffectTarget={this.props.chooseEffectTarget}
-                            isPlayerField={true}
-                        />
+                        <Row md={5}>
+                            <Field
+                                inPopup={true}
+                                field={this.props.playerField}
+                                jacks={this.props.jacks}
+                                inChoosingEffectStage={
+                                    this.props.inChoosingEffectStage
+                                }
+                                chooseEffectTarget={
+                                    this.props.chooseEffectTarget
+                                }
+                                isPlayerField={true}
+                            />
+                        </Row>
                     </Col>
                 </Row>
             </React.Fragment>
@@ -135,14 +157,16 @@ export class ChoosingPopup extends React.Component {
         return (
             <React.Fragment>
                 <h6>Opponent Field</h6>
-                <Field
-                    inPopup={true}
-                    field={this.props.opponentField}
-                    jacks={this.props.jacks}
-                    inChoosingEffectStage={this.props.inChoosingEffectStage}
-                    chooseEffectTarget={this.props.chooseEffectTarget}
-                    isOpponentField={true}
-                />
+                <Row md={5}>
+                    <Field
+                        inPopup={true}
+                        field={this.props.opponentField}
+                        jacks={this.props.jacks}
+                        inChoosingEffectStage={this.props.inChoosingEffectStage}
+                        chooseEffectTarget={this.props.chooseEffectTarget}
+                        isOpponentField={true}
+                    />
+                </Row>
             </React.Fragment>
         );
     };
@@ -170,7 +194,7 @@ export class ChoosingPopup extends React.Component {
         let inChoosingEffectStage = this.props.inChoosingEffectStage;
 
         return (
-            <Container className="border popup">
+            <React.Fragment>
                 {/* scuttling, opponent field */}
                 {inChoosingScuttleStage && (
                     <React.Fragment>{this.scuttle()}</React.Fragment>
@@ -187,10 +211,7 @@ export class ChoosingPopup extends React.Component {
                 )}
                 {/* 7 */}
                 {selectedCard.Value === "7" && inChoosingEffectStage && (
-                    <React.Fragment>
-                        <h6>Choose One</h6>
-                        {this.effect7()}
-                    </React.Fragment>
+                    <React.Fragment>{this.effect7()}</React.Fragment>
                 )}
                 {/* 9 ALL fields */}
                 {selectedCard.Value === "9" && inChoosingEffectStage && (
@@ -200,7 +221,7 @@ export class ChoosingPopup extends React.Component {
                 {selectedCard.Value === "Jack" && inChoosingEffectStage && (
                     <React.Fragment>{this.effectJ()}</React.Fragment>
                 )}
-            </Container>
+            </React.Fragment>
         );
     }
 }

@@ -24,7 +24,11 @@ export class Hand extends React.Component {
                         src={img}
                         thumbnail
                         style={style}
-                        className={this.props.inActionStage ? "targetable" : ""}
+                        className={
+                            this.props.inActionStage
+                                ? "targetable center-block"
+                                : ""
+                        }
                         onClick={
                             // note: when using ternary in onClick, have to use ()=>
                             this.props.inActionStage

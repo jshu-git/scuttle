@@ -147,24 +147,28 @@ export class TicTacToeBoard extends React.Component {
                 </Container>
 
                 {/* fields */}
-                <Container className="container-large">
+                <Container className="container-field">
                     <Jumbotron>
                         {/* opponent player fields */}
                         <Row>
                             <Col>
                                 <h6>Opponent Field</h6>
-                                <Field
-                                    field={fields[playerIDOpponent]}
-                                    jacks={jacks}
-                                />
+                                <Row md={3}>
+                                    <Field
+                                        field={fields[playerIDOpponent]}
+                                        jacks={jacks}
+                                    />
+                                </Row>
                             </Col>
                             <Col>
                                 <h6>Opponent Special Field</h6>
-                                <SpecialField
-                                    specialField={
-                                        specialFields[playerIDOpponent]
-                                    }
-                                />
+                                <Row md={3}>
+                                    <SpecialField
+                                        specialField={
+                                            specialFields[playerIDOpponent]
+                                        }
+                                    />
+                                </Row>
                             </Col>
                         </Row>
 
@@ -174,25 +178,61 @@ export class TicTacToeBoard extends React.Component {
                         <Row>
                             <Col>
                                 <h6>Your Field</h6>
-                                <Field
-                                    field={fields[playerID]}
-                                    jacks={jacks}
-                                    isPlayerField={true}
-                                />
+                                <Row md={3}>
+                                    <Field
+                                        field={fields[playerID]}
+                                        jacks={jacks}
+                                        isPlayerField={true}
+                                    />
+                                </Row>
                             </Col>
                             <Col>
                                 <h6>Your Special Field</h6>
-                                <SpecialField
-                                    specialField={specialFields[playerID]}
-                                    isPlayerSpecialField={true}
-                                />
+                                <Row md={3}>
+                                    <SpecialField
+                                        specialField={specialFields[playerID]}
+                                        isPlayerSpecialField={true}
+                                    />
+                                </Row>
                             </Col>
                         </Row>
                     </Jumbotron>
                 </Container>
 
+                {/* choosing popup */}
+                {(inChoosingScuttleStage || inChoosingEffectStage) && (
+                    <Container className="border popup">
+                        <h6>
+                            <u>Choose Target</u>
+                        </h6>
+                        <ChoosingPopup
+                            // props
+                            selectedCard={
+                                inChoosingScuttleStage
+                                    ? selectedCard
+                                    : this.props.G.counterChain[0]
+                            }
+                            deck={deck}
+                            jacks={jacks}
+                            graveyard={graveyard}
+                            playerField={fields[playerID]}
+                            opponentField={fields[playerIDOpponent]}
+                            playerSpecialField={specialFields[playerID]}
+                            opponentSpecialField={
+                                specialFields[playerIDOpponent]
+                            }
+                            // stages
+                            inChoosingScuttleStage={inChoosingScuttleStage}
+                            inChoosingEffectStage={inChoosingEffectStage}
+                            // moves
+                            chooseScuttleTarget={this.chooseScuttleTarget}
+                            chooseEffectTarget={this.chooseEffectTarget}
+                        />
+                    </Container>
+                )}
+
                 {/* hand */}
-                <Container >
+                <Container>
                     <h6>
                         Your Hand ({hand.length}){" "}
                         {selectedCard !== -1 && (
@@ -262,39 +302,18 @@ export class TicTacToeBoard extends React.Component {
                         variant="outline-secondary"
                         disabled={graveyard.length === 0}
                         onClick={this.toggleGraveyard}
-                        id="graveyardButton"
+                        style={{ marginBottom: "1rem" }}
                     >
                         View Graveyard ({graveyard.length})
                     </Button>
                     {this.state.showGraveyard && (
-                        <Graveyard graveyard={graveyard} />
+                        <React.Fragment>
+                            <h6>Graveyard</h6>
+                            <Graveyard graveyard={graveyard} />
+                        </React.Fragment>
                     )}
                 </Container>
 
-                {/* choosing popup */}
-                {(inChoosingScuttleStage || inChoosingEffectStage) && (
-                    <ChoosingPopup
-                        // props
-                        selectedCard={
-                            inChoosingScuttleStage
-                                ? selectedCard
-                                : this.props.G.counterChain[0]
-                        }
-                        deck={deck}
-                        jacks={jacks}
-                        graveyard={graveyard}
-                        playerField={fields[playerID]}
-                        opponentField={fields[playerIDOpponent]}
-                        playerSpecialField={specialFields[playerID]}
-                        opponentSpecialField={specialFields[playerIDOpponent]}
-                        // stages
-                        inChoosingScuttleStage={inChoosingScuttleStage}
-                        inChoosingEffectStage={inChoosingEffectStage}
-                        // moves
-                        chooseScuttleTarget={this.chooseScuttleTarget}
-                        chooseEffectTarget={this.chooseEffectTarget}
-                    />
-                )}
                 <hr></hr>
                 <hr></hr>
             </div>
