@@ -21,8 +21,8 @@ const TicTacToeClient = Client({
 
 const App = () => (
     <div>
-        <TicTacToeClient playerID="0" playerName="jshu" />
-        <TicTacToeClient playerID="1" playerName="vindara" />
+        <TicTacToeClient playerID="0" playerIDOpponent="1" playerName="jshu" />
+        <TicTacToeClient playerID="1" playerIDOpponent="0" playerName="vindara" />
 
         {/* spectator */}
         {/* <TicTacToeClient playerID="2" /> */}

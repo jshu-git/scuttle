@@ -6,7 +6,7 @@ export class PlayCardOptions extends React.Component {
     render() {
         // props
         let playerID = this.props.playerID;
-        let playerIDOpponent = String(1 - parseInt(playerID));
+        let playerIDOpponent = this.props.playerIDOpponent;
         let fields = this.props.fields;
         let specialFields = this.props.specialFields;
         let graveyard = this.props.graveyard;

@@ -92,9 +92,10 @@ export class TicTacToeBoard extends React.Component {
     };
 
     render() {
-        // important props to be passed
+        // props
         let playerID = this.props.playerID;
-        let playerIDOpponent = String(1 - parseInt(this.props.playerID));
+        let playerIDOpponent = this.props.playerIDOpponent;
+        let hands = this.props.G.hands;
         let currentPlayer = this.props.ctx.currentPlayer;
         let hand = this.props.G.hands[playerID];
         let graveyard = this.props.G.graveyard;
@@ -105,16 +106,13 @@ export class TicTacToeBoard extends React.Component {
         let jacks = this.props.G.jacks;
 
         // stages
-        let inActionStage =
-            this.props.ctx.activePlayers[this.props.playerID] === "action";
-        let inCounteringStage =
-            this.props.ctx.activePlayers[this.props.playerID] === "countering";
+        let activePlayers = this.props.ctx.activePlayers;
+        let inActionStage = activePlayers[playerID] === "action";
+        let inCounteringStage = activePlayers[playerID] === "countering";
         let inChoosingEffectStage =
-            this.props.ctx.activePlayers[this.props.playerID] ===
-            "choosingEffect";
+            activePlayers[playerID] === "choosingEffect";
         let inChoosingScuttleStage =
-            this.props.ctx.activePlayers[this.props.playerID] ===
-            "choosingScuttle";
+            activePlayers[playerID] === "choosingScuttle";
 
         return (
             <div>
@@ -134,14 +132,11 @@ export class TicTacToeBoard extends React.Component {
 
                 {/* 8 effect */}
                 <Container>
-                    <h6>
-                        Opponent Hand (
-                        {this.props.G.hands[playerIDOpponent].length})
-                    </h6>
+                    <h6>Opponent Hand ({hands[playerIDOpponent].length})</h6>
                     {specialFields[playerID].some((x) => x.Value === "8") && (
                         <Hand
                             playerID={playerIDOpponent}
-                            hand={this.props.G.hands[playerIDOpponent]}
+                            hand={hands[playerIDOpponent]}
                         />
                     )}
                 </Container>
@@ -182,7 +177,6 @@ export class TicTacToeBoard extends React.Component {
                                     <Field
                                         field={fields[playerID]}
                                         jacks={jacks}
-                                        isPlayerField={true}
                                     />
                                 </Row>
                             </Col>
@@ -191,7 +185,6 @@ export class TicTacToeBoard extends React.Component {
                                 <Row md={3}>
                                     <SpecialField
                                         specialField={specialFields[playerID]}
-                                        isPlayerSpecialField={true}
                                     />
                                 </Row>
                             </Col>
@@ -234,15 +227,14 @@ export class TicTacToeBoard extends React.Component {
                 {/* hand */}
                 <Container>
                     <h6>
-                        Your Hand ({hand.length}){" "}
+                        Your Hand ({hands[playerID].length}){" "}
                         {selectedCard !== -1 && (
                             <span>(selected: {selectedCard.id})</span>
                         )}
                     </h6>
                     <Hand
-                        playerID={playerID}
-                        hand={hand}
-                        // for targetable/onclick
+                        hand={hands[playerID]}
+                        // for onclick
                         inActionStage={inActionStage}
                         toggleSelectedCard={this.toggleSelectedCard}
                     />
@@ -253,6 +245,7 @@ export class TicTacToeBoard extends React.Component {
                 {inActionStage && selectedCard !== -1 && (
                     <Container>
                         <PlayCardOptions
+                            // moves
                             playCardValue={this.playCardValue}
                             playCardScuttle={this.playCardScuttle}
                             playCardEffect={this.playCardEffect}
@@ -275,8 +268,9 @@ export class TicTacToeBoard extends React.Component {
                         <CounteringOptions
                             accept={this.props.moves.accept}
                             counter={this.props.moves.counter}
-                            // for disabled
-                            hand={hand}
+                            has2={hands[playerID].some(
+                                (x) => x.Value === "2"
+                            )}
                         />
                     </Container>
                 )}

@@ -10,6 +10,7 @@ export class Hand extends React.Component {
         let hand = this.props.hand;
         let cells = [];
 
+        // for second row of cards
         const style = {
             marginBottom: "0.5rem",
         };
@@ -24,11 +25,7 @@ export class Hand extends React.Component {
                         src={img}
                         thumbnail
                         style={style}
-                        className={
-                            this.props.inActionStage
-                                ? "targetable center-block"
-                                : ""
-                        }
+                        className={this.props.inActionStage ? "targetable" : ""}
                         onClick={
                             // note: when using ternary in onClick, have to use ()=>
                             this.props.inActionStage
