@@ -1,13 +1,13 @@
 /*
-    currentPlayerActionStage is the player playing the card effect
-    G.currentPlayerCounterStage is the turn of the player who is ABOUT to counter/accept, aka the "opposite" of currentPlayerActionStage
+    playerAction is the player playing the card effect
+    the other player is then put into countering stage
 */
-export function playCardEffect(G, ctx, currentPlayerActionStage, card) {
+export function playCardEffect(G, ctx, playerAction, card) {
     // push card into counterChain
     G.counterChain.push(card);
 
     // safe to remove card from hand, it's now saved in counterChain
-    let hand = G.hands[currentPlayerActionStage];
+    let hand = G.hands[playerAction];
     let idx = hand.findIndex((i) => i.id === card.id);
     // let remove = hand.splice(idx, 1)[0];
     hand.splice(idx, 1);
@@ -17,12 +17,8 @@ export function playCardEffect(G, ctx, currentPlayerActionStage, card) {
         return accept(G, ctx);
     }
 
-    // set player counter stage
-    // this should point to who HAS THE OPTION TO COUNTER
-    G.currentPlayerCounterStage = 1 - currentPlayerActionStage; // a number
-
     // set stage
-    if (currentPlayerActionStage === 0) {
+    if (playerAction === "0") {
         ctx.events.setActivePlayers({
             value: {
                 0: "idle",
@@ -39,22 +35,19 @@ export function playCardEffect(G, ctx, currentPlayerActionStage, card) {
     }
 }
 
-export function counter(G, ctx) {
+export function counter(G, ctx, playerCounter) {
     // at this point, ctx.currentPlayer is STILL the player who played the FIRST effect, so we can't use that as a reference
-    // this is why we have to use our own G.currentPlayerCounterStage
 
-    // currentPlayerCounterStage holds which player's "turn" of the stage is aka who has option to counter
-    // check if this player has a 2
-    let hand = G.hands[G.currentPlayerCounterStage];
+    // find 2 in countering player
+    let hand = G.hands[playerCounter];
     let twoIndex = hand.findIndex((x) => x.Value === "2");
-    // console.log("index of two is: ",twoIndex)
 
     // toggle countered
     G.effectCountered = !G.effectCountered;
 
     // play as its own cardEffect
     // which is added to the counterChain
-    playCardEffect(G, ctx, G.currentPlayerCounterStage, hand[twoIndex]);
+    playCardEffect(G, ctx, playerCounter, hand[twoIndex]);
 }
 
 export function accept(G, ctx) {

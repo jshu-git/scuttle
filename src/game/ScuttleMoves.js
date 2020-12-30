@@ -19,15 +19,11 @@ export function chooseScuttleTarget(G, ctx, card, target) {
     let target_card = opponent_field.find((i) => i.id === target.id);
 
     // card logic
-    var temp = current_card.Value;
-    var temp2 = target_card.Value;
-    if (temp === "Ace") {
-        temp = "1";
-    }
-    if (temp2 === "Ace") {
-        temp2 = "1";
-    }
-    if (parseInt(temp) >= parseInt(temp2)) {
+    let curr =
+        current_card.Value === "Ace" ? "1" : parseInt(current_card.Value);
+    let targ = target_card.Value === "Ace" ? "1" : parseInt(target_card.Value);
+
+    if (parseInt(curr) >= parseInt(targ)) {
         let i = current_hand.findIndex((x) => x.id === card.id);
         let remove1 = current_hand.splice(i, 1)[0];
         let j = opponent_field.findIndex((y) => y.id === target.id);

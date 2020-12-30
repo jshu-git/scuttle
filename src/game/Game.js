@@ -26,11 +26,9 @@ const setup = ({ playOrder, playOrderPos }) => {
         // effect stuff
         counterChain: [],
         effectCountered: false,
-        // used to keep track of currentPlayer during a stage, similar to currentPlayer for a turn
-        currentPlayerCounterStage: undefined, // is overwritten whenever a cardeffect is played
 
         // jacks stuff
-        // key=card object, value=[card obj, owner, list of jacks]
+        // key=card object, value=[card obj (needed for 6), owner, list of jacks]
         // i.e. jacks[4 of Hearts ID] = [card object, "1", [Jack of Hearts, Jack of Spades]]
         jacks: {},
     };

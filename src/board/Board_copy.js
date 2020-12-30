@@ -68,7 +68,7 @@ export class TicTacToeBoard extends React.Component {
     playCardEffect = () => {
         // kicks off the playcardeffect code, which can branch into target
         this.props.moves.playCardEffect(
-            parseInt(this.props.ctx.currentPlayer),
+            this.props.playerID,
             this.state.selectedCard
         );
         // at this point, selectedCard is at counter_chain[0], so we can reset it
@@ -97,7 +97,6 @@ export class TicTacToeBoard extends React.Component {
         let playerIDOpponent = this.props.playerIDOpponent;
         let hands = this.props.G.hands;
         let currentPlayer = this.props.ctx.currentPlayer;
-        let hand = this.props.G.hands[playerID];
         let graveyard = this.props.G.graveyard;
         let deck = this.props.G.deck;
         let fields = this.props.G.fields;
@@ -266,11 +265,10 @@ export class TicTacToeBoard extends React.Component {
                 {inCounteringStage && (
                     <Container>
                         <CounteringOptions
+                            playerID={playerID}
                             accept={this.props.moves.accept}
                             counter={this.props.moves.counter}
-                            has2={hands[playerID].some(
-                                (x) => x.Value === "2"
-                            )}
+                            has2={hands[playerID].some((x) => x.Value === "2")}
                         />
                     </Container>
                 )}
@@ -296,7 +294,6 @@ export class TicTacToeBoard extends React.Component {
                         variant="outline-secondary"
                         disabled={graveyard.length === 0}
                         onClick={this.toggleGraveyard}
-                        style={{ marginBottom: "1rem" }}
                     >
                         View Graveyard ({graveyard.length})
                     </Button>
