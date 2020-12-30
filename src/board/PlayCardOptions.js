@@ -14,7 +14,6 @@ export class PlayCardOptions extends React.Component {
         let jacks = this.props.jacks;
 
         let selectedCard = this.props.selectedCard;
-        console.log("hemp;p", selectedCard.id);
 
         // special cards
         let special =
@@ -64,20 +63,6 @@ export class PlayCardOptions extends React.Component {
             // or > 0 queen
             (selectedCard.Value === "Jack" &&
                 numQueensInOpponentSpecialField > 0);
-
-        // end turn button for effect 7
-        if (
-            this.props.inChoosingEffectStage &&
-            disabledValue &&
-            disabledScuttle &&
-            disabledEffect
-        ) {
-            return (
-                <Button size="sm" variant="danger" onClick={this.props.endTurn}>
-                    End Turn
-                </Button>
-            );
-        }
 
         return (
             <React.Fragment>

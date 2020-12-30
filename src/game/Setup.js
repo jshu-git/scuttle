@@ -13,18 +13,18 @@ export const initializeGame = (playOrder, playOrderPos) => {
 export function createDeck() {
     var suits = ["Spades", "Diamonds", "Clubs", "Hearts"];
     var values = [
-        // "Ace",
-        // "2",
-        // "3",
-        // "4",
-        // "5",
-        // "6",
+        "Ace",
+        "2",
+        "3",
+        "4",
+        "5",
+        "6",
         "7",
-        // "8",
-        // "9",
-        // "10",
+        "8",
+        "9",
+        "10",
         "Jack",
-        // "Queen",
+        "Queen",
         "King",
     ];
     var deck = [];

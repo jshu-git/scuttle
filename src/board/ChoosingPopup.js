@@ -67,12 +67,9 @@ export class ChoosingPopup extends React.Component {
     };
 
     effect7 = () => {
-        if (this.props.deck.length < 2) return;
+        // if (this.props.deck.length < 2) return;
         let cells = [];
         let deck = this.props.deck;
-
-        // this case happens when you 7 into a 7 and there's 1 card left
-        if (deck.length < 2) return;
 
         for (let i = 0; i < 2; i++) {
             let idx = deck.length - 1 - i;
