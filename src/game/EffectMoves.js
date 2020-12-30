@@ -199,7 +199,7 @@ function doEffect(G, ctx) {
             current_player_special_field.push(special);
             break;
         default:
-            console.log("default case, something went wrong");
+            console.log("default case, no effect");
             break;
     }
 }
@@ -312,17 +312,18 @@ function doEffectTarget(G, ctx, targetCard, targetField) {
             // retrieve top 2 cards
             let one = G.deck.pop();
             let two = G.deck.pop();
-            // console.log("one", one.id, "two", two.id);
 
-            // check target
+            // other card goes back on top
             if (targetCard.id === one.id) {
-                current_player_hand.push(one);
                 G.deck.push(two);
             } else {
                 current_player_hand.push(two);
                 G.deck.push(one);
             }
-            break;
+
+            // use effect immediately
+            G.counterChain.unshift(targetCard);
+            return accept(G, ctx);
         case "9":
             console.log("reaching 9 case", targetField);
             // queen checks
@@ -441,7 +442,7 @@ function doEffectTarget(G, ctx, targetCard, targetField) {
             current_player_field.push(remove);
             break;
         default:
-            console.log("default case, something went wrong");
+            console.log("default case, no effect");
             break;
     }
     return true;

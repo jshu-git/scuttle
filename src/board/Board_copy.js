@@ -241,7 +241,9 @@ export class TicTacToeBoard extends React.Component {
 
                 {/* turn stuff */}
                 {/* playcard options */}
-                {inActionStage && selectedCard !== -1 && (
+                {((inActionStage && selectedCard !== -1) ||
+                    // only occurs when using 7
+                    (inChoosingEffectStage && selectedCard === -1)) && (
                     <Container>
                         <PlayCardOptions
                             // moves
@@ -253,10 +255,17 @@ export class TicTacToeBoard extends React.Component {
                             playerIDOpponent={playerIDOpponent}
                             fields={fields}
                             specialFields={specialFields}
-                            selectedCard={selectedCard}
                             graveyard={graveyard}
                             deck={deck}
                             jacks={jacks}
+                            // account for 7 effect
+                            inChoosingEffectStage={inChoosingEffectStage}
+                            selectedCard={
+                                inActionStage
+                                    ? selectedCard
+                                    : this.props.G.counterChain[0]
+                            }
+                            endTurn={this.props.moves.endTurn}
                         />
                     </Container>
                 )}

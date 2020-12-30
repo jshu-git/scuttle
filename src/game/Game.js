@@ -72,6 +72,11 @@ export const TicTacToe = {
             choosingEffect: {
                 moves: {
                     chooseEffectTarget,
+                    // only during 7 effect
+                    playCardValue,
+                    playCardEffect,
+                    playCardScuttle,
+                    endTurn,
                 },
             },
         },
