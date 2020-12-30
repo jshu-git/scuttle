@@ -35,7 +35,7 @@ const setup = ({ playOrder, playOrderPos }) => {
     };
 };
 
-export const TicTacToe = {
+export const Scuttle = {
     setup: setup,
     turn: {
         onBegin: (G, ctx) => {

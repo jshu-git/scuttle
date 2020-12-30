@@ -15,7 +15,7 @@ import { ChoosingPopup } from "./ChoosingPopup";
 // bootstrap
 import { Container, Button, Jumbotron, Row, Col } from "react-bootstrap";
 
-export class TicTacToeBoard extends React.Component {
+export class ScuttleBoard extends React.Component {
     constructor(props) {
         super(props);
         this.state = {

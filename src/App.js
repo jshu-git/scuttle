@@ -2,13 +2,12 @@ import React from "react";
 import { Client } from "boardgame.io/react";
 import { Local } from "boardgame.io/multiplayer";
 // import { SocketIO } from "boardgame.io/multiplayer";
-import { TicTacToe } from "./game/Game";
-// import { TicTacToeBoard } from "./board/Board";
-import { TicTacToeBoard } from "./board/Board_copy";
+import { Scuttle } from "./game/Game";
+import { ScuttleBoard } from "./board/Board_copy";
 
-const TicTacToeClient = Client({
-    game: TicTacToe,
-    board: TicTacToeBoard,
+const ScuttleClient = Client({
+    game: Scuttle,
+    board: ScuttleBoard,
     numPlayers: 2,
 
     // local master
@@ -21,11 +20,11 @@ const TicTacToeClient = Client({
 
 const App = () => (
     <div>
-        <TicTacToeClient playerID="0" playerIDOpponent="1" playerName="jshu" />
-        <TicTacToeClient playerID="1" playerIDOpponent="0" playerName="vindara" />
+        <ScuttleClient playerID="0" playerIDOpponent="1" playerName="jshu" />
+        <ScuttleClient playerID="1" playerIDOpponent="0" playerName="vindara" />
 
         {/* spectator */}
-        {/* <TicTacToeClient playerID="2" /> */}
+        {/* <ScuttleClient playerID="2" /> */}
     </div>
 );
 
