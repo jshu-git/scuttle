@@ -6,8 +6,6 @@ export class TurnInfo extends React.Component {
     render() {
         // props
         let currentPlayer = this.props.currentPlayer;
-        let deck = this.props.deck;
-        let selectedCard = this.props.selectedCard;
 
         return (
             <React.Fragment>

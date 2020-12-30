@@ -98,7 +98,7 @@ function doEffect(G, ctx) {
 
     let jacks = G.jacks;
     let graveyard = G.graveyard;
-    let fields = G.fields;
+    // let fields = G.fields;
     let deck = G.deck;
 
     let card = G.counterChain[0];
@@ -117,7 +117,7 @@ function doEffect(G, ctx) {
             // clear jacks
             for (let id in jacks) {
                 let card = jacks[id][0];
-                let owner = jacks[id][1];
+                // let owner = jacks[id][1];
                 let jacklist = jacks[id][2];
 
                 //  add jacks to graveyard
@@ -134,11 +134,11 @@ function doEffect(G, ctx) {
             if (opponent_player_hand.length === 0) {
                 console.log("bm, no cards to discard");
             } else if (opponent_player_hand.length === 1) {
-                var discarded = opponent_player_hand.splice(0, 1)[0];
+                let discarded = opponent_player_hand.splice(0, 1)[0];
                 graveyard.push(discarded);
             } else {
                 for (var i = 0; i < 2; i++) {
-                    var discarded = opponent_player_hand.splice(
+                    let discarded = opponent_player_hand.splice(
                         Math.floor(Math.random() * opponent_player_hand.length),
                         1
                     )[0];
@@ -234,7 +234,7 @@ function doEffectTarget(G, ctx, targetCard, targetField) {
     let opponent_player_field = G.fields[opponent_player];
     let opponent_player_special_field = G.specialFields[opponent_player];
     let current_player_hand = G.hands[current_player];
-    let opponent_player_hand = G.hands[opponent_player];
+    // let opponent_player_hand = G.hands[opponent_player];
     let jacks = G.jacks;
     let graveyard = G.graveyard;
     let deck = G.deck;
@@ -280,7 +280,7 @@ function doEffectTarget(G, ctx, targetCard, targetField) {
                     return false;
                 }
 
-                let owner = jacks[targetCard.id][1];
+                // let owner = jacks[targetCard.id][1];
                 let jacklist = jacks[targetCard.id][2];
 
                 // find 1 jack and REMOVE
@@ -376,7 +376,7 @@ function doEffectTarget(G, ctx, targetCard, targetField) {
                     );
 
                     // let card = jacks[targetCard.id][0]; // this always stays the same
-                    let owner = jacks[targetCard.id][1];
+                    // let owner = jacks[targetCard.id][1];
                     let jacklist = jacks[targetCard.id][2];
 
                     // find 1 jack and put on top of deck

@@ -6,7 +6,7 @@ import { SpecialField } from "./SpecialField";
 import { Graveyard } from "./Graveyard";
 
 import "../style/board.css";
-import { Container, Row, Col, Image } from "react-bootstrap";
+import { Row, Col, Image } from "react-bootstrap";
 import { CardImages } from "../assets/Cards.js";
 
 export class ChoosingPopup extends React.Component {

@@ -1,7 +1,7 @@
 import React from "react";
 import "../style/board.css";
 
-import { Row, Col, Image } from "react-bootstrap/";
+import { Col, Image } from "react-bootstrap/";
 
 import { CardImages } from "../assets/Cards.js";
 

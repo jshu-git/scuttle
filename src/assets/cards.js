@@ -41,6 +41,6 @@ function createImages(deck) {
         }
     }
     console.log(list);
-    list["hidden"] = require("./svgs/" + "b" + ".svg");
+    list["hidden"] = require("./svgs/b.svg");
     return list;
 }
