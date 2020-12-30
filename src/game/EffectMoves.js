@@ -53,7 +53,6 @@ export function counter(G, ctx, playerCounter) {
 export function accept(G, ctx) {
     // check if effect was countered
     if (G.effectCountered) {
-        cleanupCounterChain(G);
         ctx.events.endTurn();
         return;
     }
@@ -67,8 +66,6 @@ export function accept(G, ctx) {
     if (no_target) {
         // immediate card effect
         doEffect(G, ctx);
-        // cleanup
-        cleanupCounterChain(G);
         ctx.events.endTurn();
     } else {
         ctx.events.setActivePlayers({
@@ -210,12 +207,8 @@ export function chooseEffectTarget(G, ctx, targetCard, targetField) {
 
     // do targeting effect
     let valid = doEffectTarget(G, ctx, targetCard, targetField);
-    // cleanup
     if (valid) {
-        cleanupCounterChain(G);
         ctx.events.endTurn();
-    } else {
-        console.log("selected an invalid field");
     }
 }
 

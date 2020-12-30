@@ -78,7 +78,7 @@ export class TicTacToeBoard extends React.Component {
     };
 
     // choosing moves
-    chooseScuttleTarget = (targetCard, targetField) => {
+    chooseScuttleTarget = (targetCard) => {
         console.log(
             "scuttleCard:",
             this.state.selectedCard.id,
