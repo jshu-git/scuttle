@@ -31,8 +31,3 @@ export function isDraw(G, ctx) {
         )
     );
 }
-
-// game moves
-export function endTurn(G, ctx) {
-    ctx.events.endTurn();
-}

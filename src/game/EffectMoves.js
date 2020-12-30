@@ -60,7 +60,7 @@ export function accept(G, ctx) {
 
     // effect card is at counterChain[0]
     // check if effect requires target
-    let no_target = ["Ace", "4", "5", "6", "8", "Queen", "King"].some(
+    let no_target = ["Ace", "4", "5", "6", "8", "10", "Queen", "King"].some(
         (x) => G.counterChain[0].Value === x
     );
 
@@ -449,7 +449,7 @@ function doEffectTarget(G, ctx, targetCard, targetField) {
 
 // takes everything in counter chain and adds it to graveyard
 // so if you need anything from counter chain for an effect, it has to be extracted first
-function cleanupCounterChain(G) {
+export function cleanupCounterChain(G) {
     for (var i = 0; i < G.counterChain.length; i++) {
         G.graveyard.push(G.counterChain[i]);
     }

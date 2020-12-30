@@ -67,7 +67,6 @@ export class ChoosingPopup extends React.Component {
     };
 
     effect7 = () => {
-        // if (this.props.deck.length < 2) return;
         let cells = [];
         let deck = this.props.deck;
 

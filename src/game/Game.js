@@ -6,8 +6,9 @@ import {
     chooseEffectTarget,
     counter,
     accept,
+    cleanupCounterChain,
 } from "./EffectMoves.js";
-import { isVictory, isDraw, endTurn } from "./Victory.js";
+import { isVictory, isDraw } from "./Victory.js";
 
 const setup = ({ playOrder, playOrderPos }) => {
     const { deck, hands, fields, specialFields } = initializeGame(
@@ -43,21 +44,22 @@ export const TicTacToe = {
                 others: "idle",
             });
         },
+        onEnd: (G, ctx) => {
+            cleanupCounterChain(G);
+        },
         stages: {
             idle: {
                 moves: {},
             },
-            // see ActionMoves.js
             action: {
                 moves: {
                     drawCard,
                     playCardValue,
-                    playCardEffect,
                     playCardScuttle,
+                    playCardEffect,
                     endTurn,
                 },
             },
-            // see EffectMoves.js
             countering: {
                 moves: {
                     accept,
@@ -95,3 +97,8 @@ export const TicTacToe = {
         });
     },
 };
+
+// game moves
+function endTurn(G, ctx) {
+    ctx.events.endTurn();
+}

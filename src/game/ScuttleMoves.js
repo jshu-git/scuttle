@@ -6,7 +6,6 @@ export function playCardScuttle(G, ctx) {
     });
 }
 
-// canTargetField is TRUE if player targeted in the correct field
 export function chooseScuttleTarget(G, ctx, card, target) {
     let current_player = ctx.playOrder[ctx.playOrderPos];
     let opponent_player =

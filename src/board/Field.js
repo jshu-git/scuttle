@@ -12,10 +12,7 @@ export class Field extends React.Component {
                 this.props.inChoosingScuttleStage &&
                 this.props.isOpponentField
             ) {
-                return () =>
-                    // doesn't need targetField since can only scuttle opponent field
-                    // however for chooseEffectTarget, needs targetField because effect can target EITHER field, and need a way to differentiate
-                    this.props.chooseScuttleTarget(targetCard);
+                return () => this.props.chooseScuttleTarget(targetCard);
             } else if (this.props.inChoosingEffectStage) {
                 if (this.props.isOpponentField) {
                     return () =>
