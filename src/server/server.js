@@ -4,4 +4,4 @@ const { Scuttle } = require("../Game");
 
 const server = Server({ games: [Scuttle] });
 
-server.run(8000);
+server.run(8000, () => console.log("server running..."));
