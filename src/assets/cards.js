@@ -40,7 +40,7 @@ function createImages(deck) {
                 break;
         }
     }
-    console.log(list);
+    // console.log(list);
     list["hidden"] = require("./svgs/b.svg");
     return list;
 }

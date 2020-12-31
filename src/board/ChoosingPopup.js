@@ -66,6 +66,21 @@ export class ChoosingPopup extends React.Component {
         );
     };
 
+    effect3 = () => {
+        return (
+            <React.Fragment>
+                <h6>Graveyard</h6>
+                <Graveyard
+                    inPopup={true}
+                    graveyard={this.props.graveyard}
+                    // onclick
+                    inChoosingEffectStage={this.props.inChoosingEffectStage}
+                    chooseEffectTarget={this.props.chooseEffectTarget}
+                />
+            </React.Fragment>
+        );
+    };
+
     effect7 = () => {
         let cells = [];
         let deck = this.props.deck;
@@ -166,21 +181,6 @@ export class ChoosingPopup extends React.Component {
                         isOpponentField={true}
                     />
                 </Row>
-            </React.Fragment>
-        );
-    };
-
-    effect3 = () => {
-        return (
-            <React.Fragment>
-                <h6>Graveyard</h6>
-                <Graveyard
-                    inPopup={true}
-                    graveyard={this.props.graveyard}
-                    // onclick
-                    inChoosingEffectStage={this.props.inChoosingEffectStage}
-                    chooseEffectTarget={this.props.chooseEffectTarget}
-                />
             </React.Fragment>
         );
     };
