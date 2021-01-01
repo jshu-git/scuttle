@@ -34,6 +34,7 @@ const setup = ({ playOrder, playOrderPos }) => {
         // key=card object, value=[card obj (needed for 6), owner, list of jacks]
         // i.e. jacks[4 of Hearts ID] = [card object, "1", [Jack of Hearts, Jack of Spades]]
         jacks: {},
+        names:{},
     };
 };
 
@@ -61,6 +62,8 @@ export const Scuttle = {
                     playCardValue,
                     playCardScuttle,
                     playCardEffect,
+                    //names
+                    storeNames,
                 },
             },
             countering: {
@@ -104,4 +107,12 @@ export const Scuttle = {
 // game moves
 function endTurn(G, ctx) {
     ctx.events.endTurn();
+}
+
+// names
+function storeNames(G, ctx, playerList) {
+    for (let i = 0; i < playerList.length; i++) {
+        G.names[i] = playerList[i].name;
+    }
+    console.log(G.names);
 }

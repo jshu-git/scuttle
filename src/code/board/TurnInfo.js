@@ -9,7 +9,7 @@ export class TurnInfo extends React.Component {
 
         return (
             <React.Fragment>
-                <h5>Current Turn: Player {currentPlayer}</h5>
+                <h5>Current Turn: {currentPlayer}</h5>
                 <hr></hr>
             </React.Fragment>
         );
