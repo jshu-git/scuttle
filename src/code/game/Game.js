@@ -34,6 +34,7 @@ const setup = ({ playOrder, playOrderPos }) => {
         // i.e. jacks[4 of Hearts ID] = [card object, "1", [Jack of Hearts, Jack of Spades]]
         jacks: {},
         names: {},
+        logger: [],
     };
 };
 
@@ -105,6 +106,8 @@ export const Scuttle = {
 
 // game moves
 function endTurn(G, ctx) {
+    G.logger.push(G.names[ctx.currentPlayer] + " ended their turn.");
+    console.log(G.logger);
     ctx.events.endTurn();
 }
 
@@ -113,5 +116,4 @@ function storeNames(G, ctx, playerList) {
     for (let i = 0; i < playerList.length; i++) {
         G.names[i] = playerList[i].name;
     }
-    console.log(G.names);
 }

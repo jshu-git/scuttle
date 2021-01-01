@@ -4,6 +4,7 @@
 export function drawCard(G, ctx) {
     const card = G.deck.pop();
     G.hands[ctx.currentPlayer].push(card);
+    G.logger.push(G.names[ctx.currentPlayer] + " draws.");
     ctx.events.endTurn();
 }
 
