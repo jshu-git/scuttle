@@ -1,6 +1,6 @@
 // from boardgame.io guide for Deployment to Heroku of Frontend and Backend
 import { Server } from "boardgame.io/server";
-import { Coup } from "./src/Game/game/Game";
+import { Coup } from "./src/code/game/Game.js";
 import path from "path";
 import serve from "koa-static";
 import { DEFAULT_PORT } from "./src/config";

@@ -1,9 +1,9 @@
 {
-  "short_name": "Coup",
-  "name": "Online Coup",
-  "icons": [],
-  "start_url": ".",
-  "display": "standalone",
-  "theme_color": "#000000",
-  "background_color": "#ffffff"
+    "short_name": "Scuttle",
+    "name": "Scuttle",
+    "icons": [],
+    "start_url": ".",
+    "display": "standalone",
+    "theme_color": "#000000",
+    "background_color": "#ffffff"
 }

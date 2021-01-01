@@ -4,7 +4,7 @@ import { Client } from "boardgame.io/react";
 import { SocketIO } from "boardgame.io/multiplayer";
 import classNames from "classnames";
 import { DEFAULT_PORT, APP_PRODUCTION } from "../../config";
-import { Coup, Board } from "../../Game";
+import { Scuttle, Board } from "../../code";
 import Lobby from "../Lobby/Lobby";
 import { LobbyAPI } from "../../LobbyAPI";
 
@@ -16,7 +16,7 @@ const { origin, protocol, hostname } = window.location;
 const SERVER_URL = APP_PRODUCTION ? origin : `${protocol}//${hostname}:${DEFAULT_PORT}`;
 
 const GameClient = Client({
-  game: Coup,
+  game: Scuttle,
   board: Board,
   debug: true,
   multiplayer: SocketIO({ server: SERVER_URL }),

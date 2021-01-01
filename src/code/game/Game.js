@@ -38,7 +38,7 @@ const setup = ({ playOrder, playOrderPos }) => {
     };
 };
 
-export const Coup = {
+export const Scuttle = {
     name: `${GAME_NAME}`,
     setup: setup,
     turn: {
