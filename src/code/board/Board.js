@@ -1,5 +1,5 @@
 import React from "react";
-import "../../style/board.css";
+// import "./board.scss";
 
 // components
 import { Hand } from "./Hand";
@@ -127,7 +127,7 @@ export class Board extends React.Component {
             activePlayers[playerID] === "choosingScuttle";
 
         return (
-            <div>
+            <div className="board-area">
                 {/* turn information */}
                 <Container>
                     {this.props.ctx.gameover && this.props.ctx.gameover.winner && (

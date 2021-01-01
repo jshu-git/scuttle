@@ -1,5 +1,5 @@
 import React from "react";
-import "../../style/board.css";
+import "./board.scss";
 import Button from "react-bootstrap/Button";
 
 export class DrawOptions extends React.Component {

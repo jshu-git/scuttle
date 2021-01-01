@@ -1,5 +1,5 @@
 import React from "react";
-import "../../style/board.css";
+import "./board.scss";
 
 import { Col, Image } from "react-bootstrap/";
 

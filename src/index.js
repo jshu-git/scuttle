@@ -4,8 +4,8 @@ import { BrowserRouter as Router, Route, Switch, Redirect, useHistory } from "re
 import { Home, Room } from "./pages";
 
 import "bootstrap/dist/css/bootstrap.min.css";
-import "./style/index.css";
-// import "./index.scss";
+import "./index.scss";
+
 
 const App = () => {
   const history = useHistory(); // remember the history of user navigation

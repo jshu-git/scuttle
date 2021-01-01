@@ -1,6 +1,6 @@
 import React from "react";
 
-import "../../style/board.css";
+import "./board.scss";
 
 export class TurnInfo extends React.Component {
     render() {

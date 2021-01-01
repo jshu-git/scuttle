@@ -1,5 +1,5 @@
 import React from "react";
-import "../../style/board.css";
+import "./board.scss";
 import { Button } from "react-bootstrap";
 
 export class PlayCardOptions extends React.Component {

@@ -133,8 +133,8 @@ const Room = (props) => {
                         </button>
                     </div>
                     <div className="room-info">
-                        Game will begin once all
-                        {players.length === 0 ? "" : ` ${players.length}`}{" "}
+                        Game will begin once all{" "}
+                        {/* {players.length === 0 ? "" : ` ${players.length}`}{" "} */}
                         players have joined.
                     </div>
                     <button className="leave-btn" onClick={leaveRoom}>
