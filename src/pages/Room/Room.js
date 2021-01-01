@@ -15,7 +15,7 @@ const api = new LobbyAPI();
 const { origin, protocol, hostname } = window.location;
 const SERVER_URL = APP_PRODUCTION ? origin : `${protocol}//${hostname}:${DEFAULT_PORT}`;
 
-const TicTacToeClient = Client({
+const GameClient = Client({
   game: Coup,
   board: Board,
   debug: true,
@@ -85,7 +85,7 @@ const Room = (props) => {
   if (show) {
     // don't include lobby because game doesn't show game title, game credits... it's fullscreen.
     return (
-      <TicTacToeClient
+      <GameClient
         gameID={id}
         // numPlayers={players.length}
         playerID={localStorage.getItem("id")}
