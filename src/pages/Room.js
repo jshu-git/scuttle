@@ -2,13 +2,11 @@ import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { Client } from "boardgame.io/react";
 import { SocketIO } from "boardgame.io/multiplayer";
-// import classNames from "classnames";
 import { DEFAULT_PORT, APP_PRODUCTION } from "../config";
 import { Scuttle, Board } from "../code";
 import Lobby from "../pages/Lobby";
 import { LobbyAPI } from "../LobbyAPI";
 
-// import "./Room.scss";
 import { Button, Row, Col } from "react-bootstrap";
 
 const api = new LobbyAPI();
@@ -56,27 +54,11 @@ const Room = (props) => {
         };
     }, [show, players.length, id, history]);
 
-    // after user copies to clipboard
-    // useEffect(() => {
-    //     let timeout;
-    //     if (copied) {
-    //         timeout = setTimeout(() => {
-    //             if (document.getSelection().toString() === id) {
-    //                 document.getSelection().removeAllRanges();
-    //             }
-    //             setCopied(false);
-    //         }, 0);
-    //     }
-
-    //     return () => clearTimeout(timeout);
-    // }, [copied, id]);
-
     const copyToClipboard = (e) => {
         const textArea = document.getElementById("roomID");
         textArea.select();
         document.execCommand("copy");
         e.target.focus();
-        // setCopied(true);
     };
 
     const leaveRoom = () => {
@@ -90,7 +72,6 @@ const Room = (props) => {
     };
 
     if (show) {
-        // don't include lobby because game doesn't show game title, game credits... it's fullscreen.
         return (
             <GameClient
                 gameID={id}
