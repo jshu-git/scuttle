@@ -207,12 +207,7 @@ export function chooseEffectTarget(G, ctx, targetCard, targetField) {
 
     // do targeting effect
     let valid = doEffectTarget(G, ctx, targetCard, targetField);
-    ctx.events.setActivePlayers({
-        currentPlayer: "tmpHand",
-        others: "idle",
-    });
-    console.log(ctx.activePlayers[ctx.playOrder[ctx.playOrderPos]]);
-    if (valid && (ctx.activePlayers[ctx.playOrder[ctx.playOrderPos]] !== "tmpHand")) {
+    if (valid) {
         ctx.events.endTurn();
     }
 }
@@ -310,23 +305,15 @@ function doEffectTarget(G, ctx, targetCard, targetField) {
             // retrieve top 2 cards
             let one = G.deck.pop();
             let two = G.deck.pop();
-            // console.log("one", one.id, "two", two.id);
 
             // check target
             if (targetCard.id === one.id) {
-                G.tmp.push(one);
+                current_player_hand.push(one);
                 G.deck.push(two);
             } else {
-                G.tmp.push(two);
+                current_player_hand.push(two);
                 G.deck.push(one);
             }
-            ctx.events.setActivePlayers({
-                currentPlayer: "tmpHand",
-                others: "idle",
-            });
-            console.log(ctx.activePlayers[ctx.playOrder[ctx.playOrderPos]]);
-            console.log(ctx.activePlayers);
-            console.log("im fiddling with the right code");
             break;
         case "9":
             console.log("reaching 9 case", targetField);

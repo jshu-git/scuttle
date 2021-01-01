@@ -22,7 +22,6 @@ const setup = ({ playOrder, playOrderPos }) => {
     return {
         deck: deck,
         hands: hands,
-        tmp: [],
         fields: fields,
         graveyard: [],
         specialFields: specialFields,
@@ -78,13 +77,6 @@ export const Scuttle = {
             choosingEffect: {
                 moves: {
                     chooseEffectTarget,
-                },
-            },
-            tmpHand: {
-                moves: {
-                    playCardValue,
-                    playCardScuttle,
-                    playCardEffect,
                 },
             },
         },
