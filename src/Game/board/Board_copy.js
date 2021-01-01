@@ -107,8 +107,7 @@ export class Board extends React.Component {
     render() {
         // props
         let playerID = this.props.playerID;
-        let playerIDOpponent = this.props.ctx.playOrder[
-            (this.props.ctx.playOrderPos + 1) % this.props.ctx.playOrder.length];        
+        let playerIDOpponent = String(1 - parseInt(playerID));
         let hands = this.props.G.hands;
         let currentPlayer = this.props.ctx.currentPlayer;
         let graveyard = this.props.G.graveyard;
