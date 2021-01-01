@@ -13,7 +13,9 @@ const Lobby = (props) => {
             </h3>
             <hr></hr>
             {props.children}
-            <small>created by vindara and jshu (december 2020)</small>
+            <div>
+                <small>created by vindara and jshu (december 2020)</small>
+            </div>
         </Container>
     );
 };
