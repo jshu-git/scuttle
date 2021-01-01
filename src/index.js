@@ -12,17 +12,17 @@ import { Home, Room } from "./pages";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./index.scss";
 
+// TO TEST LOCALLY:, uncomment the multiplayer app and use this one
 // local testing
-import { Client } from "boardgame.io/react";
-import { Local } from "boardgame.io/multiplayer";
-import { Scuttle } from "../src/code/game/Game";
-import { Board } from "../src/code/board/Board";
+// import { Client } from "boardgame.io/react";
+// import { Local } from "boardgame.io/multiplayer";
+// import { Scuttle } from "../src/code/game/Game";
+// import { Board } from "../src/code/board/Board";
 // const GameClient = Client({
 //     game: Scuttle,
 //     board: Board,
 //     multiplayer: Local(),
 // });
-// // to test locally, uncomment the multiplayer app and use this one
 // const App = () => (
 //     <div>
 //         <GameClient playerID="0" />
