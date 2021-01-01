@@ -17,15 +17,15 @@ export function createDeck() {
         "2",
         "3",
         "4",
-        "5",
-        "6",
+        // "5",
+        // "6",
         "7",
-        "8",
-        "9",
-        "10",
-        "Jack",
-        "Queen",
-        "King",
+        // "8",
+        // "9",
+        // "10",
+        // "Jack",
+        // "Queen",
+        // "King",
     ];
     var deck = [];
     for (var i = 0; i < suits.length; i++) {

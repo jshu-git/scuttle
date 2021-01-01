@@ -269,6 +269,7 @@ export class Board extends React.Component {
                             selectedCard={selectedCard}
                             graveyard={graveyard}
                             deck={deck}
+                            hand={hands}
                             jacks={jacks}
                         />
                     </Container>

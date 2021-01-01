@@ -1,3 +1,5 @@
+import { shuffle } from "./Setup";
+
 /*
     playerAction is the player playing the card effect
     the other player is then put into countering stage
@@ -59,7 +61,7 @@ export function accept(G, ctx) {
 
     // effect card is at counterChain[0]
     // check if effect requires target
-    let no_target = ["Ace", "4", "5", "6", "8", "10", "Queen", "King"].some(
+    let no_target = ["Ace", "4", "5", "6", "7", "8", "10", "Queen", "King"].some(
         (x) => G.counterChain[0].Value === x
     );
 
@@ -186,6 +188,18 @@ function doEffect(G, ctx) {
                 delete jacks[card.id];
             }
             break;
+        case "7":
+            console.log("reaching this 7 case");
+            let player_hand_length = current_player_hand.length -1;
+            while (current_player_hand.length > 0) {
+                deck.push(current_player_hand.pop());
+            }
+            shuffle(G.deck);
+            for(let j =0; j<= player_hand_length;j++ ){
+                current_player_hand.push(deck.pop());
+            }
+            break;
+
         // fall through
         case "8":
         case "Queen":
@@ -300,21 +314,21 @@ function doEffectTarget(G, ctx, targetCard, targetField) {
             current_player_hand.push(found_card);
             break;
         // pick 1 of top 2 cards
-        case "7":
-            console.log("reaching 7 case");
-            // retrieve top 2 cards
-            let one = G.deck.pop();
-            let two = G.deck.pop();
+        // case "7":
+        //     console.log("reaching 7 case");
+        //     // retrieve top 2 cards
+        //     let one = G.deck.pop();
+        //     let two = G.deck.pop();
 
-            // check target
-            if (targetCard.id === one.id) {
-                current_player_hand.push(one);
-                G.deck.push(two);
-            } else {
-                current_player_hand.push(two);
-                G.deck.push(one);
-            }
-            break;
+        //     // check target
+        //     if (targetCard.id === one.id) {
+        //         current_player_hand.push(one);
+        //         G.deck.push(two);
+        //     } else {
+        //         current_player_hand.push(two);
+        //         G.deck.push(one);
+        //     }
+        //     break;
         case "9":
             console.log("reaching 9 case", targetField);
             // queen checks

@@ -12,6 +12,7 @@ export class PlayCardOptions extends React.Component {
         let graveyard = this.props.graveyard;
         let deck = this.props.deck;
         let jacks = this.props.jacks;
+        let hand = this.props.hand; 
 
         let selectedCard = this.props.selectedCard;
 
@@ -48,8 +49,8 @@ export class PlayCardOptions extends React.Component {
             (selectedCard.Value === "3" && graveyard.length === 0) ||
             // 5 on < 2 deck
             (selectedCard.Value === "5" && deck.length < 2) ||
-            // 7 on < 2 deck
-            (selectedCard.Value === "7" && deck.length < 2) ||
+            // 7 on 1 card in hand
+            (selectedCard.Value === "7" && hand[playerID].length === 1 && hand[playerID].length > deck.length) ||
             // 9 when no cards on field
             (selectedCard.Value === "9" &&
                 fields[playerID].length === 0 &&
