@@ -50,7 +50,7 @@ export class PlayCardOptions extends React.Component {
             // 5 on < 2 deck
             (selectedCard.Value === "5" && deck.length < 2) ||
             // 7 on 1 card in hand
-            (selectedCard.Value === "7" && hand[playerID].length === 1 && hand[playerID].length > deck.length) ||
+            (selectedCard.Value === "7" && hand[playerID].length === 1) ||
             // 9 when no cards on field
             (selectedCard.Value === "9" &&
                 fields[playerID].length === 0 &&
