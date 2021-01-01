@@ -4,7 +4,7 @@ import { BrowserRouter as Router, Route, Switch, Redirect, useHistory } from "re
 import { Home, Room } from "./pages";
 
 import "bootstrap/dist/css/bootstrap.min.css";
-// import "./index.css";
+import "./style/index.css";
 // import "./index.scss";
 
 const App = () => {
