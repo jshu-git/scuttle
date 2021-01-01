@@ -21,11 +21,13 @@ export class Board extends React.Component {
         this.state = {
             selectedCard: -1,
             showGraveyard: false,
-            storeNames:false,
+            storeNames: false,
         };
     }
+
+    // for names, only runs once
     componentDidMount() {
-        if(!this.state.storeNames) {
+        if (!this.state.storeNames) {
             this.setState({
                 storeNames: true,
             });
@@ -140,9 +142,10 @@ export class Board extends React.Component {
             <div className="board-area">
                 {/* turn information */}
                 <Container>
-                    {this.props.ctx.gameover && this.props.ctx.gameover.winner && (
-                    <h1>Winner: {names[currentPlayer]}</h1>
-                    )}
+                    {this.props.ctx.gameover &&
+                        this.props.ctx.gameover.winner && (
+                            <h1>Winner: {names[currentPlayer]}</h1>
+                        )}
                     {this.props.ctx.gameover &&
                         !this.props.ctx.gameover.winner && <h1>DRAW!</h1>}
                     <TurnInfo currentPlayer={names[currentPlayer]} />

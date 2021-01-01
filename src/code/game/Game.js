@@ -11,7 +11,6 @@ import {
 import { isVictory, isDraw } from "./Victory.js";
 import { GAME_NAME } from "../../config";
 
-
 const setup = ({ playOrder, playOrderPos }) => {
     const { deck, hands, fields, specialFields } = initializeGame(
         playOrder,
@@ -34,7 +33,7 @@ const setup = ({ playOrder, playOrderPos }) => {
         // key=card object, value=[card obj (needed for 6), owner, list of jacks]
         // i.e. jacks[4 of Hearts ID] = [card object, "1", [Jack of Hearts, Jack of Spades]]
         jacks: {},
-        names:{},
+        names: {},
     };
 };
 
