@@ -5,9 +5,9 @@ import { Field } from "./Field";
 import { SpecialField } from "./SpecialField";
 import { Graveyard } from "./Graveyard";
 
-import "../style/board.css";
+import "../../style/board.css";
 import { Row, Col, Image } from "react-bootstrap";
-import { CardImages } from "../assets/cards.js";
+import { CardImages } from "../../assets/cards.js";
 
 export class ChoosingPopup extends React.Component {
     scuttle = () => {

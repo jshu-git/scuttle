@@ -1,9 +1,9 @@
 import React from "react";
-import "../style/board.css";
+import "../../style/board.css";
 
 import { Col, Image } from "react-bootstrap/";
 
-import { CardImages } from "../assets/cards.js";
+import { CardImages } from "../../assets/cards.js";
 
 export class SpecialField extends React.Component {
     onClick = (targetCard) => {

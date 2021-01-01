@@ -1,5 +1,5 @@
 import React from "react";
-import "../style/board.css";
+import "../../style/board.css";
 
 // components
 import { Hand } from "./Hand";

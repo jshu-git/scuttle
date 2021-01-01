@@ -1,4 +1,4 @@
-import { createDeck } from "../game/Setup.js";
+import { createDeck } from "../code/game/Setup.js";
 let deck = createDeck();
 
 export const CardImages = createImages(deck);
