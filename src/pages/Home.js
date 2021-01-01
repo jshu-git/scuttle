@@ -115,7 +115,7 @@ const Home = (props) => {
                     </div>
                     <Button
                         size="sm"
-                        variant="outline-secondary"
+                        variant="success"
                         disabled={cName.length === 0}
                         onClick={createRoom}
                     >
@@ -152,7 +152,7 @@ const Home = (props) => {
                     </div>
                     <Button
                         size="sm"
-                        variant="outline-secondary"
+                        variant="success"
                         className="lobby-btn"
                         disabled={
                             room.length !== roomIDLength || jName.length === 0

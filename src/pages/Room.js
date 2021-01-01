@@ -2,13 +2,14 @@ import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { Client } from "boardgame.io/react";
 import { SocketIO } from "boardgame.io/multiplayer";
-import classNames from "classnames";
+// import classNames from "classnames";
 import { DEFAULT_PORT, APP_PRODUCTION } from "../config";
 import { Scuttle, Board } from "../code";
 import Lobby from "../pages/Lobby";
 import { LobbyAPI } from "../LobbyAPI";
 
 // import "./Room.scss";
+import { Button, Row, Col } from "react-bootstrap";
 
 const api = new LobbyAPI();
 
@@ -27,7 +28,7 @@ const GameClient = Client({
 const Room = (props) => {
     const { history } = props;
     const { id } = useParams();
-    const [copied, setCopied] = useState(false);
+    // const [copied, setCopied] = useState(false);
     const [players, setPlayers] = useState([]);
     const [show, setShow] = useState(false);
 
@@ -56,26 +57,26 @@ const Room = (props) => {
     }, [show, players.length, id, history]);
 
     // after user copies to clipboard
-    useEffect(() => {
-        let timeout;
-        if (copied) {
-            timeout = setTimeout(() => {
-                if (document.getSelection().toString() === id) {
-                    document.getSelection().removeAllRanges();
-                }
-                setCopied(false);
-            }, 3000);
-        }
+    // useEffect(() => {
+    //     let timeout;
+    //     if (copied) {
+    //         timeout = setTimeout(() => {
+    //             if (document.getSelection().toString() === id) {
+    //                 document.getSelection().removeAllRanges();
+    //             }
+    //             setCopied(false);
+    //         }, 0);
+    //     }
 
-        return () => clearTimeout(timeout);
-    }, [copied, id]);
+    //     return () => clearTimeout(timeout);
+    // }, [copied, id]);
 
     const copyToClipboard = (e) => {
         const textArea = document.getElementById("roomID");
         textArea.select();
         document.execCommand("copy");
         e.target.focus();
-        setCopied(true);
+        // setCopied(true);
     };
 
     const leaveRoom = () => {
@@ -101,46 +102,38 @@ const Room = (props) => {
     } else {
         return (
             <Lobby>
-                <span className="title room-title">Room</span>
-                <div className="players-list">
-                    {players.map((player) => {
-                        if (player.name) {
-                            return (
-                                player.name +
-                                `${
-                                    player.name === localStorage.getItem("name")
-                                        ? " (You)"
-                                        : ""
-                                }\n`
-                            );
-                        } else {
-                            return "...\n";
-                        }
-                    })}
-                </div>
-                <div className="room-info-area">
-                    <div className="roomID-area">
-                        room id:
-                        <textarea id="roomID" value={id} readOnly />
-                        <button
-                            className={classNames("copy-btn", {
-                                "copied-btn": copied,
+                <Row>
+                    <Col className="border">
+                        <h6>Room ID:</h6>
+                        <span>
+                            <input id="roomID" value={id} readOnly />{" "}
+                            <Button
+                                size="sm"
+                                variant="outline-secondary"
+                                onClick={copyToClipboard}
+                            >
+                                Copy
+                            </Button>
+                        </span>
+                    </Col>
+                    <Col className="border">
+                        <h6>Players</h6>
+                        <div>
+                            {players.map((player) => {
+                                if (player.name) {
+                                    return player.name;
+                                } else {
+                                    return "\n";
+                                }
                             })}
-                            onClick={copyToClipboard}
-                            disabled={copied}
-                        >
-                            {copied ? "copied" : "copy"}
-                        </button>
-                    </div>
-                    <div className="room-info">
-                        Game will begin once all{" "}
-                        {/* {players.length === 0 ? "" : ` ${players.length}`}{" "} */}
-                        players have joined.
-                    </div>
-                    <button className="leave-btn" onClick={leaveRoom}>
-                        leave
-                    </button>
-                </div>
+                        </div>
+                    </Col>
+                </Row>
+
+                <h6>Game will begin once all players have joined.</h6>
+                <Button size="sm" variant="danger" onClick={leaveRoom}>
+                    Leave Room
+                </Button>
             </Lobby>
         );
     }

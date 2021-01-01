@@ -8,6 +8,7 @@ const Lobby = (props) => {
     return (
         <Container className="lobby-area">
             <h3>Scuttle</h3>
+            <hr></hr>
             {props.children}
             {/* <div className="game-info">
         Developed by vyang1222 -{" "}
