@@ -1,5 +1,5 @@
 import React from "react";
-import "./Lobby.scss";
+// import "./Lobby.scss";
 
 // Lobby is the parent component. Home and Room are the children components.
 const Lobby = (props) => {

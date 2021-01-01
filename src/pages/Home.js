@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
-import Lobby from "../Lobby/Lobby";
-import { LobbyAPI } from "../../LobbyAPI";
-import "./Home.scss";
+import Lobby from "../pages/Lobby";
+import { LobbyAPI } from "../LobbyAPI";
+// import "./Home.scss";
 
 const api = new LobbyAPI();
 
