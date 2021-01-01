@@ -77,6 +77,7 @@ const Room = (props) => {
                 gameID={id}
                 // numPlayers={players.length}
                 playerID={localStorage.getItem("id")}
+                playerName={localStorage.getItem("name")}
                 credentials={localStorage.getItem("credentials")}
             />
         );

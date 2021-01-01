@@ -11,6 +11,7 @@ import { Graveyard } from "./Graveyard";
 import { TurnOptions } from "./TurnOptions";
 import { TurnInfo } from "./TurnInfo";
 import { ChoosingPopup } from "./ChoosingPopup";
+import { WinnerScreen } from "./WinnerScreen";
 
 // bootstrap
 import { Container, Button, Jumbotron, Row, Col } from "react-bootstrap";
@@ -108,6 +109,7 @@ export class Board extends React.Component {
         // props
         let playerID = this.props.playerID;
         let playerIDOpponent = String(1 - parseInt(playerID));
+        let playerName = this.props.playerName;
         let hands = this.props.G.hands;
         let currentPlayer = this.props.ctx.currentPlayer;
         let graveyard = this.props.G.graveyard;
@@ -126,16 +128,19 @@ export class Board extends React.Component {
         let inChoosingScuttleStage =
             activePlayers[playerID] === "choosingScuttle";
 
+
+        if(this.props.ctx.gameover && this.props.ctx.gameover.winner){
+            let currentPlayer = this.props.ctx.currentPlayer;
+            console.log(this.props.gameMetadata);
+            var winnerName = this.props.gameMetadata[currentPlayer].name;
+            console.log(playerName);
+        }
         return (
             <div className="board-area">
                 {/* turn information */}
                 <Container>
                     {this.props.ctx.gameover && this.props.ctx.gameover.winner && (
-                        <h1>
-                            WINNER: {/* {this.props.ctx.gameover.winner} */}
-                            {this.props.playerName}
-                            {/* playerName is tied to playerID which is tied to winner */}
-                        </h1>
+                    <h1>Winner: {winnerName}</h1>
                     )}
                     {this.props.ctx.gameover &&
                         !this.props.ctx.gameover.winner && <h1>DRAW!</h1>}
