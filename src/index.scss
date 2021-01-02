@@ -2,17 +2,6 @@
     font-family: monospace;
 }
 
-@media (min-width: 576px) {
-    .container
-    /* , */
-    /* .container-lg,
-    .container-md,
-    .container-sm  */ {
-        /* need !important to override other styles */
-        max-width: 650px !important;
-    }
-}
-
 .container {
     margin-top: 1rem;
     margin-bottom: 1rem;

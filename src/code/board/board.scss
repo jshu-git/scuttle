@@ -1,12 +1,23 @@
-/* widen the field */
-@media (min-width: 576px) {
-    .container-field {
-        /* need !important to override other styles */
-        max-width: 800px !important;
-    }
-}
-
 .board-area {
+    @media (min-width: 576px) {
+        .container
+        /* , */
+        /* .container-lg,
+        .container-md,
+        .container-sm  */ {
+            /* need !important to override other styles */
+            max-width: 650px !important;
+        }
+    }
+
+    /* widen the field */
+    @media (min-width: 576px) {
+        .container-field {
+            /* need !important to override other styles */
+            max-width: 800px !important;
+        }
+    }
+
     .row {
         padding: 0.5rem;
     }
@@ -35,5 +46,11 @@
     .popup {
         padding: 0.5rem;
         background-color: #ffd1d8;
+    }
+
+    // for logger
+    p {
+        margin-top: 0rem;
+        margin-bottom: 0rem;
     }
 }

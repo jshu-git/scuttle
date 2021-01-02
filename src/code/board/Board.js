@@ -112,10 +112,11 @@ export class Board extends React.Component {
         let inChoosingScuttleStage =
             activePlayers[playerID] === "choosingScuttle";
 
+        let logger = this.props.G.logger;
+
         return (
             <div className="board-area">
-
-                {/* logger */}
+                {/* logger/victory */}
                 <Container>
                     {this.props.ctx.gameover &&
                         this.props.ctx.gameover.winner && (
@@ -123,7 +124,8 @@ export class Board extends React.Component {
                         )}
                     {this.props.ctx.gameover &&
                         !this.props.ctx.gameover.winner && <h1>DRAW!</h1>}
-                    <Logger currentPlayer={names[currentPlayer]} />
+
+                    <Logger logger={logger} />
                 </Container>
 
                 {/* 8 effect */}
