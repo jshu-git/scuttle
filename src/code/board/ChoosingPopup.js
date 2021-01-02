@@ -14,7 +14,7 @@ export class ChoosingPopup extends React.Component {
         return (
             <React.Fragment>
                 <h6>Opponent Field</h6>
-                <Row md={5}>
+                <Row xs={5} sm={5} md={5}>
                     <Field
                         inPopup={true}
                         // for display
@@ -35,7 +35,7 @@ export class ChoosingPopup extends React.Component {
             <Row>
                 <Col>
                     <h6>Opponent Field</h6>
-                    <Row md={3}>
+                    <Row xs={2} sm={2} md={3}>
                         <Field
                             inPopup={true}
                             field={this.props.opponentField}
@@ -50,7 +50,7 @@ export class ChoosingPopup extends React.Component {
                 </Col>
                 <Col>
                     <h6>Opponent Special Field</h6>
-                    <Row md={3}>
+                    <Row xs={2} sm={2} md={3}>
                         <SpecialField
                             inPopup={true}
                             specialField={this.props.opponentSpecialField}
@@ -87,7 +87,11 @@ export class ChoosingPopup extends React.Component {
             );
         }
 
-        return <Row md={5}>{cells}</Row>;
+        return (
+            <Row xs={5} sm={5} md={5}>
+                {cells}
+            </Row>
+        );
     };
 
     effect9 = () => {
@@ -96,7 +100,7 @@ export class ChoosingPopup extends React.Component {
                 <Row>
                     <Col>
                         <h6>Opponent Field</h6>
-                        <Row md={3}>
+                        <Row xs={2} sm={2} md={3}>
                             <Field
                                 inPopup={true}
                                 field={this.props.opponentField}
@@ -113,7 +117,7 @@ export class ChoosingPopup extends React.Component {
                     </Col>
                     <Col>
                         <h6>Opponent Special Field</h6>
-                        <Row md={3}>
+                        <Row xs={2} sm={2} md={3}>
                             <SpecialField
                                 inPopup={true}
                                 specialField={this.props.opponentSpecialField}
@@ -132,7 +136,7 @@ export class ChoosingPopup extends React.Component {
                 <Row>
                     <Col>
                         <h6>Your Field</h6>
-                        <Row md={5}>
+                        <Row xs={5} sm={5} md={5}>
                             <Field
                                 inPopup={true}
                                 field={this.props.playerField}
@@ -156,7 +160,7 @@ export class ChoosingPopup extends React.Component {
         return (
             <React.Fragment>
                 <h6>Opponent Field</h6>
-                <Row md={5}>
+                <Row xs={5} sm={5} md={5}>
                     <Field
                         inPopup={true}
                         field={this.props.opponentField}

@@ -36,7 +36,7 @@
 
     /* hand */
     .active {
-        background: #eeffe9;
+        background: #99ff79;
     }
 
     .targetable:hover {
@@ -52,5 +52,10 @@
     p {
         margin-top: 0rem;
         margin-bottom: 0rem;
+    }
+
+    // for second row of cards
+    img {
+        margin-bottom: 0.5rem;
     }
 }

@@ -10,11 +10,6 @@ export class Hand extends React.Component {
         let hand = this.props.hand;
         let cells = [];
 
-        // for second row of cards
-        const style = {
-            marginBottom: "0.5rem",
-        };
-
         for (let i = 0; i < hand.length; i++) {
             let card = hand[i];
             let img = CardImages[card.id];
@@ -24,7 +19,6 @@ export class Hand extends React.Component {
                     <Image
                         src={img}
                         thumbnail
-                        style={style}
                         className={this.props.inActionStage ? "targetable" : ""}
                         onClick={
                             // note: when using ternary in onClick, have to use ()=>
@@ -38,7 +32,12 @@ export class Hand extends React.Component {
         }
 
         return (
-            <Row md={5} className={this.props.inActionStage ? "active" : ""}>
+            <Row
+                xs={5}
+                sm={5}
+                md={5}
+                className={this.props.inActionStage ? "active" : ""}
+            >
                 {cells}
             </Row>
         );

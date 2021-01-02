@@ -30,6 +30,10 @@ export class Graveyard extends React.Component {
             );
         }
 
-        return <Row md={5}>{cells}</Row>;
+        return (
+            <Row xs={5} sm={5} md={5}>
+                {cells}
+            </Row>
+        );
     }
 }

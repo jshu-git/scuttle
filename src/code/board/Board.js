@@ -146,7 +146,7 @@ export class Board extends React.Component {
                         <Row>
                             <Col>
                                 <h6>Opponent Field</h6>
-                                <Row md={3}>
+                                <Row xs={2} sm={2} md={3}>
                                     <Field
                                         field={fields[playerIDOpponent]}
                                         jacks={jacks}
@@ -155,7 +155,7 @@ export class Board extends React.Component {
                             </Col>
                             <Col>
                                 <h6>Opponent Special Field</h6>
-                                <Row md={3}>
+                                <Row xs={2} sm={2} md={3}>
                                     <SpecialField
                                         specialField={
                                             specialFields[playerIDOpponent]
@@ -171,7 +171,7 @@ export class Board extends React.Component {
                         <Row>
                             <Col>
                                 <h6>Your Field</h6>
-                                <Row md={3}>
+                                <Row xs={2} sm={2} md={3}>
                                     <Field
                                         field={fields[playerID]}
                                         jacks={jacks}
@@ -180,7 +180,7 @@ export class Board extends React.Component {
                             </Col>
                             <Col>
                                 <h6>Your Special Field</h6>
-                                <Row md={3}>
+                                <Row xs={2} sm={2} md={3}>
                                     <SpecialField
                                         specialField={specialFields[playerID]}
                                     />
