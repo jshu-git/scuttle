@@ -33,8 +33,8 @@ export class Hand extends React.Component {
 
         return (
             <Row
-                xs={5}
-                sm={5}
+                xs={4}
+                sm={4}
                 md={5}
                 className={this.props.inActionStage ? "active" : ""}
             >

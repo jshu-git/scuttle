@@ -47,7 +47,7 @@ export function chooseScuttleTarget(G, ctx, card, target) {
 
         G.logger.push(
             G.names[ctx.currentPlayer] +
-                "used <" +
+                " used <" +
                 card.id +
                 ">" +
                 " to scuttle <" +

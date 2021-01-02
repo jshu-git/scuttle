@@ -31,7 +31,7 @@ export class Graveyard extends React.Component {
         }
 
         return (
-            <Row xs={5} sm={5} md={5}>
+            <Row xs={4} sm={4} md={5}>
                 {cells}
             </Row>
         );

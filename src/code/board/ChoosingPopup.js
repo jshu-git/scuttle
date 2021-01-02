@@ -14,7 +14,7 @@ export class ChoosingPopup extends React.Component {
         return (
             <React.Fragment>
                 <h6>Opponent Field</h6>
-                <Row xs={5} sm={5} md={5}>
+                <Row xs={4} sm={4} md={5}>
                     <Field
                         inPopup={true}
                         // for display
@@ -88,7 +88,7 @@ export class ChoosingPopup extends React.Component {
         }
 
         return (
-            <Row xs={5} sm={5} md={5}>
+            <Row xs={4} sm={4} md={5}>
                 {cells}
             </Row>
         );
@@ -136,7 +136,7 @@ export class ChoosingPopup extends React.Component {
                 <Row>
                     <Col>
                         <h6>Your Field</h6>
-                        <Row xs={5} sm={5} md={5}>
+                        <Row xs={4} sm={4} md={5}>
                             <Field
                                 inPopup={true}
                                 field={this.props.playerField}
@@ -160,7 +160,7 @@ export class ChoosingPopup extends React.Component {
         return (
             <React.Fragment>
                 <h6>Opponent Field</h6>
-                <Row xs={5} sm={5} md={5}>
+                <Row xs={4} sm={4} md={5}>
                     <Field
                         inPopup={true}
                         field={this.props.opponentField}
