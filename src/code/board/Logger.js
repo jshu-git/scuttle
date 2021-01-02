@@ -14,16 +14,14 @@ export class Logger extends React.Component {
         }
 
         return (
-            <React.Fragment>
-                <AutoScroll
-                    showOption={false}
-                    height={"5rem"}
-                    scrollBehavior={"smooth"}
-                    className="border"
-                >
-                    {cells}
-                </AutoScroll>
-            </React.Fragment>
+            <AutoScroll
+                showOption={false}
+                height={"5rem"}
+                scrollBehavior={"smooth"}
+                className="border"
+            >
+                {cells}
+            </AutoScroll>
         );
     }
 }

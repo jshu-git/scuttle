@@ -116,22 +116,27 @@ export class Board extends React.Component {
 
         return (
             <div className="board-area">
-                {/* logger/victory */}
-                <Container>
-                    {this.props.ctx.gameover &&
-                        this.props.ctx.gameover.winner && (
-                            <h1>Winner: {names[currentPlayer]}</h1>
+                {/* victory */}
+                {this.props.ctx.gameover && (
+                    <Container>
+                        {this.props.ctx.gameover.winner && (
+                            <h1>WINNER: {names[currentPlayer]}</h1>
                         )}
-                    {this.props.ctx.gameover &&
-                        !this.props.ctx.gameover.winner && <h1>DRAW!</h1>}
+                        {!this.props.ctx.gameover.winner && <h1>DRAW!</h1>}
+                    </Container>
+                )}
 
+                {/* logger */}
+                <Container>
                     <Logger logger={logger} />
                 </Container>
 
                 {/* 8 effect */}
                 <Container>
                     <h6>Opponent Hand ({hands[playerIDOpponent].length})</h6>
-                    {specialFields[playerID].some((x) => x.Value === "8") && (
+                    {(specialFields[playerID].some((x) => x.Value === "8") ||
+                        // show hand after game is over
+                        this.props.ctx.gameover) && (
                         <Hand
                             playerID={playerIDOpponent}
                             hand={hands[playerIDOpponent]}
