@@ -62,10 +62,13 @@ export function counter(G, ctx, playerCounter) {
 }
 
 export function accept(G, ctx, playerAccept) {
-    G.logger.push(G.names[playerAccept] + " accepted");
+    if (playerAccept) {
+        G.logger.push(G.names[playerAccept] + " accepted");
+    }
 
     // check if effect was countered
     if (G.effectCountered) {
+        G.logger.push("Effect was countered");
         ctx.events.endTurn();
         return;
     }
@@ -245,7 +248,7 @@ export function chooseEffectTarget(G, ctx, targetCard, targetField) {
             G.names[ctx.currentPlayer] +
                 " targeted <" +
                 targetCard.id +
-                "> as effect"
+                "> for the effect"
         );
         ctx.events.endTurn();
     }
