@@ -14,7 +14,7 @@ const Lobby = (props) => {
             <hr></hr>
             {props.children}
             <div>
-                <small>created by vindara and jshu (december 2020)</small>
+                <small>created by jshu and vindara (december 2020)</small>
             </div>
         </Container>
     );

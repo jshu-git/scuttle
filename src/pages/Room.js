@@ -19,7 +19,7 @@ const SERVER_URL = APP_PRODUCTION
 const GameClient = Client({
     game: Scuttle,
     board: Board,
-    debug: true,
+    // debug: true,
     multiplayer: SocketIO({ server: SERVER_URL }),
 });
 
