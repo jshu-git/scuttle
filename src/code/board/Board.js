@@ -9,7 +9,7 @@ import { Field } from "./Field";
 import { SpecialField } from "./SpecialField";
 import { Graveyard } from "./Graveyard";
 import { TurnOptions } from "./TurnOptions";
-import { TurnInfo } from "./TurnInfo";
+import { Logger } from "./Logger";
 import { ChoosingPopup } from "./ChoosingPopup";
 
 // bootstrap
@@ -37,19 +37,9 @@ export class Board extends React.Component {
 
     // togglers
     toggleSelectedCard = (card) => {
-        this.setState(
-            {
-                selectedCard: this.state.selectedCard === -1 ? card : -1,
-            },
-            () => {
-                this.state.selectedCard === -1
-                    ? console.log("unselected")
-                    : console.log(
-                          "selectedCard id is ",
-                          this.state.selectedCard.id
-                      );
-            }
-        );
+        this.setState({
+            selectedCard: this.state.selectedCard === -1 ? card : -1,
+        });
     };
     toggleGraveyard = () => {
         this.setState({ showGraveyard: !this.state.showGraveyard });
@@ -63,7 +53,6 @@ export class Board extends React.Component {
         this.props.moves.endTurn();
     };
     playCardValue = () => {
-        console.log("playCardValue: ", this.state.selectedCard.id);
         this.props.moves.playCardValue(this.state.selectedCard);
         this.setState({ selectedCard: -1 });
     };
@@ -82,7 +71,7 @@ export class Board extends React.Component {
 
     // countering moves
     accept = () => {
-        this.props.moves.accept();
+        this.props.moves.accept(this.props.playerID);
     };
     counter = () => {
         this.props.moves.counter(this.props.playerID);
@@ -90,13 +79,6 @@ export class Board extends React.Component {
 
     // choosing moves
     chooseScuttleTarget = (targetCard) => {
-        console.log(
-            "scuttleCard:",
-            this.state.selectedCard.id,
-            "target:",
-            targetCard.id
-        );
-
         this.props.moves.chooseScuttleTarget(
             this.state.selectedCard,
             targetCard
@@ -104,14 +86,6 @@ export class Board extends React.Component {
         this.setState({ selectedCard: -1 });
     };
     chooseEffectTarget = (targetCard, targetField) => {
-        console.log(
-            // "chooseEffectTarget:",
-            // this.state.selectedCard.id,
-            "target:",
-            targetCard.id,
-            "targetField",
-            targetField
-        );
         this.props.moves.chooseEffectTarget(targetCard, targetField);
     };
 
@@ -140,7 +114,8 @@ export class Board extends React.Component {
 
         return (
             <div className="board-area">
-                {/* turn information */}
+
+                {/* logger */}
                 <Container>
                     {this.props.ctx.gameover &&
                         this.props.ctx.gameover.winner && (
@@ -148,7 +123,7 @@ export class Board extends React.Component {
                         )}
                     {this.props.ctx.gameover &&
                         !this.props.ctx.gameover.winner && <h1>DRAW!</h1>}
-                    <TurnInfo currentPlayer={names[currentPlayer]} />
+                    <Logger currentPlayer={names[currentPlayer]} />
                 </Container>
 
                 {/* 8 effect */}

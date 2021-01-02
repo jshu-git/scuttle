@@ -5,6 +5,13 @@ import { shuffle } from "./Setup";
     the other player is then put into countering stage
 */
 export function playCardEffect(G, ctx, playerAction, card) {
+    // because counter also calls playCardEffect, only log the first effect
+    if (G.counterChain.length < 1) {
+        G.logger.push(
+            G.names[playerAction] + " played <" + card.id + "> as effect"
+        );
+    }
+
     // push card into counterChain
     G.counterChain.push(card);
 
@@ -38,6 +45,8 @@ export function playCardEffect(G, ctx, playerAction, card) {
 }
 
 export function counter(G, ctx, playerCounter) {
+    G.logger.push(G.names[playerCounter] + " countered");
+
     // at this point, ctx.currentPlayer is STILL the player who played the FIRST effect, so we can't use that as a reference
 
     // find 2 in countering player
@@ -52,7 +61,9 @@ export function counter(G, ctx, playerCounter) {
     playCardEffect(G, ctx, playerCounter, hand[twoIndex]);
 }
 
-export function accept(G, ctx) {
+export function accept(G, ctx, playerAccept) {
+    G.logger.push(G.names[playerAccept] + " accepted");
+
     // check if effect was countered
     if (G.effectCountered) {
         ctx.events.endTurn();
@@ -61,9 +72,17 @@ export function accept(G, ctx) {
 
     // effect card is at counterChain[0]
     // check if effect requires target
-    let no_target = ["Ace", "4", "5", "6", "7", "8", "10", "Queen", "King"].some(
-        (x) => G.counterChain[0].Value === x
-    );
+    let no_target = [
+        "Ace",
+        "4",
+        "5",
+        "6",
+        "7",
+        "8",
+        "10",
+        "Queen",
+        "King",
+    ].some((x) => G.counterChain[0].Value === x);
 
     if (no_target) {
         // immediate card effect
@@ -190,12 +209,12 @@ function doEffect(G, ctx) {
             break;
         case "7":
             console.log("reaching this 7 case");
-            let player_hand_length = current_player_hand.length -1;
+            let player_hand_length = current_player_hand.length - 1;
             while (current_player_hand.length > 0) {
                 deck.push(current_player_hand.pop());
             }
             shuffle(G.deck);
-            for(let j =0; j<= player_hand_length;j++ ){
+            for (let j = 0; j <= player_hand_length; j++) {
                 current_player_hand.push(deck.pop());
             }
             break;
@@ -222,6 +241,12 @@ export function chooseEffectTarget(G, ctx, targetCard, targetField) {
     // do targeting effect
     let valid = doEffectTarget(G, ctx, targetCard, targetField);
     if (valid) {
+        G.logger.push(
+            G.names[ctx.currentPlayer] +
+                " targeted <" +
+                targetCard.id +
+                "> as effect"
+        );
         ctx.events.endTurn();
     }
 }

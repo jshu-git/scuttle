@@ -47,6 +47,14 @@ export const Scuttle = {
                 currentPlayer: "action",
                 others: "idle",
             });
+            G.logger.push(
+                // will be undefined for very first but immediately overwritten
+                "Turn " +
+                    ctx.turn +
+                    ": " +
+                    G.names[ctx.currentPlayer] +
+                    "'s turn"
+            );
         },
         onEnd: (G, ctx) => {
             cleanupCounterChain(G);
@@ -106,8 +114,7 @@ export const Scuttle = {
 
 // game moves
 function endTurn(G, ctx) {
-    G.logger.push(G.names[ctx.currentPlayer] + " ended their turn.");
-    console.log(G.logger);
+    G.logger.push(G.names[ctx.currentPlayer] + " ended their turn");
     ctx.events.endTurn();
 }
 
@@ -116,4 +123,8 @@ function storeNames(G, ctx, playerList) {
     for (let i = 0; i < playerList.length; i++) {
         G.names[i] = playerList[i].name;
     }
+
+    G.logger[0] =
+        // hack for getting around undefined
+        "Turn " + ctx.turn + ": " + G.names[ctx.currentPlayer] + "'s turn";
 }

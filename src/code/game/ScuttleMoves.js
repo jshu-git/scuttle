@@ -44,14 +44,22 @@ export function chooseScuttleTarget(G, ctx, card, target) {
 
         G.graveyard.push(remove1);
         G.graveyard.push(remove2);
+
+        G.logger.push(
+            G.names[ctx.currentPlayer] +
+                "used <" +
+                card.id +
+                ">" +
+                " to scuttle <" +
+                target.id +
+                ">"
+        );
         ctx.events.endTurn();
     } else {
-        console.log("playCardScuttle error, scuttle failed");
         // reset stages
         ctx.events.setActivePlayers({
             currentPlayer: "action",
             others: "idle",
         });
-        // return INVALID_MOVE;
     }
 }

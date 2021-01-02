@@ -11,7 +11,7 @@ export class CounteringOptions extends React.Component {
                 </Button>{" "}
                 <Button
                     size="sm"
-                    onClick={() => this.props.counter(this.props.playerID)}
+                    onClick={this.props.counter}
                     disabled={!this.props.has2}
                 >
                     Counter

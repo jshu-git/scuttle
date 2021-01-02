@@ -2,7 +2,7 @@ import React from "react";
 
 import "./board.scss";
 
-export class TurnInfo extends React.Component {
+export class Logger extends React.Component {
     render() {
         // props
         let currentPlayer = this.props.currentPlayer;

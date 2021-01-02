@@ -4,7 +4,8 @@
 export function drawCard(G, ctx) {
     const card = G.deck.pop();
     G.hands[ctx.currentPlayer].push(card);
-    G.logger.push(G.names[ctx.currentPlayer] + " draws.");
+
+    G.logger.push(G.names[ctx.currentPlayer] + " drew a card");
     ctx.events.endTurn();
 }
 
@@ -15,5 +16,9 @@ export function playCardValue(G, ctx, card) {
     let idx = hand.findIndex((i) => i.id === card.id);
     let remove = hand.splice(idx, 1)[0];
     field.push(remove);
+
+    G.logger.push(
+        G.names[ctx.currentPlayer] + " played <" + card.id + "> as value"
+    );
     ctx.events.endTurn();
 }

@@ -60,7 +60,7 @@ export class Field extends React.Component {
             // for jack text
             textAlign: "center",
         };
-        console.log(field);
+
         for (let i = 0; i < field.length; i++) {
             let card = field[i];
             let img = CardImages[card.id];
