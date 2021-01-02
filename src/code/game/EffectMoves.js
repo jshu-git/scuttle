@@ -266,6 +266,7 @@ function doEffectTarget(G, ctx, targetCard, targetField) {
     let jacks = G.jacks;
     let graveyard = G.graveyard;
     let deck = G.deck;
+    let names = G.names;
 
     let card = G.counterChain[0];
 
@@ -461,8 +462,8 @@ function doEffectTarget(G, ctx, targetCard, targetField) {
 
             // first time
             if (!jacks[targetCard.id]) {
-                // set key=card.id and value=[card object, "owner", [list of jacks]] (2 element list)
-                jacks[targetCard.id] = [targetCard, opponent_player, [jack]];
+                // set key=card.id and value=[card object, "jshu (owner)", [list of jacks]] (2 element list)
+                jacks[targetCard.id] = [targetCard, names[opponent_player], [jack]];
             } else {
                 jacks[targetCard.id][2].push(jack);
             }
