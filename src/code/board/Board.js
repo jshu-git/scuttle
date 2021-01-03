@@ -11,7 +11,7 @@ import { Graveyard } from "./Graveyard";
 import { TurnOptions } from "./TurnOptions";
 import { Logger } from "./Logger";
 import { ChoosingPopup } from "./ChoosingPopup";
-import { PlayAgain } from "./PlayAgain";
+import PlayAgain from "./PlayAgain";
 
 // bootstrap
 import { Container, Button, Jumbotron, Row, Col } from "react-bootstrap";
@@ -38,12 +38,9 @@ export class Board extends React.Component {
 
     // togglers
     toggleSelectedCard = (card) => {
-        this.setState(
-            {
-                selectedCard: this.state.selectedCard === -1 ? card : -1,
-            },
-            console.log(this.state.selectedCard)
-        );
+        this.setState({
+            selectedCard: this.state.selectedCard === -1 ? card : -1,
+        });
     };
     toggleGraveyard = () => {
         this.setState({ showGraveyard: !this.state.showGraveyard });
@@ -51,14 +48,12 @@ export class Board extends React.Component {
 
     // action moves
     drawCard = () => {
-        console.log("reaching in drawcard")
         this.props.moves.drawCard();
     };
     endTurn = () => {
         this.props.moves.endTurn();
     };
     playCardValue = () => {
-        console.log("reaching board");
         this.props.moves.playCardValue(this.state.selectedCard);
         this.setState({ selectedCard: -1 });
     };
@@ -130,27 +125,17 @@ export class Board extends React.Component {
         let gameOver = this.props.G.gameOver;
         let winner = this.props.G.winner;
 
-        console.log("in board", JSON.parse(JSON.stringify(hands)));
-        // this.props.moves.drawCard();
-
         return (
             <div className="board-area">
                 {/* logger */}
                 <Container>
                     <Logger logger={logger} />
-                    {/* not sure if works yet */}
-                    {winner !== "" && (
-                        <PlayAgain
-                            gameOver={gameOver}
-                            playerID={playerID}
-                            winner={winner}
-                            // important, passed in from GameClient in Room.js
-                            gameID={this.props.gameID}
-                            // moves
-                            playAgain={this.playAgain}
-                            setNewRoom={this.setNewRoom}
-                        />
-                    )}
+                </Container>
+
+                {/* play again */}
+                <Container>
+                    {/* using const for play again */}
+                    {winner !== "" && <PlayAgain {...this.props} />}
                 </Container>
 
                 {/* 8 effect */}

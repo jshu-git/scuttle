@@ -1,59 +1,72 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { LobbyAPI } from "../../LobbyAPI";
 import uniqid from "uniqid";
 
+import { Button } from "react-bootstrap";
+
 const api = new LobbyAPI();
 
-export class PlayAgain extends React.Component {
-    componentDidUpdate() {
-        let gameOver = this.props.gameOver;
+const PlayAgain = ({ G, ctx, playerID, moves, gameID }) => {
+    const [choices, setChoices] = useState([]);
 
-        if (gameOver.newRoomID !== "") {
-            let myID = localStorage.getItem("id");
-            let myCredentials = localStorage.getItem("credentials");
-            let myName = localStorage.getItem("name");
-            api.leaveRoom(this.props.gameID, myID, myCredentials).then(() => {
-                api.joinRoom(gameOver.newRoomID, myID, myName).then(
+    useEffect(() => {
+        if (G.gameOver.newRoomID !== "") {
+            const myID = localStorage.getItem("id");
+            const myCredentials = localStorage.getItem("credentials");
+            const myName = localStorage.getItem("name");
+            api.leaveRoom(gameID, myID, myCredentials).then(() => {
+                api.joinRoom(G.gameOver.newRoomID, myID, myName).then(
                     (credentials) => {
                         localStorage.setItem("credentials", credentials);
-                        window.location.href = "/rooms/" + gameOver.newRoomID;
+                        window.location.href = "/rooms/" + G.gameOver.newRoomID;
                     }
                 );
             });
         }
+    }, [G.gameOver.newRoomID, gameID]);
 
-        // 2 players
-        if (gameOver.playAgain.length === 2) {
+    useEffect(() => {
+        if (G.gameOver.playAgain.length === 2) {
             if (
-                gameOver.newRoomID === "" &&
-                // only the [0] player creates the room
-                this.props.playerID === gameOver.playAgain[0]
+                G.gameOver.newRoomID === "" &&
+                playerID === G.gameOver.playAgain[0]
             ) {
-                api.createRoom(2).then((roomID) => {
-                    this.props.setNewRoom(roomID);
+                api.createRoom(ctx.numPlayers).then((roomID) => {
+                    moves.setNewRoom(roomID);
                 });
             }
         }
-    }
 
-    render() {
+        const playAgain = () => {
+            moves.playAgain(playerID);
+        };
+
         let temp = [];
-        let winner = this.props.winner;
-        let gameOver = this.props.gameOver;
-        let playerID = this.props.playerID;
-        console.log(this.props.gameID);
-
-        if (winner !== "") {
+        let disabled = G.gameOver.playAgain.includes(playerID);
+        if (G.winner !== "") {
             temp.push(
-                <button
+                <Button
+                    size="sm"
+                    variant="primary"
                     key={uniqid()}
-                    onClick={this.props.playAgain}
-                    disabled={gameOver.playAgain.includes(playerID)}
+                    onClick={playAgain}
+                    disabled={disabled}
                 >
-                    play again
-                </button>
+                    {disabled ? "Waiting for other player..." : "Play Again"}
+                </Button>
             );
         }
-        return <div>HELLO WORLD!{temp}</div>;
-    }
-}
+        setChoices(temp);
+    }, [
+        G.gameOver.playAgain,
+        G.winner,
+        G.gameOver.newRoomID,
+        ctx.numPlayers,
+        moves,
+        playerID,
+    ]);
+
+    return <React.Fragment>{choices}</React.Fragment>;
+};
+
+export default PlayAgain;

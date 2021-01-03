@@ -10,7 +10,6 @@ export function drawCard(G, ctx) {
 }
 
 export function playCardValue(G, ctx, card) {
-    console.log("reaching inside actionmove sbeing");
     let hand = G.hands[ctx.currentPlayer];
     let field = G.fields[ctx.currentPlayer];
 
@@ -22,7 +21,4 @@ export function playCardValue(G, ctx, card) {
         G.names[ctx.currentPlayer] + " played <" + card.id + "> as value"
     );
     ctx.events.endTurn();
-    console.log("reaching inside actionmoves end");
-    console.log("in moves hand", JSON.parse(JSON.stringify(hand)));
-    console.log("in moves field", JSON.parse(JSON.stringify(field)));
 }
