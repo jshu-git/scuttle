@@ -186,22 +186,20 @@ function doEffect(G, ctx) {
                 // check the owner of each jack and see if they're in the correct field
                 // the jacked card can only be in 1 of these fields
                 if (
-                    current_player_field.some(
-                        (x) => card.id === x.id && owner !== current_player
-                    )
+                    owner !== current_player &&
+                    current_player_field.some((x) => card.id === x.id)
                 ) {
                     let idx = current_player_field.findIndex(
-                        (x) => card.id === x.id && owner !== current_player
+                        (x) => card.id === x.id
                     );
                     let remove = current_player_field.splice(idx, 1)[0];
                     opponent_player_field.push(remove);
                 } else if (
-                    opponent_player_field.some(
-                        (x) => card.id === x.id && owner !== opponent_player
-                    )
+                    owner !== opponent_player &&
+                    opponent_player_field.some((x) => card.id === x.id)
                 ) {
                     let idx = opponent_player_field.findIndex(
-                        (x) => card.id === x.id && owner !== current_player
+                        (x) => card.id === x.id
                     );
                     let remove = opponent_player_field.splice(idx, 1)[0];
                     current_player_field.push(remove);
