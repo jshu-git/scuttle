@@ -142,7 +142,7 @@ export class Board extends React.Component {
                     <h6>Opponent Hand ({hands[playerIDOpponent].length})</h6>
                     {(specialFields[playerID].some((x) => x.Value === "8") ||
                         // show hand after game is over
-                        winner != "") && (
+                        winner !== "") && (
                         <Hand
                             playerID={playerIDOpponent}
                             hand={hands[playerIDOpponent]}

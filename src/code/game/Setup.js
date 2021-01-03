@@ -1,9 +1,9 @@
-export const initializeGame = (playOrder, playOrderPos) => {
+export const initializeGame = (playOrder, playOrderPos, goFirst) => {
     let deck = createDeck();
 
     shuffle(deck);
 
-    let hands = drawHands(deck, playOrder, playOrderPos);
+    let hands = drawHands(deck, playOrder, playOrderPos, goFirst);
     let fields = setFields(playOrder, playOrderPos);
     let specialFields = setSpecialFields(playOrder, playOrderPos);
     return { deck, hands, fields, specialFields };
@@ -47,7 +47,7 @@ export function createDeck() {
     return deck;
 }
 
-function drawHands(deck, playOrder, playOrderPos) {
+function drawHands(deck, playOrder, playOrderPos, goFirst) {
     let hands = {};
 
     let current = playOrder[playOrderPos];
@@ -57,16 +57,26 @@ function drawHands(deck, playOrder, playOrderPos) {
     hands[current] = [];
     hands[next] = [];
 
-    // randomize if else for loops with a random toggle, basically math.rnaomd 01, if 0 
+    if (goFirst === 0) {
+        for (let i = 0; i < 4; i++) {
+            const card = deck.pop();
+            hands[current].push(card);
+        }
 
-    for (let i = 0; i < 4; i++) {
-        const card = deck.pop();
-        hands[current].push(card);
-    }
+        for (let i = 0; i < 5; i++) {
+            const card = deck.pop();
+            hands[next].push(card);
+        }
+    } else {
+        for (let i = 0; i < 5; i++) {
+            const card = deck.pop();
+            hands[current].push(card);
+        }
 
-    for (let i = 0; i < 5; i++) {
-        const card = deck.pop();
-        hands[next].push(card);
+        for (let i = 0; i < 4; i++) {
+            const card = deck.pop();
+            hands[next].push(card);
+        }
     }
 
     return hands;
@@ -101,4 +111,3 @@ function setSpecialFields(playOrder, playOrderPos) {
     specialFields[next] = [];
     return specialFields;
 }
-

@@ -14,9 +14,12 @@ import { playAgain, setNewRoom } from "./PlayAgainMoves.js";
 import { GAME_NAME } from "../../config";
 
 const setup = ({ playOrder, playOrderPos }) => {
+    const goFirst = Math.floor(Math.random() * 2);
+
     const { deck, hands, fields, specialFields } = initializeGame(
         playOrder,
-        playOrderPos
+        playOrderPos,
+        goFirst
     );
 
     // initialize game state G
@@ -44,6 +47,9 @@ const setup = ({ playOrder, playOrderPos }) => {
             playAgain: [],
             newRoomID: "",
         },
+
+        // turn stuff
+        goFirst: goFirst,
     };
 };
 
@@ -51,6 +57,11 @@ export const Scuttle = {
     name: `${GAME_NAME}`,
     setup: setup,
     turn: {
+        order: {
+            first: (G, ctx) => G.goFirst,
+            next: (G, ctx) => (ctx.playOrderPos + 1) % ctx.playOrder.length,
+        },
+
         onBegin: (G, ctx) => {
             ctx.events.setActivePlayers({
                 currentPlayer: "action",
@@ -80,7 +91,10 @@ export const Scuttle = {
         },
         stages: {
             idle: {
-                moves: {},
+                moves: {
+                    // names
+                    storeNames,
+                },
             },
             action: {
                 moves: {
@@ -125,8 +139,6 @@ function endTurn(G, ctx) {
     G.logger.push(G.names[ctx.currentPlayer] + " ended their turn");
     ctx.events.endTurn();
 }
-
-// names
 function storeNames(G, ctx, playerList) {
     for (let i = 0; i < playerList.length; i++) {
         G.names[i] = playerList[i].name;
