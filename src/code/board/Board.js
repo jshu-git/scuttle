@@ -122,7 +122,6 @@ export class Board extends React.Component {
         let logger = this.props.G.logger;
 
         // play again props
-        let gameOver = this.props.G.gameOver;
         let winner = this.props.G.winner;
 
         return (
@@ -143,7 +142,7 @@ export class Board extends React.Component {
                     <h6>Opponent Hand ({hands[playerIDOpponent].length})</h6>
                     {(specialFields[playerID].some((x) => x.Value === "8") ||
                         // show hand after game is over
-                        this.props.ctx.gameover) && (
+                        winner != "") && (
                         <Hand
                             playerID={playerIDOpponent}
                             hand={hands[playerIDOpponent]}
