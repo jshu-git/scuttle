@@ -184,22 +184,27 @@ function doEffect(G, ctx) {
                 let jacklist = jacks[id][2];
 
                 // check the owner of each jack and see if they're in the correct field
-                if (owner !== current_player) {
+                // the jacked card can only be in 1 of these fields
+                if (
+                    current_player_field.some(
+                        (x) => card.id === x.id && owner !== current_player
+                    )
+                ) {
                     let idx = current_player_field.findIndex(
-                        (x) => card.id === x.id
+                        (x) => card.id === x.id && owner !== current_player
                     );
-                    if (idx !== -1) {
-                        let remove = current_player_field.splice(idx, 1)[0];
-                        opponent_player_field.push(remove);
-                    }
-                } else if (owner !== opponent_player) {
+                    let remove = current_player_field.splice(idx, 1)[0];
+                    opponent_player_field.push(remove);
+                } else if (
+                    opponent_player_field.some(
+                        (x) => card.id === x.id && owner !== opponent_player
+                    )
+                ) {
                     let idx = opponent_player_field.findIndex(
-                        (x) => card.id === x.id
+                        (x) => card.id === x.id && owner !== current_player
                     );
-                    if (idx !== -1) {
-                        let remove = opponent_player_field.splice(idx, 1)[0];
-                        current_player_field.push(remove);
-                    }
+                    let remove = opponent_player_field.splice(idx, 1)[0];
+                    current_player_field.push(remove);
                 }
 
                 //  add jacks to graveyard
@@ -463,7 +468,11 @@ function doEffectTarget(G, ctx, targetCard, targetField) {
             // first time
             if (!jacks[targetCard.id]) {
                 // set key=card.id and value=[card object, "jshu (owner)", [list of jacks]] (2 element list)
-                jacks[targetCard.id] = [targetCard, names[opponent_player], [jack]];
+                jacks[targetCard.id] = [
+                    targetCard,
+                    names[opponent_player],
+                    [jack],
+                ];
             } else {
                 jacks[targetCard.id][2].push(jack);
             }
