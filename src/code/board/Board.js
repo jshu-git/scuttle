@@ -11,6 +11,7 @@ import { Graveyard } from "./Graveyard";
 import { TurnOptions } from "./TurnOptions";
 import { Logger } from "./Logger";
 import { ChoosingPopup } from "./ChoosingPopup";
+import { PlayAgain } from "./PlayAgain";
 
 // bootstrap
 import { Container, Button, Jumbotron, Row, Col } from "react-bootstrap";
@@ -21,13 +22,13 @@ export class Board extends React.Component {
         this.state = {
             selectedCard: -1,
             showGraveyard: false,
-            storeNames: false,
         };
     }
 
     // for names, only runs once
     componentDidMount() {
-        if (!this.state.storeNames) {
+        // trick
+        if (this.props.playerID === "0") {
             this.setState({
                 storeNames: true,
             });
@@ -37,9 +38,12 @@ export class Board extends React.Component {
 
     // togglers
     toggleSelectedCard = (card) => {
-        this.setState({
-            selectedCard: this.state.selectedCard === -1 ? card : -1,
-        });
+        this.setState(
+            {
+                selectedCard: this.state.selectedCard === -1 ? card : -1,
+            },
+            console.log(this.state.selectedCard)
+        );
     };
     toggleGraveyard = () => {
         this.setState({ showGraveyard: !this.state.showGraveyard });
@@ -47,12 +51,14 @@ export class Board extends React.Component {
 
     // action moves
     drawCard = () => {
+        console.log("reaching in drawcard")
         this.props.moves.drawCard();
     };
     endTurn = () => {
         this.props.moves.endTurn();
     };
     playCardValue = () => {
+        console.log("reaching board");
         this.props.moves.playCardValue(this.state.selectedCard);
         this.setState({ selectedCard: -1 });
     };
@@ -89,13 +95,19 @@ export class Board extends React.Component {
         this.props.moves.chooseEffectTarget(targetCard, targetField);
     };
 
+    // play again testing
+    playAgain = () => {
+        this.props.moves.playAgain(this.props.playerID);
+    };
+    setNewRoom = (roomID) => {
+        this.props.moves.setNewRoom(roomID);
+    };
+
     render() {
         // props
         let playerID = this.props.playerID;
         let playerIDOpponent = String(1 - parseInt(playerID));
-        let names = this.props.G.names;
         let hands = this.props.G.hands;
-        let currentPlayer = this.props.ctx.currentPlayer;
         let graveyard = this.props.G.graveyard;
         let deck = this.props.G.deck;
         let fields = this.props.G.fields;
@@ -114,21 +126,31 @@ export class Board extends React.Component {
 
         let logger = this.props.G.logger;
 
+        // play again props
+        let gameOver = this.props.G.gameOver;
+        let winner = this.props.G.winner;
+
+        console.log("in board", JSON.parse(JSON.stringify(hands)));
+        // this.props.moves.drawCard();
+
         return (
             <div className="board-area">
-                {/* victory */}
-                {this.props.ctx.gameover && (
-                    <Container>
-                        {this.props.ctx.gameover.winner && (
-                            <h1>WINNER: {names[currentPlayer]}</h1>
-                        )}
-                        {!this.props.ctx.gameover.winner && <h1>DRAW!</h1>}
-                    </Container>
-                )}
-
                 {/* logger */}
                 <Container>
                     <Logger logger={logger} />
+                    {/* not sure if works yet */}
+                    {winner !== "" && (
+                        <PlayAgain
+                            gameOver={gameOver}
+                            playerID={playerID}
+                            winner={winner}
+                            // important, passed in from GameClient in Room.js
+                            gameID={this.props.gameID}
+                            // moves
+                            playAgain={this.playAgain}
+                            setNewRoom={this.setNewRoom}
+                        />
+                    )}
                 </Container>
 
                 {/* 8 effect */}

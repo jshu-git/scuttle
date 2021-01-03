@@ -57,6 +57,8 @@ function drawHands(deck, playOrder, playOrderPos) {
     hands[current] = [];
     hands[next] = [];
 
+    // randomize if else for loops with a random toggle, basically math.rnaomd 01, if 0 
+
     for (let i = 0; i < 4; i++) {
         const card = deck.pop();
         hands[current].push(card);

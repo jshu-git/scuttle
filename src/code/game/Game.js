@@ -8,7 +8,9 @@ import {
     accept,
     cleanupCounterChain,
 } from "./EffectMoves.js";
-import { isVictory, isDraw } from "./Victory.js";
+import { checkForVictory } from "./Victory.js";
+import { playAgain, setNewRoom } from "./PlayAgainMoves.js";
+
 import { GAME_NAME } from "../../config";
 
 const setup = ({ playOrder, playOrderPos }) => {
@@ -35,6 +37,13 @@ const setup = ({ playOrder, playOrderPos }) => {
         jacks: {},
         names: {},
         logger: [],
+
+        // play again stuff
+        winner: "",
+        gameOver: {
+            playAgain: [],
+            newRoomID: "",
+        },
     };
 };
 
@@ -47,21 +56,26 @@ export const Scuttle = {
                 currentPlayer: "action",
                 others: "idle",
             });
-            G.logger.push(
-                // will be undefined for very first but immediately overwritten
-                "Turn " +
-                    ctx.turn +
-                    ": " +
-                    G.names[ctx.currentPlayer] +
-                    "'s turn"
-            );
+
+            // only log in onbegin if no winner yet
+            if (G.winner === "") {
+                G.logger.push(
+                    // will be undefined for very first but immediately overwritten
+                    "Turn " +
+                        ctx.turn +
+                        ": " +
+                        G.names[ctx.currentPlayer] +
+                        "'s turn"
+                );
+            }
         },
         onEnd: (G, ctx) => {
             cleanupCounterChain(G);
+            checkForVictory(G, ctx);
         },
         stages: {
             idle: {
-                moves: {},
+                moves: { playAgain, setNewRoom },
             },
             action: {
                 moves: {
@@ -72,6 +86,10 @@ export const Scuttle = {
                     playCardEffect,
                     //names
                     storeNames,
+
+                    //play again
+                    playAgain,
+                    setNewRoom,
                 },
             },
             countering: {
@@ -91,24 +109,6 @@ export const Scuttle = {
                 },
             },
         },
-    },
-
-    // victory condition
-    endIf: (G, ctx) => {
-        if (isVictory(G, ctx)) {
-            return { winner: ctx.currentPlayer };
-        }
-        if (isDraw(G, ctx)) {
-            return { draw: true };
-        }
-    },
-    onEnd: (G, ctx) => {
-        ctx.events.setActivePlayers({
-            value: {
-                0: "idle",
-                1: "idle",
-            },
-        });
     },
 };
 

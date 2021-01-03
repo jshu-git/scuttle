@@ -75,7 +75,7 @@ const Room = (props) => {
         return (
             <GameClient
                 gameID={id}
-                // numPlayers={players.length}
+                numPlayers={2}
                 playerID={localStorage.getItem("id")}
                 playerName={localStorage.getItem("name")}
                 credentials={localStorage.getItem("credentials")}
