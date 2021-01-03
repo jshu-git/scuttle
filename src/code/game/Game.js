@@ -67,6 +67,11 @@ export const Scuttle = {
                         G.names[ctx.currentPlayer] +
                         "'s turn"
                 );
+            } else {
+                ctx.events.setActivePlayers({
+                    currentPlayer: "playAgain",
+                    others: "playAgain",
+                });
             }
         },
         onEnd: (G, ctx) => {
@@ -75,7 +80,7 @@ export const Scuttle = {
         },
         stages: {
             idle: {
-                moves: { playAgain, setNewRoom },
+                moves: {},
             },
             action: {
                 moves: {
@@ -84,12 +89,8 @@ export const Scuttle = {
                     playCardValue,
                     playCardScuttle,
                     playCardEffect,
-                    //names
+                    // names
                     storeNames,
-
-                    //play again
-                    playAgain,
-                    setNewRoom,
                 },
             },
             countering: {
@@ -106,6 +107,13 @@ export const Scuttle = {
             choosingEffect: {
                 moves: {
                     chooseEffectTarget,
+                },
+            },
+
+            playAgain: {
+                moves: {
+                    playAgain,
+                    setNewRoom,
                 },
             },
         },
