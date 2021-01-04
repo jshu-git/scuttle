@@ -1,8 +1,8 @@
 import React from "react";
-import "./board.scss";
+import "../board.scss";
 import { Button } from "react-bootstrap";
 
-export const PlayCardOptions = (props) => {
+const PlayCardOptions = (props) => {
     const {
         G,
         ctx,
@@ -110,3 +110,5 @@ export const PlayCardOptions = (props) => {
     }
     return <React.Fragment></React.Fragment>;
 };
+
+export default PlayCardOptions;

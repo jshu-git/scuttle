@@ -1,9 +1,9 @@
 import React from "react";
 import AutoScroll from "@brianmcallister/react-auto-scroll";
 
-import "./board.scss";
+import "../board.scss";
 
-export const Logger = (props) => {
+const Logger = (props) => {
     const { G } = props;
 
     let cells = [];
@@ -22,3 +22,5 @@ export const Logger = (props) => {
         </AutoScroll>
     );
 };
+
+export default Logger;

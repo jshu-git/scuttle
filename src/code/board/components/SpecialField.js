@@ -1,9 +1,9 @@
 import React from "react";
-import "./board.scss";
+import "../board.scss";
 import { Col, Image } from "react-bootstrap/";
-import { CardImages } from "../../assets/cards.js";
+import { CardImages } from "../../../assets/cards.js";
 
-export const SpecialField = (props) => {
+const SpecialField = (props) => {
     const {
         ctx,
         playerID,
@@ -58,3 +58,5 @@ export const SpecialField = (props) => {
 
     return cells;
 };
+
+export default SpecialField;

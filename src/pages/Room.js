@@ -5,11 +5,9 @@ import { SocketIO } from "boardgame.io/multiplayer";
 import { DEFAULT_PORT, APP_PRODUCTION } from "../config";
 import { Scuttle, Board } from "../code";
 import Lobby from "../pages/Lobby";
-import { LobbyAPI } from "../LobbyAPI";
+import { api } from "../LobbyAPI";
 
 import { Button, Row, Col } from "react-bootstrap";
-
-const api = new LobbyAPI();
 
 const { origin, protocol, hostname } = window.location;
 const SERVER_URL = APP_PRODUCTION

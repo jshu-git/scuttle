@@ -1,12 +1,10 @@
 import React, { useState, useEffect } from "react";
-import { LobbyAPI } from "../../LobbyAPI";
+import { api } from "../../../LobbyAPI";
 import uniqid from "uniqid";
 
 import { Button } from "react-bootstrap";
 
-const api = new LobbyAPI();
-
-export const PlayAgain = ({ G, ctx, playerID, moves, gameID }) => {
+const PlayAgain = ({ G, ctx, playerID, moves, gameID }) => {
     const [choices, setChoices] = useState([]);
 
     useEffect(() => {
@@ -68,3 +66,5 @@ export const PlayAgain = ({ G, ctx, playerID, moves, gameID }) => {
 
     return <React.Fragment>{choices}</React.Fragment>;
 };
+
+export default PlayAgain;

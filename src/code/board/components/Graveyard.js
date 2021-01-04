@@ -1,11 +1,11 @@
 import React from "react";
 
-import "./board.scss";
+import "../board.scss";
 import { Row, Col, Image } from "react-bootstrap";
 
-import { CardImages } from "../../assets/cards.js";
+import { CardImages } from "../../../assets/cards.js";
 
-export const Graveyard = (props) => {
+const Graveyard = (props) => {
     const { G, moves, inPopup } = props;
 
     // moves
@@ -43,3 +43,5 @@ export const Graveyard = (props) => {
         </React.Fragment>
     );
 };
+
+export default Graveyard;

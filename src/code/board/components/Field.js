@@ -1,11 +1,11 @@
 import React from "react";
 
-import "./board.scss";
+import "../board.scss";
 import { Col, Image } from "react-bootstrap";
 
-import { CardImages } from "../../assets/cards.js";
+import { CardImages } from "../../../assets/cards.js";
 
-export const Field = (props) => {
+const Field = (props) => {
     const {
         G,
         ctx,
@@ -78,3 +78,5 @@ export const Field = (props) => {
     }
     return cells;
 };
+
+export default Field;

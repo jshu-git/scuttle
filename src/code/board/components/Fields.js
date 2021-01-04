@@ -1,13 +1,13 @@
 import React from "react";
 
 // components
-import { Field } from "./Field";
-import { SpecialField } from "./SpecialField";
+import Field from "./Field";
+import SpecialField from "./SpecialField";
 
-import "./board.scss";
+import "../board.scss";
 import { Row, Col } from "react-bootstrap";
 
-export const Fields = (props) => {
+const Fields = (props) => {
     const { G, playerID, playerIDOpponent } = props;
 
     return (
@@ -54,3 +54,4 @@ export const Fields = (props) => {
         </React.Fragment>
     );
 };
+export default Fields;

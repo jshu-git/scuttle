@@ -1,15 +1,15 @@
 import React from "react";
 
 // components
-import { Field } from "./Field";
-import { SpecialField } from "./SpecialField";
-import { Graveyard } from "./Graveyard";
+import Field from "./Field";
+import SpecialField from "./SpecialField";
+import Graveyard from "./Graveyard";
 
-import "./board.scss";
+import "../board.scss";
 import { Row, Col, Image, Container } from "react-bootstrap";
-import { CardImages } from "../../assets/cards.js";
+import { CardImages } from "../../../assets/cards.js";
 
-export const ChoosingPopup = (props) => {
+const ChoosingPopup = (props) => {
     const {
         G,
         ctx,
@@ -172,7 +172,6 @@ export const ChoosingPopup = (props) => {
     const effect3 = () => {
         return (
             <React.Fragment>
-                <h6>Graveyard</h6>
                 <Graveyard {...props} inPopup={true} />
             </React.Fragment>
         );
@@ -215,3 +214,5 @@ export const ChoosingPopup = (props) => {
     }
     return <React.Fragment></React.Fragment>;
 };
+
+export default ChoosingPopup;

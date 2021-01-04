@@ -2,15 +2,15 @@ import React from "react";
 // import "./board.scss";
 
 // components
-import { Hand } from "./Hand";
-import { PlayCardOptions } from "./PlayCardOptions";
-import { CounteringOptions } from "./CounteringOptions";
+import { Hand } from "./components/Hand";
+import { PlayCardOptions } from "./components/PlayCardOptions";
+import { CounteringOptions } from "./components/CounteringOptions";
 import { Field } from "./Field";
 import { SpecialField } from "./SpecialField";
-import { Graveyard } from "./Graveyard";
-import { TurnOptions } from "./TurnOptions";
-import { Logger } from "./Logger";
-import { ChoosingPopup } from "./ChoosingPopup";
+import { Graveyard } from "./components/Graveyard";
+import { TurnOptions } from "./components/TurnOptions";
+import { Logger } from "./components/Logger";
+import { ChoosingPopup } from "./components/ChoosingPopup";
 import PlayAgain from "./PlayAgain";
 
 // bootstrap

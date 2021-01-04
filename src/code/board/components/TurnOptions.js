@@ -1,8 +1,8 @@
 import React from "react";
-import "./board.scss";
+import "../board.scss";
 import { Button } from "react-bootstrap";
 
-export const TurnOptions = (props) => {
+const TurnOptions = (props) => {
     const { G, ctx, playerID, moves, selectedCard } = props;
     const inActionStage = ctx.activePlayers[playerID] === "action";
 
@@ -38,3 +38,5 @@ export const TurnOptions = (props) => {
     }
     return <React.Fragment></React.Fragment>;
 };
+
+export default TurnOptions;

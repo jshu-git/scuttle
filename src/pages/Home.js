@@ -1,10 +1,9 @@
 import React, { useState, useEffect } from "react";
 import Lobby from "../pages/Lobby";
-import { LobbyAPI } from "../LobbyAPI";
+import { api } from "../LobbyAPI";
 
 import { Button, Row, Col } from "react-bootstrap";
 
-const api = new LobbyAPI();
 
 const Home = (props) => {
     const { history } = props;

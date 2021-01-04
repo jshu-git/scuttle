@@ -1,15 +1,17 @@
 import React, { useState, useEffect } from "react";
 
 // components
-import { Hand } from "./Hand";
-import { PlayCardOptions } from "./PlayCardOptions";
-import { CounteringOptions } from "./CounteringOptions";
-import { Graveyard } from "./Graveyard";
-import { Fields } from "./Fields";
-import { TurnOptions } from "./TurnOptions";
-import { Logger } from "./Logger";
-import { ChoosingPopup } from "./ChoosingPopup";
-import { PlayAgain } from "./PlayAgain";
+import {
+    Hand,
+    PlayCardOptions,
+    CounteringOptions,
+    Graveyard,
+    Fields,
+    TurnOptions,
+    Logger,
+    ChoosingPopup,
+    PlayAgain,
+} from "./components";
 
 // bootstrap
 import { Container, Jumbotron, Button } from "react-bootstrap";

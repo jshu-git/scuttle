@@ -1,10 +1,10 @@
 import React, { useEffect } from "react";
 
-import "./board.scss";
+import "../board.scss";
 import { Row, Col, Image } from "react-bootstrap";
-import { CardImages } from "../../assets/cards.js";
+import { CardImages } from "../../../assets/cards.js";
 
-export const Hand = (props) => {
+const Hand = (props) => {
     const {
         G,
         ctx,
@@ -64,3 +64,5 @@ export const Hand = (props) => {
         </React.Fragment>
     );
 };
+
+export default Hand;

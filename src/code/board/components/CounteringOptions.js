@@ -1,8 +1,8 @@
 import React from "react";
-import "./board.scss";
+import "../board.scss";
 import { Button } from "react-bootstrap";
 
-export const CounteringOptions = (props) => {
+const CounteringOptions = (props) => {
     const { G, ctx, playerID, moves } = props;
     const inCounteringStage = ctx.activePlayers[playerID] === "countering";
     const has2 = G.hands[playerID].some((x) => x.Value === "2");
@@ -29,3 +29,5 @@ export const CounteringOptions = (props) => {
     }
     return <React.Fragment></React.Fragment>;
 };
+
+export default CounteringOptions;
