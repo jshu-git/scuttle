@@ -6,7 +6,7 @@ import { Row, Col, Image, Button } from "react-bootstrap";
 import { CardImages } from "../../assets/cards.js";
 
 export const Graveyard = (props) => {
-    const { G, ctx, moves, showGraveyard, setShowGraveyard, inPopup } = props;
+    const { G, moves, showGraveyard, setShowGraveyard, inPopup } = props;
 
     // state toggler
     const toggleGraveyard = () => {

@@ -3,7 +3,7 @@ import "./board.scss";
 import { Button } from "react-bootstrap";
 
 export const CounteringOptions = (props) => {
-    const { G, ctx, playerID, moves, selectedCard, playerIDOpponent } = props;
+    const { G, ctx, playerID, moves } = props;
     const inCounteringStage = ctx.activePlayers[playerID] === "countering";
     const has2 = G.hands[playerID].some((x) => x.Value === "2");
 

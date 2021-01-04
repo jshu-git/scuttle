@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
 
 import "./board.scss";
 import { Row, Col, Image } from "react-bootstrap";
@@ -42,12 +42,6 @@ export const Hand = (props) => {
 
     return (
         <React.Fragment>
-            <h6>
-                Your Hand ({hand.length}){" "}
-                {selectedCard !== false && (
-                    <span>(selected: {selectedCard.id})</span>
-                )}
-            </h6>
             <Row xs={4} sm={4} md={5} className={inActionStage ? "active" : ""}>
                 {cells}
             </Row>
