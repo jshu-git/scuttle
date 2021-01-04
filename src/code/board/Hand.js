@@ -12,6 +12,7 @@ export const Hand = (props) => {
         selectedCard ? setSelectedCard(false) : setSelectedCard(card);
     };
 
+    // just to print
     useEffect(() => {
         console.log("selected", selectedCard);
     }, [selectedCard]);
@@ -38,10 +39,19 @@ export const Hand = (props) => {
             </Col>
         );
     }
+
     return (
-        <Row xs={4} sm={4} md={5} className={inActionStage ? "active" : ""}>
-            {cells}
-        </Row>
+        <React.Fragment>
+            <h6>
+                Your Hand ({hand.length}){" "}
+                {selectedCard !== false && (
+                    <span>(selected: {selectedCard.id})</span>
+                )}
+            </h6>
+            <Row xs={4} sm={4} md={5} className={inActionStage ? "active" : ""}>
+                {cells}
+            </Row>
+        </React.Fragment>
     );
 };
 

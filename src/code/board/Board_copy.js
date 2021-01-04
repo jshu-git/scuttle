@@ -20,6 +20,9 @@ export const Board = (props) => {
     const [selectedCard, setSelectedCard] = useState(false);
     const [showGraveyard, setShowGraveyard] = useState(false);
 
+    // extra props
+    let playerIDOpponent = String(1 - parseInt(props.playerID));
+
     // player 0 has to set the player's actual screen names due to the way boardgame.io works
     //   useEffect(() => {
     //     if (props.playerID === "0") {
@@ -31,18 +34,24 @@ export const Board = (props) => {
         <div className="board-area">
             {/* hand */}
             <Container>
-                {/* <h6>
-                    Your Hand ({hands[playerID].length}){" "}
-                    {selectedCard !== -1 && (
-                        <span>(selected: {selectedCard.id})</span>
-                    )}
-                </h6> */}
                 <Hand
                     {...props}
                     selectedCard={selectedCard}
                     setSelectedCard={setSelectedCard}
                 />
             </Container>
+
+            {/* turn stuff */}
+            {/* playcard options */}
+            <Container>
+                <PlayCardOptions
+                    {...props}
+                    selectedCard={selectedCard}
+                    playerIDOpponent={playerIDOpponent}
+                />
+            </Container>
+
+            <Container></Container>
         </div>
     );
 };
