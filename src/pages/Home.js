@@ -24,7 +24,7 @@ const Home = (props) => {
     useEffect(() => {
         let timer;
         if (history.location.state && history.location.state.invalidRoom) {
-            setErrMsg("Room does not exist.");
+            setErrMsg("Room does not exist");
             // reset error message
             timer = setTimeout(() => {
                 setErrMsg("");
@@ -84,7 +84,7 @@ const Home = (props) => {
             /*
              * --- TO-DO: setErrMsg("room is full") here if that's the case. currently it's "room does not exist" in both cases ---
              */
-            setErrMsg("Room does not exist.");
+            setErrMsg("Room does not exist");
             setRoom("");
             document.getElementById("roomIdentification").value = "";
         }

@@ -6,45 +6,62 @@ import { SpecialField } from "./SpecialField";
 import { Graveyard } from "./Graveyard";
 
 import "./board.scss";
-import { Row, Col, Image } from "react-bootstrap";
+import { Row, Col, Image, Container } from "react-bootstrap";
 import { CardImages } from "../../assets/cards.js";
 
-export class ChoosingPopup extends React.Component {
-    scuttle = () => {
+export const ChoosingPopup = (props) => {
+    const {
+        G,
+        ctx,
+        playerID,
+        moves,
+        selectedCard,
+        setSelectedCard,
+        playerIDOpponent,
+    } = props;
+
+    // stages
+    const inChoosingScuttleStage =
+        ctx.activePlayers[playerID] === "choosingScuttle";
+    const inChoosingEffectStage =
+        ctx.activePlayers[playerID] === "choosingEffect";
+
+    // moves
+    const chooseEffectTarget = (targetCard) => {
+        moves.chooseEffectTarget(targetCard);
+    };
+
+    const scuttle = () => {
         return (
             <React.Fragment>
                 <h6>Opponent Field</h6>
                 <Row xs={4} sm={4} md={5}>
                     <Field
+                        {...props}
+                        field={G.fields[playerIDOpponent]}
                         inPopup={true}
-                        // for display
-                        field={this.props.opponentField}
-                        jacks={this.props.jacks}
-                        // onclick
-                        inChoosingScuttleStage={true}
-                        chooseScuttleTarget={this.props.chooseScuttleTarget}
                         isOpponentField={true}
+                        // for scuttling
+                        selectedCard={selectedCard}
+                        setSelectedCard={setSelectedCard}
                     />
                 </Row>
             </React.Fragment>
         );
     };
 
-    effect2 = () => {
+    const effect2 = () => {
         return (
             <Row>
                 <Col>
                     <h6>Opponent Field</h6>
                     <Row xs={2} sm={2} md={3}>
                         <Field
+                            {...props}
                             inPopup={true}
-                            field={this.props.opponentField}
-                            jacks={this.props.jacks}
-                            inChoosingEffectStage={
-                                this.props.inChoosingEffectStage
-                            }
-                            chooseEffectTarget={this.props.chooseEffectTarget}
+                            field={G.fields[playerIDOpponent]}
                             isOpponentField={true}
+                            // don't need to pass selectedcard since it's in counter chain
                         />
                     </Row>
                 </Col>
@@ -52,12 +69,9 @@ export class ChoosingPopup extends React.Component {
                     <h6>Opponent Special Field</h6>
                     <Row xs={2} sm={2} md={3}>
                         <SpecialField
+                            {...props}
                             inPopup={true}
-                            specialField={this.props.opponentSpecialField}
-                            inChoosingEffectStage={
-                                this.props.inChoosingEffectStage
-                            }
-                            chooseEffectTarget={this.props.chooseEffectTarget}
+                            specialField={G.specialFields[playerIDOpponent]}
                             isOpponentSpecialField={true}
                         />
                     </Row>
@@ -66,9 +80,9 @@ export class ChoosingPopup extends React.Component {
         );
     };
 
-    effect7 = () => {
+    const effect7 = () => {
         let cells = [];
-        let deck = this.props.deck;
+        let deck = G.deck;
 
         for (let i = 0; i < 2; i++) {
             let idx = deck.length - 1 - i;
@@ -81,7 +95,7 @@ export class ChoosingPopup extends React.Component {
                         src={img}
                         thumbnail
                         className={"targetable"}
-                        onClick={() => this.props.chooseEffectTarget(card)}
+                        onClick={() => chooseEffectTarget(card)}
                     ></Image>
                 </Col>
             );
@@ -94,7 +108,7 @@ export class ChoosingPopup extends React.Component {
         );
     };
 
-    effect9 = () => {
+    const effect9 = () => {
         return (
             <React.Fragment>
                 <Row>
@@ -102,15 +116,9 @@ export class ChoosingPopup extends React.Component {
                         <h6>Opponent Field</h6>
                         <Row xs={2} sm={2} md={3}>
                             <Field
+                                {...props}
                                 inPopup={true}
-                                field={this.props.opponentField}
-                                jacks={this.props.jacks}
-                                inChoosingEffectStage={
-                                    this.props.inChoosingEffectStage
-                                }
-                                chooseEffectTarget={
-                                    this.props.chooseEffectTarget
-                                }
+                                field={G.fields[playerIDOpponent]}
                                 isOpponentField={true}
                             />
                         </Row>
@@ -119,14 +127,9 @@ export class ChoosingPopup extends React.Component {
                         <h6>Opponent Special Field</h6>
                         <Row xs={2} sm={2} md={3}>
                             <SpecialField
+                                {...props}
                                 inPopup={true}
-                                specialField={this.props.opponentSpecialField}
-                                inChoosingEffectStage={
-                                    this.props.inChoosingEffectStage
-                                }
-                                chooseEffectTarget={
-                                    this.props.chooseEffectTarget
-                                }
+                                specialField={G.specialFields[playerIDOpponent]}
                                 isOpponentSpecialField={true}
                             />
                         </Row>
@@ -138,15 +141,9 @@ export class ChoosingPopup extends React.Component {
                         <h6>Your Field</h6>
                         <Row xs={4} sm={4} md={5}>
                             <Field
+                                {...props}
+                                field={G.fields[playerID]}
                                 inPopup={true}
-                                field={this.props.playerField}
-                                jacks={this.props.jacks}
-                                inChoosingEffectStage={
-                                    this.props.inChoosingEffectStage
-                                }
-                                chooseEffectTarget={
-                                    this.props.chooseEffectTarget
-                                }
                                 isPlayerField={true}
                             />
                         </Row>
@@ -156,17 +153,15 @@ export class ChoosingPopup extends React.Component {
         );
     };
 
-    effectJ = () => {
+    const effectJ = () => {
         return (
             <React.Fragment>
                 <h6>Opponent Field</h6>
                 <Row xs={4} sm={4} md={5}>
                     <Field
+                        {...props}
                         inPopup={true}
-                        field={this.props.opponentField}
-                        jacks={this.props.jacks}
-                        inChoosingEffectStage={this.props.inChoosingEffectStage}
-                        chooseEffectTarget={this.props.chooseEffectTarget}
+                        field={G.fields[playerIDOpponent]}
                         isOpponentField={true}
                     />
                 </Row>
@@ -174,57 +169,49 @@ export class ChoosingPopup extends React.Component {
         );
     };
 
-    effect3 = () => {
+    const effect3 = () => {
         return (
             <React.Fragment>
                 <h6>Graveyard</h6>
-                <Graveyard
-                    inPopup={true}
-                    graveyard={this.props.graveyard}
-                    // onclick
-                    inChoosingEffectStage={this.props.inChoosingEffectStage}
-                    chooseEffectTarget={this.props.chooseEffectTarget}
-                />
+                <Graveyard {...props} inPopup={true} />
             </React.Fragment>
         );
     };
 
-    render() {
-        // props
-        let selectedCard = this.props.selectedCard;
-        // stages
-        let inChoosingScuttleStage = this.props.inChoosingScuttleStage;
-        let inChoosingEffectStage = this.props.inChoosingEffectStage;
-
+    if (inChoosingScuttleStage || inChoosingEffectStage) {
         return (
-            <React.Fragment>
+            <Container className="border popup">
+                <h6>
+                    <u>Choose Target</u>
+                </h6>
+
                 {/* scuttling, opponent field */}
                 {inChoosingScuttleStage && (
-                    <React.Fragment>{this.scuttle()}</React.Fragment>
+                    <React.Fragment>{scuttle()}</React.Fragment>
                 )}
 
                 {/* 2 opponent field and opponent special field */}
                 {selectedCard.Value === "2" && inChoosingEffectStage && (
-                    <React.Fragment>{this.effect2()}</React.Fragment>
+                    <React.Fragment>{effect2()}</React.Fragment>
                 )}
-
                 {/* 3 graveyard */}
                 {selectedCard.Value === "3" && inChoosingEffectStage && (
-                    <React.Fragment>{this.effect3()}</React.Fragment>
+                    <React.Fragment>{effect3()}</React.Fragment>
                 )}
                 {/* 7 */}
                 {selectedCard.Value === "7" && inChoosingEffectStage && (
-                    <React.Fragment>{this.effect7()}</React.Fragment>
+                    <React.Fragment>{effect7()}</React.Fragment>
                 )}
                 {/* 9 ALL fields */}
                 {selectedCard.Value === "9" && inChoosingEffectStage && (
-                    <React.Fragment>{this.effect9()}</React.Fragment>
+                    <React.Fragment>{effect9()}</React.Fragment>
                 )}
                 {/* J opponent field */}
                 {selectedCard.Value === "Jack" && inChoosingEffectStage && (
-                    <React.Fragment>{this.effectJ()}</React.Fragment>
+                    <React.Fragment>{effectJ()}</React.Fragment>
                 )}
-            </React.Fragment>
+            </Container>
         );
     }
-}
+    return <React.Fragment></React.Fragment>;
+};

@@ -12,15 +12,15 @@ export const Hand = (props) => {
         selectedCard,
         setSelectedCard,
         isPlayerHand,
-        isOpponentHand,
     } = props;
+
     const inActionStage = ctx.activePlayers[playerID] === "action";
 
     const toggleSelectedCard = (card) => {
         selectedCard ? setSelectedCard(false) : setSelectedCard(card);
     };
 
-    // just to print
+    // printing
     useEffect(() => {
         console.log("selected", selectedCard);
     }, [selectedCard]);
@@ -58,56 +58,9 @@ export const Hand = (props) => {
                     )}
                 </h6>
             )}
-            {isOpponentHand && (
-                <h6>
-                    Your Hand ({hand.length}){" "}
-                    {selectedCard !== false && (
-                        <span>(selected: {selectedCard.id})</span>
-                    )}
-                </h6>
-            )}
             <Row xs={4} sm={4} md={5} className={inActionStage ? "active" : ""}>
                 {cells}
             </Row>
         </React.Fragment>
     );
 };
-
-// export class Hand extends React.Component {
-//     render() {
-//         let hand = this.props.hand;
-//         let cells = [];
-
-//         for (let i = 0; i < hand.length; i++) {
-//             let card = hand[i];
-//             let img = CardImages[card.id];
-
-//             cells.push(
-//                 <Col key={card.id}>
-//                     <Image
-//                         src={img}
-//                         thumbnail
-//                         className={this.props.inActionStage ? "targetable" : ""}
-//                         onClick={
-//                             // note: when using ternary in onClick, have to use ()=>
-//                             this.props.inActionStage
-//                                 ? () => this.props.toggleSelectedCard(card)
-//                                 : () => void 0
-//                         }
-//                     />
-//                 </Col>
-//             );
-//         }
-
-//         return (
-//             <Row
-//                 xs={4}
-//                 sm={4}
-//                 md={5}
-//                 className={this.props.inActionStage ? "active" : ""}
-//             >
-//                 {cells}
-//             </Row>
-//         );
-//     }
-// }
