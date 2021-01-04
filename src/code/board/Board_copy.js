@@ -32,6 +32,11 @@ export const Board = (props) => {
 
     return (
         <div className="board-area">
+            {/* logger */}
+            <Container>
+                <Logger {...props} />
+            </Container>
+
             {/* hand */}
             <Container>
                 <Hand

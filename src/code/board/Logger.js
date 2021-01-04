@@ -3,25 +3,45 @@ import AutoScroll from "@brianmcallister/react-auto-scroll";
 
 import "./board.scss";
 
-export class Logger extends React.Component {
-    render() {
-        // props
-        let logger = this.props.logger;
+export const Logger = (props) => {
+    const { G } = props;
 
-        let cells = [];
-        for (let i = 0; i < logger.length; i++) {
-            cells.push(<p key={i}>{logger[i]}</p>);
-        }
-
-        return (
-            <AutoScroll
-                showOption={false}
-                height={"5rem"}
-                scrollBehavior={"smooth"}
-                className="border"
-            >
-                {cells}
-            </AutoScroll>
-        );
+    let cells = [];
+    for (let i = 0; i < G.logger.length; i++) {
+        cells.push(<p key={i}>{G.logger[i]}</p>);
     }
-}
+
+    return (
+        <AutoScroll
+            showOption={false}
+            height={"5rem"}
+            scrollBehavior={"smooth"}
+            className="border"
+        >
+            {cells}
+        </AutoScroll>
+    );
+};
+
+// export class Logger extends React.Component {
+//     render() {
+//         // props
+//         let logger = this.props.logger;
+
+//         let cells = [];
+//         for (let i = 0; i < logger.length; i++) {
+//             cells.push(<p key={i}>{logger[i]}</p>);
+//         }
+
+//         return (
+//             <AutoScroll
+//                 showOption={false}
+//                 height={"5rem"}
+//                 scrollBehavior={"smooth"}
+//                 className="border"
+//             >
+//                 {cells}
+//             </AutoScroll>
+//         );
+//     }
+// }
