@@ -6,7 +6,7 @@ import { Button } from "react-bootstrap";
 
 const api = new LobbyAPI();
 
-const PlayAgain = ({ G, ctx, playerID, moves, gameID }) => {
+export const PlayAgain = ({ G, ctx, playerID, moves, gameID }) => {
     const [choices, setChoices] = useState([]);
 
     useEffect(() => {
@@ -68,5 +68,3 @@ const PlayAgain = ({ G, ctx, playerID, moves, gameID }) => {
 
     return <React.Fragment>{choices}</React.Fragment>;
 };
-
-export default PlayAgain;

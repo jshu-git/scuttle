@@ -5,7 +5,15 @@ import { Row, Col, Image } from "react-bootstrap";
 import { CardImages } from "../../assets/cards.js";
 
 export const Hand = (props) => {
-    const { G, ctx, playerID, selectedCard, setSelectedCard } = props;
+    const {
+        G,
+        ctx,
+        playerID,
+        selectedCard,
+        setSelectedCard,
+        isPlayerHand,
+        isOpponentHand,
+    } = props;
     const inActionStage = ctx.activePlayers[playerID] === "action";
 
     const toggleSelectedCard = (card) => {
@@ -42,6 +50,22 @@ export const Hand = (props) => {
 
     return (
         <React.Fragment>
+            {isPlayerHand && (
+                <h6>
+                    Your Hand ({hand.length}){" "}
+                    {selectedCard !== false && (
+                        <span>(selected: {selectedCard.id})</span>
+                    )}
+                </h6>
+            )}
+            {isOpponentHand && (
+                <h6>
+                    Your Hand ({hand.length}){" "}
+                    {selectedCard !== false && (
+                        <span>(selected: {selectedCard.id})</span>
+                    )}
+                </h6>
+            )}
             <Row xs={4} sm={4} md={5} className={inActionStage ? "active" : ""}>
                 {cells}
             </Row>
