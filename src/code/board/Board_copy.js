@@ -50,8 +50,11 @@ export const Board = (props) => {
                     playerIDOpponent={playerIDOpponent}
                 />
             </Container>
-
-            <Container></Container>
+            {/* countering options */}
+            <Container>
+                <CounteringOptions {...props} />
+            </Container>
+            
         </div>
     );
 };
