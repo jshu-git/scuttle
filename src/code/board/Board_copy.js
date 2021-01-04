@@ -54,7 +54,10 @@ export const Board = (props) => {
             <Container>
                 <CounteringOptions {...props} />
             </Container>
-            
+            {/* turn options */}
+            <Container>
+                <TurnOptions {...props} selectedCard={selectedCard} />
+            </Container>
         </div>
     );
 };
