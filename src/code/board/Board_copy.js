@@ -58,6 +58,15 @@ export const Board = (props) => {
             <Container>
                 <TurnOptions {...props} selectedCard={selectedCard} />
             </Container>
+
+            {/* graveyard button is always visible */}
+            <Container>
+                <Graveyard
+                    {...props}
+                    showGraveyard={showGraveyard}
+                    setShowGraveyard={setShowGraveyard}
+                />
+            </Container>
         </div>
     );
 };
