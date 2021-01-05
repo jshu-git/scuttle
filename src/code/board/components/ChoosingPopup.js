@@ -10,21 +10,16 @@ import { Row, Col, Image, Container } from "react-bootstrap";
 import { CardImages } from "../../../assets/cards.js";
 
 const ChoosingPopup = (props) => {
-    const {
-        G,
-        ctx,
-        playerID,
-        moves,
-        selectedCard,
-        setSelectedCard,
-        playerIDOpponent,
-    } = props;
+    const { G, ctx, playerID, moves, playerIDOpponent } = props;
 
     // stages
     const inChoosingScuttleStage =
         ctx.activePlayers[playerID] === "choosingScuttle";
     const inChoosingEffectStage =
         ctx.activePlayers[playerID] === "choosingEffect";
+
+    const player = G.players[playerID];
+    const selectedCard = player.selectedCard;
 
     // moves
     const chooseEffectTarget = (targetCard) => {
@@ -38,12 +33,9 @@ const ChoosingPopup = (props) => {
                 <Row xs={4} sm={4} md={5}>
                     <Field
                         {...props}
-                        field={G.fields[playerIDOpponent]}
+                        field={G.players[playerIDOpponent].field}
                         inPopup={true}
                         isOpponentField={true}
-                        // for scuttling
-                        selectedCard={selectedCard}
-                        setSelectedCard={setSelectedCard}
                     />
                 </Row>
             </React.Fragment>
@@ -59,9 +51,8 @@ const ChoosingPopup = (props) => {
                         <Field
                             {...props}
                             inPopup={true}
-                            field={G.fields[playerIDOpponent]}
+                            field={G.players[playerIDOpponent].field}
                             isOpponentField={true}
-                            // don't need to pass selectedcard since it's in counter chain
                         />
                     </Row>
                 </Col>
@@ -71,7 +62,9 @@ const ChoosingPopup = (props) => {
                         <SpecialField
                             {...props}
                             inPopup={true}
-                            specialField={G.specialFields[playerIDOpponent]}
+                            specialField={
+                                G.players[playerIDOpponent].specialField
+                            }
                             isOpponentSpecialField={true}
                         />
                     </Row>
@@ -118,7 +111,7 @@ const ChoosingPopup = (props) => {
                             <Field
                                 {...props}
                                 inPopup={true}
-                                field={G.fields[playerIDOpponent]}
+                                field={G.players[playerIDOpponent].field}
                                 isOpponentField={true}
                             />
                         </Row>
@@ -129,7 +122,9 @@ const ChoosingPopup = (props) => {
                             <SpecialField
                                 {...props}
                                 inPopup={true}
-                                specialField={G.specialFields[playerIDOpponent]}
+                                specialField={
+                                    G.players[playerIDOpponent].specialField
+                                }
                                 isOpponentSpecialField={true}
                             />
                         </Row>
@@ -142,7 +137,7 @@ const ChoosingPopup = (props) => {
                         <Row xs={4} sm={4} md={5}>
                             <Field
                                 {...props}
-                                field={G.fields[playerID]}
+                                field={G.players[playerID].field}
                                 inPopup={true}
                                 isPlayerField={true}
                             />
@@ -161,7 +156,7 @@ const ChoosingPopup = (props) => {
                     <Field
                         {...props}
                         inPopup={true}
-                        field={G.fields[playerIDOpponent]}
+                        field={G.players[playerIDOpponent].field}
                         isOpponentField={true}
                     />
                 </Row>

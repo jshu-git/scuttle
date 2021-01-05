@@ -6,27 +6,24 @@ export function playCardScuttle(G, ctx) {
     });
 }
 
-export function chooseScuttleTarget(G, ctx, card, target) {
-    let current_player = ctx.playOrder[ctx.playOrderPos];
-    let opponent_player =
-        ctx.playOrder[(ctx.playOrderPos + 1) % ctx.playOrder.length];
-
-    let current_hand = G.hands[current_player];
-    let opponent_field = G.fields[opponent_player];
-
-    let current_card = current_hand.find((i) => i.id === card.id);
-    let target_card = opponent_field.find((i) => i.id === target.id);
+export function chooseScuttleTarget(G, ctx, target) {
+    let player = G.players[ctx.playOrderPos];
+    let card = player.selectedCard;
+    let opponent = G.players[(ctx.playOrderPos + 1) % ctx.playOrder.length];
 
     // card logic
-    let curr =
-        current_card.Value === "Ace" ? "1" : parseInt(current_card.Value);
-    let targ = target_card.Value === "Ace" ? "1" : parseInt(target_card.Value);
+    let currValue = card.Value === "Ace" ? "1" : parseInt(card.Value);
+    let targValue = target.Value === "Ace" ? "1" : parseInt(target.Value);
 
-    if (parseInt(curr) >= parseInt(targ)) {
-        let i = current_hand.findIndex((x) => x.id === card.id);
-        let remove1 = current_hand.splice(i, 1)[0];
-        let j = opponent_field.findIndex((y) => y.id === target.id);
-        let remove2 = opponent_field.splice(j, 1)[0];
+    if (parseInt(currValue) >= parseInt(targValue)) {
+        let i = player.hand.findIndex((x) => x.id === card.id);
+        let remove1 = player.hand.splice(i, 1)[0];
+
+        let j = opponent.field.findIndex((y) => y.id === target.id);
+        let remove2 = opponent.field.splice(j, 1)[0];
+
+        G.graveyard.push(remove1);
+        G.graveyard.push(remove2);
 
         // remove jack
         let jacks = G.jacks;
@@ -42,11 +39,8 @@ export function chooseScuttleTarget(G, ctx, card, target) {
             delete jacks[card.id];
         }
 
-        G.graveyard.push(remove1);
-        G.graveyard.push(remove2);
-
         G.logger.push(
-            G.names[ctx.currentPlayer] +
+            player.name +
                 " used <" +
                 card.id +
                 ">" +
@@ -56,6 +50,8 @@ export function chooseScuttleTarget(G, ctx, card, target) {
         );
         ctx.events.endTurn();
     } else {
+        G.logger.push(player.name + " failed their scuttle");
+        player.selectedCard = false;
         // reset stages
         ctx.events.setActivePlayers({
             currentPlayer: "action",

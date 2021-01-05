@@ -20,20 +20,20 @@ export const Board = (props) => {
     const { G, ctx, playerID, moves, gameMetadata } = props;
 
     // states
-    const [selectedCard, setSelectedCard] = useState(false);
     const [showGraveyard, setShowGraveyard] = useState(false);
 
     // player 0 has to set the player's actual screen names due to the way boardgame.io works
     useEffect(() => {
         if (playerID === "0") {
-            moves.storeNames(gameMetadata);
+            // moves.storeNames(gameMetadata);
         }
     }, [playerID, moves, gameMetadata]);
 
     // extra props
-    let playerIDOpponent = String(1 - parseInt(playerID));
+    const playerIDOpponent = String(1 - parseInt(playerID));
+    const player = G.players[playerID];
 
-    let graveyardButton = (
+    const graveyardButton = (
         <Button
             size="sm"
             variant="outline-secondary"
@@ -56,8 +56,10 @@ export const Board = (props) => {
 
             {/* show opponent hand */}
             <Container>
-                <h6>Opponent Hand ({G.hands[playerIDOpponent].length}) </h6>
-                {(G.specialFields[playerID].some((x) => x.Value === "8") ||
+                <h6>
+                    Opponent Hand ({G.players[playerIDOpponent].hand.length}){" "}
+                </h6>
+                {(player.specialField.some((x) => x.Value === "8") ||
                     G.winner !== "") && (
                     <Hand {...props} playerID={playerIDOpponent} />
                 )}
@@ -71,26 +73,17 @@ export const Board = (props) => {
             </Container>
 
             {/* choosing popup (in its own container) */}
-            <ChoosingPopup
-                {...props}
-                // selectedcard is for scuttling, counterchain is for effects
-                selectedCard={
-                    ctx.activePlayers[playerID] === "choosingScuttle"
-                        ? selectedCard
-                        : G.counterChain[0]
-                }
-                setSelectedCard={setSelectedCard}
-                playerIDOpponent={playerIDOpponent}
-            />
+            <ChoosingPopup {...props} playerIDOpponent={playerIDOpponent} />
 
             {/* hand */}
             <Container>
-                <Hand
-                    {...props}
-                    selectedCard={selectedCard}
-                    setSelectedCard={setSelectedCard}
-                    isPlayerHand={true}
-                />
+                <h6>
+                    Your Hand ({player.hand.length}){" "}
+                    {player.selectedCard !== false && (
+                        <span>(selected: {player.selectedCard.id})</span>
+                    )}
+                </h6>
+                <Hand {...props} />
             </Container>
 
             {/* turn stuff */}
@@ -98,8 +91,6 @@ export const Board = (props) => {
             <Container>
                 <PlayCardOptions
                     {...props}
-                    selectedCard={selectedCard}
-                    setSelectedCard={setSelectedCard}
                     playerIDOpponent={playerIDOpponent}
                 />
             </Container>
@@ -109,7 +100,7 @@ export const Board = (props) => {
             </Container>
             {/* turn options */}
             <Container>
-                <TurnOptions {...props} selectedCard={selectedCard} />
+                <TurnOptions {...props} />
             </Container>
 
             {/* graveyard */}

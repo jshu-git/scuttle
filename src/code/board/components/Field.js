@@ -15,8 +15,6 @@ const Field = (props) => {
         inPopup,
         isPlayerField,
         isOpponentField,
-        selectedCard,
-        setSelectedCard,
     } = props;
 
     // stages
@@ -29,8 +27,7 @@ const Field = (props) => {
     const onClick = (targetCard) => {
         if (inPopup) {
             if (inChoosingScuttleStage && isOpponentField) {
-                moves.chooseScuttleTarget(selectedCard, targetCard);
-                setSelectedCard(false);
+                moves.chooseScuttleTarget(targetCard);
             } else if (inChoosingEffectStage) {
                 if (isOpponentField) {
                     moves.chooseEffectTarget(targetCard, "opponentField");

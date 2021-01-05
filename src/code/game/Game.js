@@ -13,22 +13,16 @@ import { playAgain, setNewRoom } from "./PlayAgainMoves.js";
 
 import { GAME_NAME } from "../../config";
 
-const setup = ({ playOrder, playOrderPos }) => {
+const setup = ({ numPlayers }) => {
     const goFirst = Math.floor(Math.random() * 2);
 
-    const { deck, hands, fields, specialFields } = initializeGame(
-        playOrder,
-        playOrderPos,
-        goFirst
-    );
+    const { deck, players } = initializeGame(goFirst, numPlayers);
 
     // initialize game state G
     return {
+        players: players,
         deck: deck,
-        hands: hands,
-        fields: fields,
         graveyard: [],
-        specialFields: specialFields,
 
         // effect stuff
         counterChain: [],
@@ -38,7 +32,7 @@ const setup = ({ playOrder, playOrderPos }) => {
         // key=card object, value=[card obj (needed for 6), owner, list of jacks]
         // i.e. jacks[4 of Hearts ID] = [card object, "1", [Jack of Hearts, Jack of Spades]]
         jacks: {},
-        names: {},
+
         logger: [],
 
         // play again stuff
@@ -75,7 +69,7 @@ export const Scuttle = {
                     "Turn " +
                         ctx.turn +
                         ": " +
-                        G.names[ctx.currentPlayer] +
+                        G.players[ctx.currentPlayer].name +
                         "'s turn"
                 );
             } else {
@@ -87,6 +81,12 @@ export const Scuttle = {
         },
         onEnd: (G, ctx) => {
             cleanupCounterChain(G);
+
+            // clear selectedCard always
+            for (let i = 0; i < G.players.length; i++) {
+                G.players[i].selectedCard = false;
+            }
+
             checkForVictory(G, ctx);
         },
         stages: {
@@ -105,6 +105,8 @@ export const Scuttle = {
                     playCardEffect,
                     // names
                     storeNames,
+
+                    toggleSelectedCard,
                 },
             },
             countering: {
@@ -136,15 +138,26 @@ export const Scuttle = {
 
 // game moves
 function endTurn(G, ctx) {
-    G.logger.push(G.names[ctx.currentPlayer] + " ended their turn");
+    G.logger.push(G.players[ctx.currentPlayer].name + " ended their turn");
     ctx.events.endTurn();
 }
 function storeNames(G, ctx, playerList) {
     for (let i = 0; i < playerList.length; i++) {
-        G.names[i] = playerList[i].name;
+        G.players[i].name = playerList[i].name;
     }
 
     G.logger[0] =
         // hack for getting around undefined
-        "Turn " + ctx.turn + ": " + G.names[ctx.currentPlayer] + "'s turn";
+        "Turn " +
+        ctx.turn +
+        ": " +
+        G.players[ctx.currentPlayer].name +
+        "'s turn";
+}
+
+function toggleSelectedCard(G, ctx, card) {
+    let player = G.players[ctx.currentPlayer];
+    player.selectedCard
+        ? (player.selectedCard = false)
+        : (player.selectedCard = card);
 }

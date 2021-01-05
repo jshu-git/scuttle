@@ -5,27 +5,24 @@ import { Row, Col, Image } from "react-bootstrap";
 import { CardImages } from "../../../assets/cards.js";
 
 const Hand = (props) => {
-    const {
-        G,
-        ctx,
-        playerID,
-        selectedCard,
-        setSelectedCard,
-        isPlayerHand,
-    } = props;
+    const { G, ctx, moves, playerID } = props;
 
     const inActionStage = ctx.activePlayers[playerID] === "action";
-
-    const toggleSelectedCard = (card) => {
-        selectedCard ? setSelectedCard(false) : setSelectedCard(card);
-    };
+    const player = G.players[playerID];
+    const selectedCard = player.selectedCard;
 
     // printing
     useEffect(() => {
-        console.log("selected", selectedCard);
+        console.log("in hand.js selected", selectedCard);
     }, [selectedCard]);
 
-    let hand = G.hands[playerID];
+    const hand = player.hand;
+
+    // moves
+    const toggleSelectedCard = (card) => {
+        moves.toggleSelectedCard(card)
+    };
+
     let cells = [];
     for (let i = 0; i < hand.length; i++) {
         let card = hand[i];
@@ -50,14 +47,6 @@ const Hand = (props) => {
 
     return (
         <React.Fragment>
-            {isPlayerHand && (
-                <h6>
-                    Your Hand ({hand.length}){" "}
-                    {selectedCard !== false && (
-                        <span>(selected: {selectedCard.id})</span>
-                    )}
-                </h6>
-            )}
             <Row xs={4} sm={4} md={5} className={inActionStage ? "active" : ""}>
                 {cells}
             </Row>

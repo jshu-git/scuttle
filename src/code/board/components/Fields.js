@@ -9,6 +9,8 @@ import { Row, Col } from "react-bootstrap";
 
 const Fields = (props) => {
     const { G, playerID, playerIDOpponent } = props;
+    const player = G.players[playerID];
+    const opponent = G.players[playerIDOpponent];
 
     return (
         <React.Fragment>
@@ -17,7 +19,7 @@ const Fields = (props) => {
                 <Col>
                     <h6>Opponent Field</h6>
                     <Row xs={2} sm={2} md={3}>
-                        <Field {...props} field={G.fields[playerIDOpponent]} />
+                        <Field {...props} field={opponent.field} />
                     </Row>
                 </Col>
                 <Col>
@@ -25,7 +27,7 @@ const Fields = (props) => {
                     <Row xs={2} sm={2} md={3}>
                         <SpecialField
                             {...props}
-                            specialField={G.specialFields[playerIDOpponent]}
+                            specialField={opponent.specialField}
                         />
                     </Row>
                 </Col>
@@ -38,7 +40,7 @@ const Fields = (props) => {
                 <Col>
                     <h6>Your Field</h6>
                     <Row xs={2} sm={2} md={3}>
-                        <Field {...props} field={G.fields[playerID]} />
+                        <Field {...props} field={player.field} />
                     </Row>
                 </Col>
                 <Col>
@@ -46,7 +48,7 @@ const Fields = (props) => {
                     <Row xs={2} sm={2} md={3}>
                         <SpecialField
                             {...props}
-                            specialField={G.specialFields[playerID]}
+                            specialField={player.specialField}
                         />
                     </Row>
                 </Col>

@@ -2,23 +2,23 @@
 // import { INVALID_MOVE } from "boardgame.io/core";
 
 export function drawCard(G, ctx) {
-    const card = G.deck.pop();
-    G.hands[ctx.currentPlayer].push(card);
+    let player = G.players[ctx.currentPlayer];
 
-    G.logger.push(G.names[ctx.currentPlayer] + " drew a card");
+    const card = G.deck.pop();
+    player.hand.push(card);
+
+    G.logger.push(player.name + " drew a card");
     ctx.events.endTurn();
 }
 
-export function playCardValue(G, ctx, card) {
-    let hand = G.hands[ctx.currentPlayer];
-    let field = G.fields[ctx.currentPlayer];
+export function playCardValue(G, ctx) {
+    let player = G.players[ctx.currentPlayer];
+    let card = player.selectedCard;
 
-    let idx = hand.findIndex((i) => i.id === card.id);
-    let remove = hand.splice(idx, 1)[0];
-    field.push(remove);
+    let idx = player.hand.findIndex((i) => i.id === card.id);
+    let remove = player.hand.splice(idx, 1)[0];
+    player.field.push(remove);
 
-    G.logger.push(
-        G.names[ctx.currentPlayer] + " played <" + card.id + "> as value"
-    );
+    G.logger.push(player.name + " played <" + card.id + "> as value");
     ctx.events.endTurn();
 }

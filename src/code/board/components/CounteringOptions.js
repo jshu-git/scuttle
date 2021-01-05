@@ -5,7 +5,7 @@ import { Button } from "react-bootstrap";
 const CounteringOptions = (props) => {
     const { G, ctx, playerID, moves } = props;
     const inCounteringStage = ctx.activePlayers[playerID] === "countering";
-    const has2 = G.hands[playerID].some((x) => x.Value === "2");
+    const has2 = G.players[playerID].hand.some((x) => x.Value === "2");
 
     // moves
     const accept = () => {

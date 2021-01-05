@@ -1,13 +1,40 @@
-export const initializeGame = (playOrder, playOrderPos, goFirst) => {
+export const initializeGame = (goFirst, numPlayers) => {
     let deck = createDeck();
-
     shuffle(deck);
 
-    let hands = drawHands(deck, playOrder, playOrderPos, goFirst);
-    let fields = setFields(playOrder, playOrderPos);
-    let specialFields = setSpecialFields(playOrder, playOrderPos);
-    return { deck, hands, fields, specialFields };
+    // initialize players
+    let players = [];
+    for (let i = 0; i < numPlayers; i++) {
+        var p = {
+            id: i,
+            name: "",
+            hand: drawHand(deck, goFirst, i),
+            field: [],
+            specialField: [],
+            selectedCard: false,
+        };
+        players.push(p);
+    }
+    console.log(JSON.parse(JSON.stringify(players)));
+
+    return { deck, players };
 };
+
+function drawHand(deck, goFirst, id) {
+    let temp = [];
+    if (id === goFirst) {
+        for (let i = 0; i < 4; i++) {
+            const card = deck.pop();
+            temp.push(card);
+        }
+    } else {
+        for (let i = 0; i < 5; i++) {
+            const card = deck.pop();
+            temp.push(card);
+        }
+    }
+    return temp;
+}
 
 // also used for create images
 export function createDeck() {
@@ -47,41 +74,6 @@ export function createDeck() {
     return deck;
 }
 
-function drawHands(deck, playOrder, playOrderPos, goFirst) {
-    let hands = {};
-
-    let current = playOrder[playOrderPos];
-    // wrap around end of playOrder arr
-    let next = playOrder[(playOrderPos + 1) % playOrder.length];
-
-    hands[current] = [];
-    hands[next] = [];
-
-    if (goFirst === 0) {
-        for (let i = 0; i < 4; i++) {
-            const card = deck.pop();
-            hands[current].push(card);
-        }
-
-        for (let i = 0; i < 5; i++) {
-            const card = deck.pop();
-            hands[next].push(card);
-        }
-    } else {
-        for (let i = 0; i < 5; i++) {
-            const card = deck.pop();
-            hands[current].push(card);
-        }
-
-        for (let i = 0; i < 4; i++) {
-            const card = deck.pop();
-            hands[next].push(card);
-        }
-    }
-
-    return hands;
-}
-
 export const shuffle = (arr) => {
     // shuffle deck (using Fisher-Yates algorithm, might've been overkill since deck is only ~20 at most)
     for (let i = arr.length - 1; i > 0; i--) {
@@ -89,25 +81,3 @@ export const shuffle = (arr) => {
         [arr[i], arr[j]] = [arr[j], arr[i]];
     }
 };
-
-function setFields(playOrder, playOrderPos) {
-    let fields = {};
-
-    let current = playOrder[playOrderPos];
-    let next = playOrder[(playOrderPos + 1) % playOrder.length];
-
-    fields[current] = [];
-    fields[next] = [];
-    return fields;
-}
-
-function setSpecialFields(playOrder, playOrderPos) {
-    let specialFields = {};
-
-    let current = playOrder[playOrderPos];
-    let next = playOrder[(playOrderPos + 1) % playOrder.length];
-
-    specialFields[current] = [];
-    specialFields[next] = [];
-    return specialFields;
-}

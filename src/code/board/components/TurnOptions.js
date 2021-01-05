@@ -3,7 +3,7 @@ import "../board.scss";
 import { Button } from "react-bootstrap";
 
 const TurnOptions = (props) => {
-    const { G, ctx, playerID, moves, selectedCard } = props;
+    const { G, ctx, playerID, moves } = props;
     const inActionStage = ctx.activePlayers[playerID] === "action";
 
     // moves
@@ -20,7 +20,10 @@ const TurnOptions = (props) => {
                 <Button
                     size="sm"
                     variant="success"
-                    disabled={selectedCard !== false || G.deck.length === 0}
+                    disabled={
+                        G.players[playerID].selectedCard !== false ||
+                        G.deck.length === 0
+                    }
                     onClick={drawCard}
                 >
                     Draw ({G.deck.length})
