@@ -62,7 +62,7 @@ export function counter(G, ctx, playerCounter) {
 }
 
 export function accept(G, ctx, playerAccept) {
-    // playerAccept can be undefined since J/Q/K immediately calls it 
+    // playerAccept can be undefined since J/Q/K immediately calls it
     if (playerAccept) {
         G.logger.push(G.players[playerAccept].name + " accepted");
     }
@@ -204,16 +204,15 @@ function doEffect(G, ctx) {
             break;
         case "7":
             console.log("reaching this 7 case");
-            // let player_hand_length = current_player_hand.length - 1;
-            // while (current_player_hand.length > 0) {
-            //     deck.push(current_player_hand.pop());
-            // }
-            // shuffle(G.deck);
-            // for (let j = 0; j <= player_hand_length; j++) {
-            //     current_player_hand.push(deck.pop());
-            // }
+            let len = player.hand.length - 1;
+            while (player.hand.length > 0) {
+                deck.push(player.hand.pop());
+            }
+            shuffle(G.deck);
+            for (let j = 0; j <= len; j++) {
+                player.hand.push(deck.pop());
+            }
             break;
-
         // fall through
         case "8":
         case "Queen":
@@ -335,10 +334,10 @@ function doEffectTarget(G, ctx, targetCard, targetField) {
 
         //     // check target
         //     if (targetCard.id === one.id) {
-        //         current_player_hand.push(one);
+        //         player.hand.push(one);
         //         G.deck.push(two);
         //     } else {
-        //         current_player_hand.push(two);
+        //         player.hand.push(two);
         //         G.deck.push(one);
         //     }
         //     break;

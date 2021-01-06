@@ -15,7 +15,6 @@ export const initializeGame = (goFirst, numPlayers) => {
         };
         players.push(p);
     }
-    console.log(JSON.parse(JSON.stringify(players)));
 
     return { deck, players };
 };
