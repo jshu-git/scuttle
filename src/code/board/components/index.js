@@ -8,10 +8,15 @@ import PlayAgain from "./PlayAgain";
 import PlayCardOptions from "./PlayCardOptions";
 import TurnOptions from "./TurnOptions";
 
+import Field from "./Field";
+import SpecialField from "./SpecialField";
+
 export {
     ChoosingPopup,
     CounteringOptions,
     Fields,
+    Field,
+    SpecialField,
     Graveyard,
     Hand,
     Logger,

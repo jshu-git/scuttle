@@ -1,9 +1,7 @@
 import React from "react";
 
 // components
-import Field from "./Field";
-import SpecialField from "./SpecialField";
-import Graveyard from "./Graveyard";
+import { Field, SpecialField, Graveyard } from "./";
 
 import "../board.scss";
 import { Row, Col, Image, Container } from "react-bootstrap";

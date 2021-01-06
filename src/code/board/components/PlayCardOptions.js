@@ -34,9 +34,11 @@ const PlayCardOptions = (props) => {
     let disabledValue = special;
 
     // scuttle
+    let canScuttleACard = opponent.field.some(
+        (x) => selectedCard.Point >= x.Point
+    );
     let disabledScuttle =
-        // scuttle on empty opponent field or special card
-        opponent.field.length === 0 || special;
+        opponent.field.length === 0 || special || !canScuttleACard;
 
     // special field J/Q checks
     let jackInOpponentField = opponent.field.some((x) => jacks[x.id]);
