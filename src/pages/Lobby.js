@@ -11,7 +11,6 @@ const Lobby = (props) => {
             <h3>
                 Scuttle<img id="icon" src={icon} alt="icon"></img>
             </h3>
-            <hr></hr>
             {props.children}
             <div>
                 <small>created by jshu and vindara (december 2020)</small>
